@@ -101,6 +101,7 @@ document.getElementById('delete-book-btn').addEventListener('click', function()
     DeleteSelectedItem(SelectedBookItem);
 });
 
+// ========[ Menu Navigations ]==========================
 function MenuNavigate(s)
 {
     switch(s)
@@ -124,19 +125,6 @@ function MenuNavigate(s)
             break;
         default:
             break;
-    }
-}
-// ========[ Logout ]===================================
-function Logout()
-{
-    try
-    {
-        cookie.DeleteCookie('cuser');
-        window.location.href = "./index.html";
-    }
-    catch(exception)
-    {
-        console.log(exception);
     }
 }
 
@@ -179,29 +167,6 @@ function PushToMaster(Book)
     // 1. When new book comes to insert, check ISBN number is already exist or not.
     
     ld.SetBookDatabase(BookDatabase);
-    // var obj = Object.fromEntries(BookDatabase);
-    // var jsonString = JSON.stringify(obj);
-    // localStorage.setItem('bookDB', jsonString);
-}
-function ResetAllFields()
-{
-    document.getElementById('book-title-tb').value = '';
-    document.getElementById('book-isbn-tb').value = '';
-    document.getElementById('book-edition-tb').value = '';
-    document.getElementById('language-combo').value = '';
-    document.getElementById('genre-combo').value = '';
-    document.getElementById('authour-tb').value = '';
-    document.getElementById('book-publisher-tb').value = '';
-    document.getElementById('book-publisher-contact').value = '';
-    document.getElementById('book-pubished-date').value = '';
-    document.getElementById('book-origin-combo').value = '';
-    document.getElementById('lib-section-tb').value = '';
-    document.getElementById('lib-rack-tb').value = '';
-    document.getElementById('book-stock-tb').value = '';
-    document.getElementById('genre-list').innerHTML = '';
-    document.getElementById('authour-list').innerHTML = '';
-    thisBook.Genre = [];
-    thisBook.Authuors = [];
 }
 
 // ========[ Choose image ]=============================
@@ -219,22 +184,7 @@ function ChooseNewImage()
         }
     }
 }
-//
-function ShowErrorAlert(error)
-{
-    try
-    {
-        document.getElementById('error-msg').style.display = 'flex';
-        document.getElementById('error-msg-tag').innerText = error;
-        setTimeout(() => {
-            document.getElementById('error-msg').style.display = 'none';    
-        }, 3000);
-    }
-    catch(exception)
-    {
-        ShowErrorAlert(exception);
-    }
-}
+
 
 // =====[ Genre list ]===========================
 // ==============================================
@@ -391,7 +341,11 @@ function Makelist(givenList)
                             </div>
                         </div>
                         <div class="right-end">
-                            <span>${item.Language}</span>
+                            <div id="lang-text">
+                            ${item.Language}</div>
+                            <div id="stock-text">
+                            Stock:
+                            ${item.StockCount}</div>
                         </div>
                     </div>
                 </div>
@@ -425,7 +379,6 @@ function Invoke_EventListener_BookList(bookListDB)
         item.addEventListener('click', function () 
         {
             SelectedBookItem = bookListDB[bookListChildrens.indexOf(item)];
-            console.log(SelectedBookItem);
             InvokeSelectionCard(SelectedBookItem);
         });
     });
@@ -461,12 +414,87 @@ function InvokeSelectionCard(selectedBookItem)
 }
 function DeleteSelectedItem(selectedItem)
 {
-    ld.DeleteBook(selectedItem);
-    Refresh_BookList_UI();
+    let BookLogMaster = ld.GetBookLogDatabase();
+    let logMaster = Array.from(BookLogMaster.values());
+    
+    let count = 0;
+    for(let i = 0; i < logMaster.length; i++)
+    {
+        let logItem = Array.from(logMaster[i]);
+        for(let j = 0; j < logItem.length; j++)
+        {
+            let singleItem = logItem[j];
+            if(singleItem.BookId == selectedItem.ISBN)
+            {
+                count++;
+            }
+        }
+    }
+    if(count <= 0)
+    {
+        ld.DeleteBook(selectedItem);
+        Refresh_BookList_UI();
+    }
+    else
+    {
+        ShowErrorAlert('Book has been taken..! Cannot delete now.!')
+    }
     document.getElementById('selection-action-block').style.display = 'none';
 }
 
 
+
+// ========[ Logout ]==========================================
+function Logout()
+{
+    try
+    {
+        cookie.DeleteCookie('cuser');
+        window.location.href = "./index.html";
+    }
+    catch(exception)
+    {
+        console.log(exception);
+    }
+}
+// ========[ Reset all field ]==================================
+function ResetAllFields()
+{
+    document.getElementById('book-title-tb').value = '';
+    document.getElementById('book-isbn-tb').value = '';
+    document.getElementById('book-edition-tb').value = '';
+    document.getElementById('language-combo').value = '';
+    document.getElementById('genre-combo').value = '';
+    document.getElementById('authour-tb').value = '';
+    document.getElementById('book-publisher-tb').value = '';
+    document.getElementById('book-publisher-contact').value = '';
+    document.getElementById('book-pubished-date').value = '';
+    document.getElementById('book-origin-combo').value = '';
+    document.getElementById('lib-section-tb').value = '';
+    document.getElementById('lib-rack-tb').value = '';
+    document.getElementById('book-stock-tb').value = '';
+    document.getElementById('genre-list').innerHTML = '';
+    document.getElementById('authour-list').innerHTML = '';
+    thisBook.Genre = [];
+    thisBook.Authuors = [];
+}
+// ========[ Show error alert ]=================================
+function ShowErrorAlert(error)
+{
+    try
+    {
+        document.getElementById('error-msg').style.display = 'block';
+        document.getElementById('error-msg-tag').innerText = error;
+        setTimeout(() => {
+            document.getElementById('error-msg').style.display = 'none';    
+        }, 5000);
+    }
+    catch(exception)
+    {
+        ShowErrorAlert(exception);
+    }
+}
+// ========[ Cookie info ]======================================
 function GetUserFromCookie()
 {
     try

@@ -62,6 +62,10 @@
     background-color: orange;
     border: 2px solid var(--light1);
 }
+#page-heading
+{
+    color: var(--light3);
+}
 /* ================[ Content Block ]===================== */
 /* =================================================== */
 .content-block
@@ -190,14 +194,14 @@
 
 #error-msg
 {
-    width: 80%;
+    width: 83%;
     height: 30px;
     background-color: rgb(255, 63, 63);
     color: white;
-    position: fixed;
     display: none;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 #authour-item:hover
 {
@@ -319,12 +323,19 @@
 .right-end
 {
     width: 100px;
-    height: 20px;
+    height: 30px;
+    font-size: small;
     background-color: rgb(21, 88, 188);
     border-radius: 0px 5px 0px 3px;
     color: white;
     text-align: center;
 }
+#stock-text
+{
+    font-size: smaller;
+}
+
+/* ==================================================== */
 .center-block div
 {
     display: flex;

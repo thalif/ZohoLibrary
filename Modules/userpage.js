@@ -118,6 +118,25 @@ document.getElementById('return-book-btn').addEventListener('click', function()
 {
     BookReturn();
 });
+document.getElementById('menu-setting-btn').addEventListener('click', function()
+{
+    InvokeSettingCard();
+});
+document.getElementById('setting-card-close-btn').addEventListener('click', function()
+{
+    document.getElementById('setting-card').style.display = 'none';
+});
+document.getElementById('delete-account-btn').addEventListener('click', function()
+{
+    alert('delete btn clicked');
+    document.getElementById('setting-card').style.display = 'none';
+});
+
+
+function InvokeSettingCard()
+{
+    document.getElementById('setting-card').style.display = 'block';
+}
 
 
 function MenuNavigate(index)
@@ -455,7 +474,7 @@ function ReturnBook(element)
     InvokeBookReturnCard(UserReturnBookLog);
 }
 
-
+// =======[ Invoke book return card ]================
 function InvokeBookReturnCard(booklog)
 {
     UserReturnBook = BookDatabase.get(booklog.BookId);
@@ -478,7 +497,6 @@ function InvokeBookReturnCard(booklog)
         document.getElementById('return-book-btn').style.display = 'flex';
     }
 }
-
 function PayFine(booklog)
 {
     let fineAmount = libUtil.GetFineAmount(booklog.PickDate, new Date());
@@ -513,7 +531,6 @@ function BookReturn()
     ddd.StockCount++;
     LocalDB.SetBookDatabase(BookDatabase);
 }
-
 
 
 // =======[ Load Initials ]=======================

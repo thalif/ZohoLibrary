@@ -1,0 +1,445 @@
+:root 
+{
+    --dark1: #2C3639;
+    --dark2:#b9c7c8;
+    --light1: #DCD7C9;
+    --light2: #D0C9C0;
+    --light3: #eeeeee;
+}
+*
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.wrapper-block
+{
+    width: 100%;
+    height: 150vh;
+}
+.header-block
+{
+    height: 15%;
+    background-color: var(--dark1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--light3);
+}
+/* =====[ User Detail ]=========== */
+.user-detail
+{
+    width: 200px;
+    height: 30px;
+
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+/* =====[ Menu Navigation ]=========== */
+.menu-navigation-block
+{
+    position: absolute;
+    left: 10px;
+    top: 130px;
+}
+#menu-find-book, #menu-return-book
+{
+    width: 150px;
+    height: 30px;
+    text-align: center;
+}
+/* =====[ Logout btn ]=========== */
+#logout-btn
+{
+    width: 60px;
+    height: 20px;
+    background-color: orange;
+    border: 2px solid var(--light1);
+}
+/* ================================== */
+.center-filter-block
+{
+    display: flex;
+    flex-direction: row;
+
+    height: auto;
+    background-color: var(--light2);
+}
+/* ====[ Genre block ]====== */
+.genre-filter-block
+{
+    width: 40%;
+    /* background-color: darkcyan; */
+}
+.genre-select
+{
+    margin-left: 20px;
+}
+#genre-combo
+{
+    width: 100px;
+    height: 30px;
+}
+#genre-selected-list
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 10px;
+}
+#genre-selected-list li
+{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+#delete-item
+{
+    padding-left: 10px;
+}
+/* =====[ Authour Search block ]===== */
+.Authour-search-panel
+{
+    width: 40%;
+    height: 100%;
+    /* background-color: rgb(31, 68, 68); */
+}
+#authour-selected-list
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+}
+#authour-selected-list li
+{
+    margin-left: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.search-item-list
+{
+    background-color: var(--light1);
+    position: absolute;
+    width: 170px;
+    list-style: none;
+    margin-left: 15px;
+}
+.search-item-list li
+{
+    padding: 4px;
+    cursor: pointer;
+}
+.search-item-list li:hover
+{
+    background-color: rgb(169, 169, 169)
+}
+#authour-input-key
+{
+    width: 300px;
+    height: 30px;
+    padding-left: 15px;
+}
+/* ======[ Find block ]====== */
+.find-btn-block
+{
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#find-btn
+{
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+}
+#find-btn:hover
+{
+    background-color: #D0C9C0;
+}
+
+/* ===========[ Content block ]======================= */
+/* =================================================== */
+
+.content-block
+{
+    width: 100%;
+    height: 100%;
+    background-color: var(--light3);
+}
+
+#search-content-list
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+}
+#search-content-list li
+{
+    padding-left: 10px;
+}
+#user-bookpick-list
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: var(--light3);
+    list-style: none;
+    display: none;
+}
+#user-bookpick-list li
+{
+    padding: 10px;
+}
+
+/* ========[ Booklist card ]============================ */
+/* ===================================================== */
+.book-card
+{
+    width: 500px;
+    height: 100px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: var(--light3);
+    box-shadow:  3px 3px 10px #848484;
+    display: flex;
+    flex-direction: row;
+}
+.book-card:hover
+{
+    background-color: rgb(224, 219, 256);
+    cursor: pointer;
+}
+
+.book-detail
+{
+    width: 100%;
+    height: 100%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    
+}
+.title-block
+{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.left-start
+{
+    width: auto;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* =====[ Edition Block]=========== */
+.edition-badge
+{
+    margin-top: 15px;
+    margin-left: 15px;
+    width: 35px;
+    height: 22px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-color: black;
+    padding: 2px;
+}
+.edition{
+    height: 40%;
+    background-color:transparent;
+    font-size: xx-small;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.edition-v
+{
+    height: 60%;
+    background-color: gold;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* ==[ Language box ]== */
+.right-end
+{
+    width: 100px;
+    height: 20px;
+    background-color: rgb(21, 88, 188);
+    border-radius: 0px 5px 0px 3px;
+    color: white;
+    text-align: center;
+}
+.center-block div
+{
+    display: flex;
+    flex-direction: row;
+}
+.ISBN-block
+{
+    font-size: 12px;
+    color: rgb(63, 63, 63);
+}
+/* ==[ Authour block ]==*/
+.author-block
+{
+    font-size: 12px;
+    color: rgb(63, 63, 63);
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.author-list{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding-left: 10px;
+}
+.author-list li
+{
+    padding-left: 10px;
+}
+/* ==[ Genre block ]==*/
+.genre-block
+{
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.genre-list
+{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding-left: 10px;
+}
+.genre-list li
+{
+    padding-left: 10px;
+}
+
+/* ========[ Book Selection card ]================================ */
+/* =============================================================== */
+.book-selection-card
+{
+    width: 400px;
+    height: 200px;
+    background-color:#DCD7C9;
+    box-shadow:  3px 3px 10px var(--dark1);
+    position: fixed;
+    top: 250px;
+    left: 550px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 5px;
+
+    display: none;
+}
+
+/* ===[ Close Button ]========= */
+.close-book-selection-card
+{
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+#book-selection-close-btn
+{
+    width: 30px;
+}
+
+.book-titte-panel
+{
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+}
+.card-row-1
+{
+    display: flex;
+    flex-direction: row;
+}
+.card-row-2
+{
+    display: flex;
+    flex-direction: row;
+}
+.selection-action
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+#get-book-btn
+{
+    width: 100%;
+    height: 30px;
+    background-color: var(--dark1);
+    color: #D0C9C0;
+}
+#get-book-btn:hover
+{
+    background-color: var(--light3);
+    color: var(--dark1);
+}
+
+/* ========[ Book return card ]=================================== */
+/* =============================================================== */
+.book-return-card
+{
+    width: 400px;
+    height: 200px;
+    background-color:#DCD7C9;
+    box-shadow:  3px 3px 10px var(--dark1);
+    position: fixed;
+    top: 250px;
+    left: 550px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+.return-action
+{
+    display: flex;
+    flex-direction: column;
+}
+#isbn-number
+{
+    padding-left: 10px;
+}

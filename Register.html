@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="./Styles/register.css">
+</head>
+<body>
+    <div class="main-container">
+
+        <div class="register-block">
+            <h2>Zoho Form</h2>
+            <div id="fieldDiv">
+                <label id="label">Full Name<span>*</span></label>
+                <input id="fullname-box" type="text" placeholder="Full name">
+            </div>
+            <div id="fieldDiv">
+                <label id="label">Username<span>*</span></label>
+                <input id="username-box" type="text" placeholder="Username">
+            </div>
+            <div id="fieldDiv">
+                <label id="label">DOB<span>*</span></label>
+                <input id="dob-box" type="date"/>
+            </div>
+            <div id="fieldDiv">
+                <label id="label">Gender<span>*</span></label>
+                <select name="Gender" id="gender-combo">
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
+            <div id="fieldDiv">
+                <label id="label">Mobile<span>*</span></label>
+                <input id="mobile-box" type="text" placeholder="Mobile number">
+            </div>
+
+            <div id="fieldDiv">
+                <label id="label">Email<span>*</span></label>
+                <input id="email-box" type="text" placeholder="e-Mail">
+            </div>
+
+            <div id="fieldDiv">
+                <label id="label">Password<span>*</span></label>
+                <input id="password-box1" type="text" placeholder="Password">
+            </div>
+
+            <div id="fieldDiv">
+                <label id="label">Retype Password<span>*</span></label>
+                <input id="password-box2" type="text" placeholder="Retype Password">
+            </div>
+            
+            <div id="error-block">
+                <p id="er"></p>
+            </div>
+            
+            <div id="actionDiv">
+                <button id="reset-btn" onclick="ResetAllFields()">Reset</button>
+                <button id="submit-btn">Submit</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="./Modules/register.js"></script>
+</html>

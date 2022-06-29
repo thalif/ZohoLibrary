@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" href="./Styles/bookform.css">
+</head>
+<body>
+    <div class="wrapper-div">
+        <div class="header-block">
+            <ul class="menu-list">
+                <button id="menu-add-newbook">New Book</button>
+                <button id="menu-show-allbook">Show Books</button>
+                <button id="menu-show-allusers">Show Users</button>
+            </ul>
+            <div class="user-detail">
+                <div id="user-name"></div>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </div>
+        <br>
+        <div class="content-block">
+            <!-- ===========[ New Book form block. ]=========================================================== -->
+            <div class="bookform-block" id="bookform-block">
+                <div id="error-msg">
+                    <p id="error-msg-tag">ssadfasdfasdfadfasdf</p>
+                </div>
+                <h3>New Book</h3>
+                <div class="row-one">
+                    <label>Book Title</label>
+                    <input id="book-title-tb" type="text">
+                    <br>
+                    <div class="book-detail-panel">
+                                                                    <!-- ISBN number -->
+                        <div>
+                            <label>ISBN</label>
+                            <input id="book-isbn-tb" type="text">
+                        </div>
+                                                                    <!-- Edition    -->
+                        <div>
+                            <label>Edtion</label>
+                            <input id="book-edition-tb" type="text">
+                        </div>
+                                                                    <!-- Language -->
+                        <div>
+                            <label>Language</label>
+                            <select id="language-combo" class="language-combo">
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                                                                    <!-- Choose Image -->
+                    <div class="image-panel">
+                        <strong>Cover Image :</strong>
+                        <input type="file" id="choose-img-btn">
+                        <div>
+                            <img id="choosen-image" >
+                        </div>
+                    </div>
+                </div>
+                                                                    <!-- Genre's -->
+                <div class="row-two">
+                    <div class="genre-block">
+                        <label>Genre</label>
+                        <select class="genre-combo" id="genre-combo"></select>
+                    </div>
+                    <ul class="genre-list" id="genre-list"> </ul>
+                </div>
+    
+                                                                    <!-- Authour's -->
+                <div class="row-three">
+                    <div class="authour-panel">
+                        <label>Authour</label>
+                        <div class="authour-textbox-panel">
+                            <input id="authour-tb" type="text">
+                            <button id="add-authour-btn">Add</button>
+                        </div>
+                    </div>
+                    <ul class="authour-list" id="authour-list"></ul>
+                </div>
+    
+                <div class="row-four">
+                                                                    <!-- Publisher -->
+                    <div>
+                        <label>Publisher</label>
+                        <input id="book-publisher-tb" type="text">
+                    </div>
+                                                                    <!-- Publised Date -->
+                    <div>
+                        <label>Publised Date</label>
+                        <input id="book-pubished-date" type="date">
+                    </div>
+    
+                                                                    <!-- Publisher Contact -->
+                    <div>
+                        <label>Contact</label>
+                        <input id="book-publisher-contact" type="text">
+                    </div>
+                                                                    <!-- Origin -->
+                    <div>
+                        <label>Origin</label>
+                        <select id="book-origin-combo" class="book-origin-combo"></select>
+                    </div>
+                </div>
+    
+                <div class="row-five">
+                    <h2>Library Details</h2>
+                    <div class="row-five-content">              <!-- Library Section -->
+                        <div>
+                            <label>Section</label>
+                            <input id="lib-section-tb" type="text">
+                        </div>
+                                                                <!-- Library Rack -->
+                        <div>
+                            <label>Rack</label>
+                            <input id="lib-rack-tb" type="text">
+                        </div>
+                                                                <!-- Stock count -->
+                        <div>
+                            <label>Stock count</label>
+                            <input id="book-stock-tb" type="text">
+                        </div>
+                    </div>
+                    <br>
+                                                                <!-- Submit button -->
+                    <div class="button-panel">
+                        <button id="submit-btn">Add Book</button>
+                    </div>
+                </div>
+            </div>
+            <!-- ===========[ Show Book Block ]=========================================================== -->
+            <div class="show-book-block" id="show-book-block">
+                <div class="book-filter-panel">
+
+                </div>
+                <ul class="books-list" id="books-list"></ul>
+            </div>
+
+            <div class="show-user-block" id="show-user-block">
+                <ul class="users-list" id="users-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selected Book Card -->
+    <div class="selection-action-block" id="selection-action-block">
+        <div class="close-selection-card">
+            <button id="close-selection-btn">x</button>
+        </div>
+
+        <div class="book-titte-panel">
+            <h3 id="selected-book-title"></h3>
+            <span id="book-version"></span>
+        </div>
+        
+        <div class="selection-action">
+            <button id="update-book-btn">Update</button>
+            <button id="delete-book-btn">Delete</button>
+        </div>
+    </div>
+</body>
+<script type="module" src="./Modules/admin.js"></script>
+</html>

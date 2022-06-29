@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="./Styles/login.css">
+</head>
+<body>
+    <div class="main-container">
+        <div>
+            <h2>Zoho Library</h2>
+        </div>
+        <!-- Login card -->
+        <div class="user-login-card">
+            <div class="username-block">
+                <div class="label">Username</div>
+                <input id="username-box" type="text" placeholder="Username" required>
+            </div>
+            <div class="password-block">
+                <div class="label">Password</div>
+                <input id="password-box" type="password" placeholder="Password">
+            </div>
+            <div class="error-block" id="error-block">
+                <div id="error-msg">Error</div>
+            </div>
+            <div class="login-btn-block">
+                <button id="login-btn">Login</button>
+            </div>
+            
+            <div class="user-register-block">
+                <div class="user-register">New user ? <a href="./register.html" >Click to register.!</a></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="./Modules/login.js"></script>
+</html> 

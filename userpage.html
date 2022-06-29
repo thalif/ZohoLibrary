@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>UserPage</title>
+    <link rel="stylesheet" type="text/css" href="./Styles/userpage.css">
+</head>
+<body>
+    <div class="wrapper-block">
+        <div class="header-block">
+            <h2>Welcome to Zoho Library..!</h2>
+
+            <div class="user-detail">
+                <div id="user-name">asdasdfasdffasd</div>
+                <button id="logout-btn">Logout</button>
+            </div>
+            
+
+            <div class="menu-navigation-block">
+                <button id="menu-find-book">Find Books</button>
+                <button id="menu-return-book">Return Books</button>
+            </div>
+        </div>
+                                    <!-- Center filter panel -->
+        <div class="center-filter-block" id="center-filter-block">
+
+                                    <!-- Genre search panel -->
+            <div class="genre-filter-block">
+                <div class="genre-select">
+                    Genre
+                    <br>
+                    <select id="genre-combo"></select>
+                </div>
+                <ul id="genre-selected-list"></ul>
+            </div>
+
+                                    <!-- Authour Search Panel -->
+            <div class="Authour-search-panel">
+                <div class="authour-input">
+                    Authour
+                    <br>
+                    <input id="authour-input-key" type="text">
+                </div>
+                
+                <ul id="search-item-list" class="search-item-list"></ul>
+                <ul id="authour-selected-list"></ul>
+            </div>
+
+                                            <!-- Find Button -->
+            <div class="find-btn-block">
+                <button id="find-btn">Find</button>
+            </div>
+        </div>
+        <!-- Content Block -->
+        <div class="content-block">
+            <ul id="search-content-list">
+
+            </ul>
+            <ul id="user-bookpick-list">
+
+            </ul>
+        </div>
+        
+
+        <!-- Book selection card -->
+        <div id="book-selection-card" class="book-selection-card">
+            <div class="close-book-selection-card">
+                <button id="book-selection-close-btn">x</button>
+            </div>
+            <div class="book-titte-panel">
+                <div class="card-row-1">
+                    <h3 id="selected-book-title"></h3>
+                    <span id="book-version"></span>
+                </div>
+                <br>
+                <div class="card-row-2">
+                    ISBN:
+                    <p id="p-isbn"></p>
+                </div>
+            </div>
+
+            <div class="selection-action">
+                <button id="get-book-btn">Take this Book</button>
+            </div>
+        </div>
+
+        <!-- Book return card -->
+        <div id="book-return-card" class="book-return-card">
+            <div class="close-book-selection-card">
+                <button id="book-return-close-btn">x</button>
+            </div>
+            <div class="book-titte-panel">
+                <div class="card-row-1">
+                    <h3 id="return-book-title">Book Title</h3>
+                    <span id="return-book-version">Edition 3</span>
+                </div>
+                <br>
+                <div class="card-row-2">
+                    ISBN:
+                    <div id="isbn-number"></div>
+                </div>
+            </div>
+
+            <div class="return-action">
+                <button id="pay-fine-btn">Pay Fine Amount</button>
+                <button id="return-book-btn">Return this Book</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="./Modules/userpage.js"></script>
+</html>

@@ -4,7 +4,7 @@ import UserDB from "./Utils/userDB.js";
 
 const UserDatabase = new UserDB();
 const cookie = new LocalCookie();
-const ContextUser = new User();
+let ContextUser = new User();
 window.onload = (event) =>
 {
     ContextUser = GetUserFromCookie();

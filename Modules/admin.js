@@ -1,4 +1,4 @@
-import Book from "./Book.js";
+import Book from "./Model/Book.js";
 import localDB from "./Utils/localDB.js";
 import UserDB from "./Utils/userDB.js";
 import Cookie from "./Utils/localCookie.js";

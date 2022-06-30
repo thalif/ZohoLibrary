@@ -2,15 +2,11 @@ export default class localDB
 {
     Load_Genres()
     {
-        try
-        {
-            let GenreList = JSON.parse(localStorage.getItem('genreItems'));
+        let GenreList = JSON.parse(localStorage.getItem('genreDB'));
+        if (GenreList != null)
             return GenreList;
-        }
-        catch(exception)
-        {
-            throw exception;
-        }
+        else
+            return new Array();
     }
     Load_Country()
     {

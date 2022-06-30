@@ -16,11 +16,11 @@
 .wrapper-block
 {
     width: 100%;
-    height: 150vh;
+    height: 100vh;
 }
 .header-block
 {
-    height: 15%;
+    height: 20%;
     background-color: var(--dark1);
 
     display: flex;
@@ -71,7 +71,8 @@
     background-color: orange;
     border: 2px solid var(--light1);
 }
-/* ================================== */
+/* =========[ Center filter box ]========================= */
+/* ======================================================= */
 .center-filter-block
 {
     display: flex;
@@ -157,25 +158,6 @@
     height: 30px;
     padding-left: 15px;
 }
-/* ======[ Find block ]====== */
-.find-btn-block
-{
-    width: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-#find-btn
-{
-    width: 90px;
-    height: 30px;
-    cursor: pointer;
-}
-#find-btn:hover
-{
-    background-color: #D0C9C0;
-}
 
 /* ===========[ Content block ]======================= */
 /* =================================================== */
@@ -185,13 +167,19 @@
     width: 100%;
     height: 100%;
     background-color: var(--light3);
+    /* background-color: red; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #search-content-list
 {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    overflow-y: scroll;
     flex-wrap: wrap;
     list-style: none;
 }
@@ -219,8 +207,8 @@
 /* ===================================================== */
 .book-card
 {
-    width: 500px;
-    height: 100px;
+    width: 400px;
+    height: 140px;
     margin-top: 10px;
     border-radius: 5px;
     background-color: var(--light3);
@@ -295,12 +283,17 @@
 /* ==[ Language box ]== */
 .right-end
 {
-    width: 100px;
-    height: 20px;
+    width: auto;
+    height: 25px;
+    font-size: 12px;
     background-color: rgb(21, 88, 188);
-    border-radius: 0px 5px 0px 3px;
+    border-radius: 0px 5px 0px 5px;
     color: white;
     text-align: center;
+}
+#lang-text
+{
+    padding: 5px;
 }
 .center-block div
 {
@@ -351,9 +344,41 @@
 {
     padding-left: 10px;
 }
-
-
-
+/* ==[ Book availability block ]==*/
+.avail-in-block, .not-avail-block, .in-stock-block, .return-in-block, .return-imediate-block
+{
+    margin-left: 14px;
+    width: 90%;
+    height: 25px;
+    border-radius: 5px;
+    background-color:orange;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#availability-text
+{
+    color: white;
+}
+.not-avail-block
+{
+    background-color:rgb(206, 65, 65);
+}
+.in-stock-block
+{
+    background-color: rgb(94, 175, 94);
+}
+.return-in-block
+{
+    background-color: orange;
+}
+.return-imediate-block 
+{
+    background-color: orangered;
+    color: white;
+}
+/* ============================================= */
 .book-titte-panel
 {
     width: 100%;

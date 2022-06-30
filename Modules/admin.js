@@ -17,7 +17,6 @@ let BookDatabase = new Map();
 let thisBook = new Book();
 let UserLogList = [];
 
-
 let ContextUser;
 let SelectedBookItem;
 window.onload = (event) =>
@@ -364,9 +363,6 @@ function Makelist(givenList)
                         <div class="right-end">
                             <div id="lang-text">
                             ${item.Language}</div>
-                            <div id="stock-text">
-                            Stock:
-                            ${item.StockCount}</div>
                         </div>
                     </div>
                 </div>
@@ -387,6 +383,24 @@ function Makelist(givenList)
                     <ul class="genre-list"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
+                </div>
+                <div class="library-detail-block">
+                    <label>Library Details:</label>
+                    <br>
+                    <div class="library-details">
+                        <div class="section-block">
+                            <label>Section :</label>
+                            <div id="lib-section">${item.Section}</div>
+                        </div>
+                        <div class="rack-block">
+                            <label>Rack :</label>
+                            <div id="lib-rack">${item.Rack}</div>
+                        </div>
+                        <div class="stock-block">
+                            <label>Stock :</label>
+                            <div id="lib-stock">${item.StockCount}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

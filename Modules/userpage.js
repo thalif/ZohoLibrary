@@ -8,6 +8,7 @@ let SelectedGenreList = [];
 let SelectedAuthours = [];
 
 let BookLogMaster = new Map();
+let BookLogArray = [];
 
 let ContextUser;
 let AuthourMaster = [];
@@ -33,7 +34,10 @@ window.onload = (event) =>
         try
         {
             if(BookLogMaster.size > 0)
+            {
                 UserBookLogList = Array.from(BookLogMaster.get(ContextUser.UserName));
+                BookLogArray = Array.from(BookLogMaster.values());
+            }   
         }
         catch(exception)
         {
@@ -78,15 +82,12 @@ document.getElementById('genre-combo').addEventListener('change', function(event
     try
     {
         AddGenre();
+        FindFilter();
     }
     catch(exception)
     {
         console.log(exception);
     }
-});
-document.getElementById('find-btn').addEventListener('click', function()
-{
-    FindFilter();
 });
 document.getElementById('book-return-close-btn').addEventListener('click', function()
 {
@@ -183,6 +184,7 @@ function RemoveGenre(element)
     let index = nodes.indexOf(element);
     SelectedGenreList.splice(index, 1);
     UpdateSelectedGenreList(SelectedGenreList);
+    FindFilter();
 }
 function UpdateSelectedGenreList(selectedGenres)
 {
@@ -240,6 +242,7 @@ function AddAuthour(selectedItem)
     {
         SelectedAuthours.push(selectedItem);
         UpdateSelectionAuthourListUI(SelectedAuthours);
+        FindFilter();
     }   
     else
         throw `${selectedItem} is already added.`;
@@ -274,6 +277,7 @@ function RemoveAuthour(element)
     let index = nodes.indexOf(element);
     SelectedAuthours.splice(index, 1);
     UpdateSelectionAuthourListUI(SelectedAuthours);
+    FindFilter();
 }
 
 // =====[ Filter find click ]=====================
@@ -301,7 +305,7 @@ function FindFilter()
         copy = gFound;
     }
     let mainList = document.getElementById('search-content-list');
-    mainList.innerHTML = Makelist(copy);
+    mainList.innerHTML = BookShowTemplate(copy);
 
     let childItem = Array.from(mainList.childNodes);
     childItem.forEach(element => 
@@ -336,7 +340,7 @@ function FindBookForAuthour(authour, database)
     });
     return result;
 }
-function Makelist(givenList)
+function BookShowTemplate(givenList)
 {
     return `${givenList.map((item) => 
         `<li>
@@ -356,7 +360,8 @@ function Makelist(givenList)
                             </div>
                         </div>
                         <div class="right-end">
-                            <span>${item.Language}</span>
+                            <div id="lang-text">
+                            ${item.Language}</div>
                         </div>
                     </div>
                 </div>
@@ -378,17 +383,135 @@ function Makelist(givenList)
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>
+
+                ${AvailCheck(item.ISBN)}
+                
             </div>
         </div>
     </li>`).join('')}`;
 }
+function UserBookReturnListTemplate(givenList)
+{
+    return `${givenList.map((item) => 
+        `<li>
+        <div class="book-card">
+            <div class="cover"></div>
+            <div class="book-detail">
+                <div class="top-block">
+                    <div class="title-block">
+                        <div class="left-start">
+                            <div>
+                                <h3 id="b-title">${item.BookTitle}</h3>
+                            </div>
+                            
+                            <div class="edition-badge">
+                                <div class="edition">Edition</div>
+                                <div class="edition-v">${item.Edition}</div>
+                            </div>
+                        </div>
+                        <div class="right-end">
+                            <div id="lang-text">
+                            ${item.Language}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center-block">
+                    <div class="ISBN-block"> 
+                        <div>ISBN :</div> 
+                        <div>${item.ISBN}</div> 
+                    </div>
+                    <div class="author-block"> 
+                        Authour :
+                        <ul class="author-list">
+                                ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="genre-block">
+                    Genre:
+                    <ul class="genre-list"> 
+                            ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
+                    </ul>
+                </div>
+
+                ${ReturnCheck(item.ISBN)}
+                
+            </div>
+        </div>
+    </li>`).join('')}`;
+}
+function AvailCheck(isbn)
+{
+    let book = BookDatabase.get(isbn);
+    if(book.StockCount > 0)
+        return`
+        <div class="in-stock-block">
+            <div id="in-stock-text">In Stock</div>
+        </div>`;
+    else
+    {
+        // Get least book return date.
+        let leastDate = new Date();
+        for(let i = 0; i < BookLogArray.length; i++)
+        {
+            let bookLog = Array.from(BookLogArray[i]);
+            for (let j = 0; j < bookLog.length; j++) {
+                if (bookLog[j].BookId == isbn) {
+                    let pd = new Date(bookLog[j].PickDate);
+                    if (leastDate > pd)
+                        leastDate = pd;
+                }
+            }
+        }
+        //===================
+        let leastDay = libUtil.GetDiff(leastDate, new Date());
+        if (leastDay > 10)
+            return `
+            <div class="not-avail-block">
+                <div id="not-avail-text">Available in soon!</div>
+            </div>`;
+        else
+            return `
+            <div class="avail-in-block">
+                <div id="avail-in-text">Avail in ${ 10 - leastDay} day's!</div>
+            </div>`;
+    }
+}
+function ReturnCheck(isbn)
+{
+    for(let i = 0; i < UserBookLogList.length; i++)
+    {
+        let userLog = UserBookLogList[i];
+        if(userLog.BookId == isbn)
+        {
+            let pickedDate = new Date(userLog.PickDate);
+            let days = libUtil.GetDiff(pickedDate, new Date());
+            if((10 - days) > 0)
+            {
+                return `
+                    <div class="return-in-block">
+                        <div id="avail-in-text">Return in ${10 -days} day's!</div>
+                    </div>`;
+            }
+            else
+            {
+                let fineAmount = libUtil.GetFineAmount(booklog.PickDate, new Date());
+                return `
+                    <div class="return-imediate-block">
+                        <div id="avail-in-text">Return imediate with fine amount ${fineAmount}!</div>
+                    </div>`;
+            }
+        }
+    }
+}
+
+
 function InvokeBookSelectionCard()
 {
     document.getElementById('book-selection-card').style.display = 'block';
     document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
     document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
 }
-
 
 
 // =======[ Book Take ]==========================
@@ -404,7 +527,7 @@ function TakeBook()
                 bookPick.UserName = ContextUser.UserName;
                 bookPick.BookId = SelectedBookItem.ISBN;
                 bookPick.PickDate = new Date();
-                bookPick.PickDate.setDate(bookPick.PickDate.getDate() - 13);
+                bookPick.PickDate.setDate(bookPick.PickDate.getDate() - 3);
                 //
                 if (UserBookLogList.length > 0) {
                     // To-Do
@@ -458,7 +581,7 @@ function InvokeReturnPage()
 
     let bookPickList = document.getElementById('user-bookpick-list');
     bookPickList.innerHTML = '';
-    bookPickList.innerHTML = Makelist(UserBookMaster);
+    bookPickList.innerHTML = UserBookReturnListTemplate(UserBookMaster);
 
     let childItem = Array.from(bookPickList.childNodes);
     childItem.forEach(element => 

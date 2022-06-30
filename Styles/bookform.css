@@ -2,7 +2,7 @@
 {
     --dark1: #2C3639;
     --dark2:#b9c7c8;
-    --light1: #DCD7C9;
+    --light1: #e4e4e4;
     --light2: #D0C9C0;
     --light3: #eeeeee;
 }
@@ -220,13 +220,12 @@
     width: 83%;
     height: 100%;
     position: absolute;
-    background-color: #b9c7c8;
 }
 .book-filter-panel
 {
     width: 100%;
-    height: 80px;
-    background-color: rgb(47, 171, 47);
+    height: 10%;
+    background-color: rgb(136, 251, 136);
 }
 .books-list
 {
@@ -234,21 +233,26 @@
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
+
+    background-color: transparent;
+    height: 90%;
+    overflow-y: scroll;
 }
 .books-list li
 {
-    padding-left: 20px;
-    padding-top: 20px;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 /* ========[ Booklist card ]======================================== */
 /* ================================================================= */
 .book-card
 {
-    width: 500px;
-    height: 100px;
-    margin-top: 10px;
+    width: 400px;
+    height: 150px;
+    margin-top: 5px;
     border-radius: 5px;
+    padding: 3px;
     background-color: var(--light3);
     box-shadow:  3px 3px 10px #848484;
     display: flex;
@@ -322,17 +326,17 @@
 /* ==[ Language box ]== */
 .right-end
 {
-    width: 100px;
-    height: 30px;
-    font-size: small;
+    width: auto;
+    height: 25px;
+    font-size: 12px;
     background-color: rgb(21, 88, 188);
-    border-radius: 0px 5px 0px 3px;
+    border-radius: 0px 5px 0px 5px;
     color: white;
     text-align: center;
 }
-#stock-text
+#lang-text
 {
-    font-size: smaller;
+    padding: 5px;
 }
 
 /* ==================================================== */
@@ -340,6 +344,8 @@
 {
     display: flex;
     flex-direction: row;
+    height: 50%;
+    /* background-color: red; */
 }
 .ISBN-block
 {
@@ -352,9 +358,10 @@
     font-size: 12px;
     color: rgb(63, 63, 63);
     height: 25px;
+    /* background-color: rebeccapurple; */
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-self: center;
 }
 .author-list{
     display: flex;
@@ -369,6 +376,7 @@
     position: relative;
     bottom: 5px;
     height: 25px;
+    /* background-color: royalblue; */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -378,12 +386,78 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    bottom: 10px;
+    bottom: 5px;
     list-style: none;
+}
+/* =====[ Library details block ]===========*/
+.library-detail-block
+{
+    position: relative;
+    top: 0px;
+    left: 15px;
+    bottom: 5px;
+    width: 90%;
+    height: 40px;
+    background-color: var(--light1);
+    box-shadow: inset 3px 3px 10px #848484;
+    /* box-shadow: 3px 3px 10px #848484; */
+    border-radius: 5px;
+}
+.library-detail-block label
+{
+    padding-left: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.library-details
+{
+    height: 25px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    padding-left: 20px;
+    justify-content: space-around;
+    border-radius: 5px;
+}
+/* ===[ Section block ]==== */
+.section-block
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 10px;
+}
+#lib-section
+{
+    margin-top: 2px;
+}
+/* ===[ Rack block ]==== */
+.rack-block
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 10px;
+}
+#lib-rack
+{
+    margin-top: 2px;
+}
+/* ===[ Stock block ]==== */
+.stock-block
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 10px;
+}
+#lib-stock
+{
+    margin-top: 2px;
 }
 
 /* =======[ Selection action panel ]========================= */
-
 /* ===[ Close Button ]========= */
 .close-selection-card
 {

@@ -133,18 +133,15 @@ document.getElementById('delete-account-btn').addEventListener('click', function
     try
     {
         let result = UserDatabase.DeleteUser(ContextUser);
-        if(result)
-        {
+        if (result === '') {
             window.location.href = "./index.html";
         }
         else {
             alert(result);
         }
-
         document.getElementById('setting-card').style.display = 'none';
     }
-    catch(ex)
-    {
+    catch (ex) {
         alert(ex);
     }
 });

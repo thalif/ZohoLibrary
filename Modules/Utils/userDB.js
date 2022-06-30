@@ -48,8 +48,8 @@ export default class UserDB
             if(BookLogDB.has(user.UserName))
             {
                 let Userlogs = BookLogDB.get(user.UserName);
-                throw `User should must return ${UserLogs.Length} books first!`;
-                return false;
+                let len = Userlogs.length;
+                return `User should must return ${len} books first!`;
             }
             else
             {
@@ -59,7 +59,7 @@ export default class UserDB
                 let UserDatabase = this.GetUserDatabase();
                 UserDatabase.delete(user.UserName);
                 this.UpdateUserDB(UserDatabase);
-                return true;
+                return '';
             }
         }
         catch(exception)

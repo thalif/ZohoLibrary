@@ -4,6 +4,9 @@ import UserDB from "./Utils/userDB.js";
 import Cookie from "./Utils/localCookie.js";
 
 
+// const dayjs = require('dayjs');
+// console.log(dayjs().format());
+
 let ld = new localDB();
 let userDB = new UserDB();
 let cookie = new Cookie();
@@ -228,11 +231,9 @@ function UpdateGenreListUI()
     {
         genreList.innerHTML = `${thisBook.Genre.map((gen) => 
             `<li id='genre-item'>
-                <div>
-                    <div>${gen}</div>
-                    <div id="genre-item-btn" width="10" height="10">
-                        <img src="./Styles/close.png" width="10" height="10">
-                    </div>
+                <div>${gen}</div>
+                <div id="genre-item-btn" width="10" height="10">
+                    <img src="./Styles/close.png" width="10" height="10">
                 </div>
             </li>`).join('')}`;
     }
@@ -282,11 +283,9 @@ function UpdateAuthorListUI()
     {
         authourList.innerHTML = `${thisBook.Authuors.map((author) => 
             `<li id='authour-item'>
-                <div>
-                    <label>${author}</label>
-                    <div id="delete-item">
-                        <img src="./Styles/close.png" width="10" height="10">
-                    </div>
+                <label>${author}</label>
+                <div id="delete-item">
+                    <img src="./Styles/close.png" width="10" height="10">
                 </div>
             </li>`).join('')}`;
     }
@@ -378,9 +377,9 @@ function Makelist(givenList)
                         </ul>
                     </div>
                 </div>
-                <div class="genre-block">
+                <div class="genre-block-card">
                     Genre:
-                    <ul class="genre-list"> 
+                    <ul class="genre-list-card"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>

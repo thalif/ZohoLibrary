@@ -3,9 +3,15 @@
 <head>
     <title>Admin Page</title>
     <link rel="stylesheet" type="text/css" href="./Styles/bookform.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/bookFormStyle.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/showUsers.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/showBooksPage.css">
 </head>
 <body>
     <div class="wrapper-div">
+        <div id="error-msg">
+            <p id="error-msg-tag">ssadfasdfasdfadfasdf</p>
+        </div>
         <div class="header-block">
             <ul class="menu-list">
                 <button id="menu-add-newbook">New Book</button>
@@ -18,13 +24,10 @@
                 <button id="logout-btn">Logout</button>
             </div>
         </div>
-        <div id="error-msg">
-            <p id="error-msg-tag">ssadfasdfasdfadfasdf</p>
-        </div>
         <div class="content-block">
             <!-- ===========[ New Book form block. ]=========================================================== -->
             <div class="bookform-block" id="bookform-block">
-                <h3>New Book</h3>
+                <h2>New Book</h2>
                 <div class="row-one">
                     <label>Book Title</label>
                     <input id="book-title-tb" type="text">
@@ -63,7 +66,7 @@
                         <label>Genre</label>
                         <select class="genre-combo" id="genre-combo"></select>
                     </div>
-                    <ul class="genre-list" id="genre-list"> </ul>
+                    <ul class="genre-list" id="genre-list"></ul>
                 </div>
     
                                                                     <!-- Authour's -->

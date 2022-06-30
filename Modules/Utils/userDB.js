@@ -1,13 +1,8 @@
 import UserLog from "../Model/Userlog.js";
+import LocalDB from "./localDB.js";
+import Cookie from "./localCookie.js";
 export default class UserDB
 {
-    constructor()
-    {
-        this.UserDatabase = new Map();
-        this.UserLogInfo = new Array();
-        this.GetUserDatabase();
-        this.GetUserLogInfo();
-    }
     GetUserDatabase()
     {
         const fromJSON = JSON.parse(localStorage.getItem('userDB'));
@@ -16,52 +11,75 @@ export default class UserDB
             let UserDatabase = new Map(Object.entries(fromJSON));
             return UserDatabase;
         }
-        else
-        {
+        else {
             return new Map();
         }
-        // try
-        // {
-        //     const fromJSON = JSON.parse(localStorage.getItem('userDB'));
-        //     this.UserDatabase = new Map(Object.entries(fromJSON));
-        //     return this.UserDatabase;
-        // }
-        // catch(exception)
-        // {
-        //     this.UserDatabase = new Map();
-        //     return this.UserDatabase;
-        // }
     }
-    GetUserLogInfo()
+    UpdateUserDB(UserDatabase)
     {
-        try
-        {
-            this.UserLogInfo = JSON.parse(localStorage.getItem('userLogDB'))
-            if(this.UserLogInfo ==  null)
-                this.UserLogInfo = [];
-            return this.UserLogInfo;
-        }
-        catch(exception)
-        {
-            this.UserLogInfo = [];
-            return this.UserLogInfo;
-        }
+        localStorage.removeItem('userDB');
+        var obj = Object.fromEntries(UserDatabase);
+        var jsonString = JSON.stringify(obj);
+        localStorage.setItem('userDB', jsonString);
     }
 
     AddNewUser(newUser)
     {
-        if(!this.UserDatabase.has(newUser.UserName))
+        let UserDatabase = this.GetUserDatabase();
+        if(!UserDatabase.has(newUser.UserName))
         {
-            this.UserDatabase.set(newUser.UserName, newUser);
-            localStorage.removeItem('userDB');
-
-            var obj = Object.fromEntries(this.UserDatabase);
-            var jsonString = JSON.stringify(obj);
-            localStorage.setItem('userDB', jsonString);
+            UserDatabase.set(newUser.UserName, newUser);
+            this.UpdateUserDB(UserDatabase);
         }
         else
         {
             throw "User already exist";
+        }
+    }
+    DeleteUser(user)
+    {
+        // 1. Check user have to return book
+        // 2. Clear local cookie and log out
+        try
+        {
+            let ld = new LocalDB();
+            let BookLogDB =  ld.GetBookLogDatabase();
+            
+            if(BookLogDB.has(user.UserName))
+            {
+                let Userlogs = BookLogDB.get(user.UserName);
+                throw `User should must return ${UserLogs.Length} books first!`;
+                return false;
+            }
+            else
+            {
+                let cookie = new  Cookie();
+                cookie.DeleteCookie('cuser');
+
+                let UserDatabase = this.GetUserDatabase();
+                UserDatabase.delete(user.UserName);
+                this.UpdateUserDB(UserDatabase);
+                return true;
+            }
+        }
+        catch(exception)
+        {
+            throw "Something went wrong!";
+        }
+    }
+
+    
+    GetUserLogInfo()
+    {
+        try
+        {
+            let UserLogInfo = JSON.parse(localStorage.getItem('userLogDB'));
+            if(UserLogInfo ==  null)
+                UserLogInfo = [];
+            return UserLogInfo;
+        }
+        catch (exception) {
+            return new Array();
         }
     }
     UpdateUserLogInfo(userloged)
@@ -74,9 +92,11 @@ export default class UserDB
             loggedUser.Gender = userloged.Gender;
             loggedUser.LogTime = new Date();
 
-            this.UserLogInfo.push(loggedUser);
+            let UserLogInfo = this.GetUserLogInfo();
+            UserLogInfo.push(loggedUser);
+
             localStorage.removeItem('userLogDB');
-            localStorage.setItem('userLogDB', JSON.stringify(this.UserLogInfo));
+            localStorage.setItem('userLogDB', JSON.stringify(UserLogInfo));
         }
     }
 }

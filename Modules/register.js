@@ -1,7 +1,7 @@
 import User from './Model/User.js';
-import localDB from './Utils/userDB.js';
+import UserDB from './Utils/userDB.js';
 
-let local = new localDB();
+let userDB = new UserDB();
 let newUser = new User();
 let UserDatabase;
 window.onload = (event) => 
@@ -17,7 +17,7 @@ function Register()
 {
     function GetNewID()
     {
-        try { return local.GetUserDatabase().size + 1; }
+        try { return userDB.GetUserDatabase().size + 1; }
         catch(e) { return 1; }
     }
     try
@@ -31,8 +31,8 @@ function Register()
         newUser.setMobileNumber(document.getElementById('mobile-box').value);
         newUser.setPassword(document.getElementById('password-box1').value, document.getElementById('password-box2').value);
         newUser.IsAdmin = false;
-        local.AddNewUser(newUser);
-        UserDatabase = local.GetUserDatabase();
+        userDB.AddNewUser(newUser);
+        UserDatabase = userDB.GetUserDatabase();
         ResetAllFields();
         window.location.href = './index.html';
 

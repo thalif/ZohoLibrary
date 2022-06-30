@@ -130,15 +130,24 @@ document.getElementById('setting-card-close-btn').addEventListener('click', func
 });
 document.getElementById('delete-account-btn').addEventListener('click', function()
 {
-    alert('delete btn clicked');
-    document.getElementById('setting-card').style.display = 'none';
+    try
+    {
+        let result = UserDatabase.DeleteUser(ContextUser);
+        if(result)
+        {
+            window.location.href = "./index.html";
+        }
+        else {
+            alert(result);
+        }
+
+        document.getElementById('setting-card').style.display = 'none';
+    }
+    catch(ex)
+    {
+        alert(ex);
+    }
 });
-
-
-function InvokeSettingCard()
-{
-    document.getElementById('setting-card').style.display = 'block';
-}
 
 
 function MenuNavigate(index)
@@ -149,6 +158,7 @@ function MenuNavigate(index)
             document.getElementById('center-filter-block').style.display = 'flex';
             document.getElementById('search-content-list').style.display = 'flex';
             document.getElementById('user-bookpick-list').style.display = 'none';
+            FindFilter();
             break;
 
         case 2:
@@ -161,8 +171,6 @@ function MenuNavigate(index)
             break;
     }
 }
-
-
 // =====[ Genre filter action ]======================
 function AddGenre()
 {
@@ -206,7 +214,17 @@ function UpdateSelectedGenreList(selectedGenres)
             });
         });
 }
-
+function FindBookForGenre(genre, database)
+{
+    let result = [];
+    let bookMaster = Array.from(database);
+    bookMaster.forEach((book) => 
+    {
+        if(book.Genre.includes(genre))
+            result.push(book);
+    });
+    return result;
+}
 
 // =====[ Authour filter action ]=====================
 
@@ -279,56 +297,6 @@ function RemoveAuthour(element)
     UpdateSelectionAuthourListUI(SelectedAuthours);
     FindFilter();
 }
-
-// =====[ Filter find click ]=====================
-function FindFilter()
-{
-    let copy = Array.from(BookDatabase.values());
-    if(SelectedAuthours.length > 0)
-    {
-        let aFound = [];
-        SelectedAuthours.forEach((item) => 
-        {
-            let booksfound = FindBookForAuthour(item, copy);
-            booksfound.forEach((book) => { aFound.push(book) });
-        });
-        copy = aFound;
-    }
-    if(SelectedGenreList.length > 0)
-    {
-        let gFound = [];
-        SelectedGenreList.forEach((item) => 
-        {
-            let booksfound = FindBookForGenre(item, copy);
-            booksfound.forEach((book) =>  { gFound.push(book)});
-        });
-        copy = gFound;
-    }
-    let mainList = document.getElementById('search-content-list');
-    mainList.innerHTML = BookShowTemplate(copy);
-
-    let childItem = Array.from(mainList.childNodes);
-    childItem.forEach(element => 
-        {
-            element.addEventListener('click', function()
-            {
-                SelectedBookItem = copy[childItem.indexOf(element)];
-                InvokeBookSelectionCard(SelectedBookItem);
-            });
-        });
-}
-
-function FindBookForGenre(genre, database)
-{
-    let result = [];
-    let bookMaster = Array.from(database);
-    bookMaster.forEach((book) => 
-    {
-        if(book.Genre.includes(genre))
-            result.push(book);
-    });
-    return result;
-}
 function FindBookForAuthour(authour, database)
 {
     let result = [];
@@ -340,6 +308,10 @@ function FindBookForAuthour(authour, database)
     });
     return result;
 }
+
+
+// =====[ List item templates ]=====================
+// ===============================================
 function BookShowTemplate(givenList)
 {
     return `${givenList.map((item) => 
@@ -456,7 +428,8 @@ function AvailCheck(isbn)
         {
             let bookLog = Array.from(BookLogArray[i]);
             for (let j = 0; j < bookLog.length; j++) {
-                if (bookLog[j].BookId == isbn) {
+                if (bookLog[j].UserName = ContextUser.UserName && bookLog[j].BookId == isbn) 
+                {
                     let pd = new Date(bookLog[j].PickDate);
                     if (leastDate > pd)
                         leastDate = pd;
@@ -495,7 +468,7 @@ function ReturnCheck(isbn)
             }
             else
             {
-                let fineAmount = libUtil.GetFineAmount(booklog.PickDate, new Date());
+                let fineAmount = libUtil.GetFineAmount(userLog.PickDate, new Date());
                 return `
                     <div class="return-imediate-block">
                         <div id="avail-in-text">Return imediate with fine amount ${fineAmount}!</div>
@@ -506,15 +479,48 @@ function ReturnCheck(isbn)
 }
 
 
-function InvokeBookSelectionCard()
+// =====[ Filter find click ]=====================
+// ===============================================
+function FindFilter()
 {
-    document.getElementById('book-selection-card').style.display = 'block';
-    document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
-    document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
+    let copy = Array.from(BookDatabase.values());
+    if(SelectedAuthours.length > 0)
+    {
+        let aFound = [];
+        SelectedAuthours.forEach((item) => 
+        {
+            let booksfound = FindBookForAuthour(item, copy);
+            booksfound.forEach((book) => { aFound.push(book) });
+        });
+        copy = aFound;
+    }
+    if(SelectedGenreList.length > 0)
+    {
+        let gFound = [];
+        SelectedGenreList.forEach((item) => 
+        {
+            let booksfound = FindBookForGenre(item, copy);
+            booksfound.forEach((book) =>  { gFound.push(book)});
+        });
+        copy = gFound;
+    }
+    let mainList = document.getElementById('search-content-list');
+    mainList.innerHTML = BookShowTemplate(copy);
+
+    let childItem = Array.from(mainList.childNodes);
+    childItem.forEach(element => 
+        {
+            element.addEventListener('click', function()
+            {
+                SelectedBookItem = copy[childItem.indexOf(element)];
+                InvokeBookSelectionCard(SelectedBookItem);
+            });
+        });
 }
 
 
-// =======[ Book Take ]==========================
+// =======[ Book Take ]===========================
+// ===============================================
 function TakeBook()
 {
     if (ContextUser && SelectedBookItem) {
@@ -566,10 +572,29 @@ function TakeBook()
             alert(`User already has ${SelectedBookItem.BookTitle}!`);
         }
     }
+    FindFilter();
     document.getElementById('book-selection-card').style.display = 'none';
 }
+// =======[ Return Book ]==========================
+function ReturnBook(element)
+{
+    UserReturnBookLog = UserBookLogList[element];
+    InvokeBookReturnCard(UserReturnBookLog);
+}
+function BookReturn()
+{
+    UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBook.ISBN);
+    // Update user account DB
+    BookLogMaster.set(ContextUser.UserName, UserBookLogList);
+    LocalDB.SetBookLogDatabase(BookLogMaster);
+    InvokeReturnPage();
 
-// =======[ Book Return ]==========================
+    // Update Book Stock count
+    let ddd = BookDatabase.get(UserReturnBook.ISBN);
+    ddd.StockCount++;
+    LocalDB.SetBookDatabase(BookDatabase);
+}
+// =======[ Book Return ]=========
 function InvokeReturnPage()
 {
     UserBookMaster = [];
@@ -578,10 +603,13 @@ function InvokeReturnPage()
         let bb = BookDatabase.get(book.BookId);
         UserBookMaster.push(bb);
     });
-
+    UpdateUserReturnListUI(UserBookMaster);
+}
+function UpdateUserReturnListUI(givenList)
+{
     let bookPickList = document.getElementById('user-bookpick-list');
     bookPickList.innerHTML = '';
-    bookPickList.innerHTML = UserBookReturnListTemplate(UserBookMaster);
+    bookPickList.innerHTML = UserBookReturnListTemplate(givenList);
 
     let childItem = Array.from(bookPickList.childNodes);
     childItem.forEach(element => 
@@ -592,13 +620,16 @@ function InvokeReturnPage()
             });
         });
 }
-function ReturnBook(element)
-{
-    UserReturnBookLog = UserBookLogList[element];
-    InvokeBookReturnCard(UserReturnBookLog);
-}
 
-// =======[ Invoke book return card ]================
+
+// =======[ Invoke book selection card ]================
+function InvokeBookSelectionCard()
+{
+    document.getElementById('book-selection-card').style.display = 'block';
+    document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
+    document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
+}
+// =======[ Invoke book return card ]===================
 function InvokeBookReturnCard(booklog)
 {
     UserReturnBook = BookDatabase.get(booklog.BookId);
@@ -621,6 +652,8 @@ function InvokeBookReturnCard(booklog)
         document.getElementById('return-book-btn').style.display = 'flex';
     }
 }
+
+// ========[ Pay fine amount ]=======================
 function PayFine(booklog)
 {
     let fineAmount = libUtil.GetFineAmount(booklog.PickDate, new Date());
@@ -640,24 +673,9 @@ function PayFine(booklog)
     LocalDB.SetBookLogDatabase(BookLogMaster);
 
     InvokeBookReturnCard(UserReturnBook);
+    UpdateUserReturnListUI(UserBookMaster);
 }
-
-function BookReturn()
-{
-    UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBook.ISBN);
-    // Update user account DB
-    BookLogMaster.set(ContextUser.UserName, UserBookLogList);
-    LocalDB.SetBookLogDatabase(BookLogMaster);
-    InvokeReturnPage();
-
-    // Update Book Stock count
-    let ddd = BookDatabase.get(UserReturnBook.ISBN);
-    ddd.StockCount++;
-    LocalDB.SetBookDatabase(BookDatabase);
-}
-
-
-// =======[ Load Initials ]=======================
+// =======[ Load Initials ]==========================
 function InitGenre(genreList)
 {
     let genreCombo = document.getElementById('genre-combo');
@@ -679,6 +697,11 @@ function GetDistinctAuthoursList(booksList)
 }
 
 
+// ========[ Setting Card ]=============================
+function InvokeSettingCard()
+{
+    document.getElementById('setting-card').style.display = 'block';
+}
 // ========[ Logout ]===================================
 function Logout()
 {

@@ -32,6 +32,7 @@ export default class localDB
             throw exception;
         }
     }
+
     LoadBookDatabase()
     {
         const fromJSON = JSON.parse(localStorage.getItem('bookDB'))
@@ -62,6 +63,7 @@ export default class localDB
             return false;
         }
     }
+
     GetBookLogDatabase()
     {
 
@@ -75,19 +77,6 @@ export default class localDB
             let bookLogMaster = new Map(Object.entries(fromJSON));
             return bookLogMaster;
         }
-        // let get = typeof(localStorage.getItem("bookLogDB"));
-        // if(get === 'undefined'){
-        //     alert('no');
-        // };
-        // try {
-        //     const fromJSON = JSON.parse(localStorage.getItem('bookLogDB'))
-        //     let bookLogMaster = new Map(Object.entries(fromJSON));
-        //     return bookLogMaster;
-
-        // }
-        // catch (exception) {
-        //     return new Map();
-        // }
     }
     SetBookLogDatabase(bookLogMaster)
     {
@@ -122,18 +111,7 @@ export default class localDB
             throw "Invalid Operation : There is no book in database.";
         }
     }
-
-
-    LoadUserDB()
-    {
-        try
-        {
-            const fromJSON = JSON.parse(localStorage.getItem('userDB'))
-            let UserkDatabase = new Map(Object.entries(fromJSON));
-            return UserkDatabase;
-        }
-        catch(exception) { throw exception; }
-    }
+    
 
     GetUserLogDB()
     {

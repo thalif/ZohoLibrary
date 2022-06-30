@@ -10,17 +10,27 @@ export default class UserDB
     }
     GetUserDatabase()
     {
-        try
+        const fromJSON = JSON.parse(localStorage.getItem('userDB'));
+        if(fromJSON != null)
         {
-            const fromJSON = JSON.parse(localStorage.getItem('userDB'));
-            this.UserDatabase = new Map(Object.entries(fromJSON));
-            return this.UserDatabase;
+            let UserDatabase = new Map(Object.entries(fromJSON));
+            return UserDatabase;
         }
-        catch(exception)
+        else
         {
-            this.UserDatabase = new Map();
-            return this.UserDatabase;
+            return new Map();
         }
+        // try
+        // {
+        //     const fromJSON = JSON.parse(localStorage.getItem('userDB'));
+        //     this.UserDatabase = new Map(Object.entries(fromJSON));
+        //     return this.UserDatabase;
+        // }
+        // catch(exception)
+        // {
+        //     this.UserDatabase = new Map();
+        //     return this.UserDatabase;
+        // }
     }
     GetUserLogInfo()
     {

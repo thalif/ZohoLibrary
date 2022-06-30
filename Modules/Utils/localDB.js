@@ -38,21 +38,24 @@ export default class localDB
     }
     LoadBookDatabase()
     {
-        try
+        const fromJSON = JSON.parse(localStorage.getItem('bookDB'))
+        if (fromJSON != null) 
         {
-            const fromJSON = JSON.parse(localStorage.getItem('bookDB'))
             let BookDatabase = new Map(Object.entries(fromJSON));
             return BookDatabase;
         }
-        catch(exception) 
-        {
-            throw exception;
+        else {
+            return new Map();
         }
     }
     SetBookDatabase(BookDatabase)
     {
         try
         {
+            // Remove existing data
+            localStorage.removeItem('bookDB');
+
+            // Update with new Data
             var obj = Object.fromEntries(BookDatabase);
             var jsonString = JSON.stringify(obj);
             localStorage.setItem('bookDB', jsonString);
@@ -63,18 +66,32 @@ export default class localDB
             return false;
         }
     }
-
     GetBookLogDatabase()
     {
-        try {
-            const fromJSON = JSON.parse(localStorage.getItem('bookLogDB'))
-            let bookLogMaster = new Map(Object.entries(fromJSON));
-            return bookLogMaster;
 
-        }
-        catch (exception) {
+        const fromJSON = JSON.parse(localStorage.getItem('bookLogDB'));
+        if(fromJSON === null)
+        {
             return new Map();
         }
+        else
+        {
+            let bookLogMaster = new Map(Object.entries(fromJSON));
+            return bookLogMaster;
+        }
+        // let get = typeof(localStorage.getItem("bookLogDB"));
+        // if(get === 'undefined'){
+        //     alert('no');
+        // };
+        // try {
+        //     const fromJSON = JSON.parse(localStorage.getItem('bookLogDB'))
+        //     let bookLogMaster = new Map(Object.entries(fromJSON));
+        //     return bookLogMaster;
+
+        // }
+        // catch (exception) {
+        //     return new Map();
+        // }
     }
     SetBookLogDatabase(bookLogMaster)
     {
@@ -88,16 +105,29 @@ export default class localDB
     DeleteBook(selectedItem)
     {
         const fromJSON = JSON.parse(localStorage.getItem('bookDB'));
-        let BookDatabase = new Map(Object.entries(fromJSON));
-        BookDatabase.delete(selectedItem.ISBN)
+        if(fromJSON != null)
+        {
+            let BookDatabase = new Map(Object.entries(fromJSON));
+            if(BookDatabase.has(selectedItem.ISBN))
+            {
+                // Delete item.
+                BookDatabase.delete(selectedItem.ISBN)
 
-        let bookDB_Name = 'bookDB';
-        localStorage.removeItem(bookDB_Name);
-        
-        var obj = Object.fromEntries(BookDatabase);
-        var jsonString = JSON.stringify(obj);
-        localStorage.setItem(bookDB_Name, jsonString);
+                // Update database.
+                this.SetBookDatabase(BookDatabase);
+            }
+            else
+            {
+                throw "Invalid operation: There is no such book ";
+            }
+        }
+        else
+        {
+            throw "Invalid Operation : There is no book in database.";
+        }
     }
+
+
     LoadUserDB()
     {
         try
@@ -107,6 +137,15 @@ export default class localDB
             return UserkDatabase;
         }
         catch(exception) { throw exception; }
+    }
+
+    GetUserLogDB()
+    {
+        let userLog = JSON.parse(localStorage.getItem('userLogDB'));
+        if (userLog != null)
+            return Array.from(userLog);
+        else
+            return new Array();
     }
 
     UpdateFineColleciton(thisUser, thisBook, fineAmount)

@@ -3,56 +3,66 @@ import localDB from "./Utils/localDB.js";
 import UserDB from "./Utils/userDB.js";
 import Cookie from "./Utils/localCookie.js";
 
-let ContextUser;
+
 let ld = new localDB();
+let userDB = new UserDB();
 let cookie = new Cookie();
+
 let genreDB;
 let countryDB;
 let languageDB;
+
+let UserDatabase = new Map();
 let BookDatabase = new Map();
-let UserDatabase = new UserDB();
-let UserLogList = [];
 let thisBook = new Book();
+let UserLogList = [];
+
+
+let ContextUser;
 let SelectedBookItem;
 window.onload = (event) =>
 {
     try
     {
-        genreDB = ld.Load_Genres();
-        if (genreDB)
-            Load_Genres(genreDB);
-        //
-        countryDB = ld.Load_Country();
-        if (countryDB)
-            Load_Countries(countryDB);
-
-        //
-        languageDB = ld.Load_Language();
-        if (languageDB)
-            Load_Language(languageDB);
-
-        LoadBookDatabase();
+        BookDatabase = ld.LoadBookDatabase();
+        UserDatabase = userDB.GetUserDatabase();
+        LoadInitialsForPageContext();
 
         ContextUser = GetUserFromCookie();
-        document.getElementById('user-name').innerHTML = ContextUser.FullName;
-        MenuNavigate(2);
+        if(ContextUser)
+        {
+            document.getElementById('user-name').innerHTML = ContextUser.FullName;
+            MenuNavigate(2);
+        }
+        else {
+            window.location.href = "./index.html";
+        }
     }
-    catch(exception)
-    {
-        
+    catch (exception) {
+        ShowErrorAlert(exception);
     }
-}
-function LoadBookDatabase()
-{
-    try
-    {
-        const fromJSON = JSON.parse(localStorage.getItem('bookDB'))
-        BookDatabase = new Map(Object.entries(fromJSON));
-    }
-    catch(exp) { }
 }
 
-// ========[ Event listener ]=============================
+//===========[ 1. Load Genre | 2. Load Country | 3. Load Language ]======================
+// ======================================================================================
+function LoadInitialsForPageContext()
+{
+    genreDB = ld.Load_Genres();
+    if (genreDB)
+        Load_Genres(genreDB);
+    //
+    countryDB = ld.Load_Country();
+    if (countryDB)
+        Load_Countries(countryDB);
+
+    //
+    languageDB = ld.Load_Language();
+    if (languageDB)
+        Load_Language(languageDB);
+}
+
+// ========[ Event listener ]=============================================================
+// ======================================================================================
 document.getElementById('logout-btn').addEventListener('click', function()
 {
     Logout();
@@ -153,6 +163,7 @@ function SubmitNewBook()
         thisBook.SetStockCount(document.getElementById('book-stock-tb').value);
         
         PushToMaster(thisBook);
+
         ResetAllFields();
     }
     catch(exception)
@@ -162,11 +173,12 @@ function SubmitNewBook()
 }
 function PushToMaster(Book)
 {
-    BookDatabase.set(Book.ISBN, Book);
-    localStorage.removeItem('bookDB');
-    // 1. When new book comes to insert, check ISBN number is already exist or not.
-    
-    ld.SetBookDatabase(BookDatabase);
+    if (Book) {
+        BookDatabase.set(Book.ISBN, Book);
+
+        // 1. When new book comes to insert, check ISBN number is already exist or not.
+        ld.SetBookDatabase(BookDatabase);
+    }
 }
 
 // ========[ Choose image ]=============================
@@ -196,10 +208,8 @@ function AddNewGenre()
         document.getElementById('genre-combo').value = '';
         thisBook.AddGenre(newGenre);
         UpdateGenreListUI();
-
     }
-    catch(exception)
-    {
+    catch (exception) {
         ShowErrorAlert(exception);
     }
 }
@@ -248,18 +258,23 @@ function AddNewAuthour()
         thisBook.AddAuthours(newAuthour);
         UpdateAuthorListUI();
     }
-    catch(exception)
-    {
+    catch (exception) {
         ShowErrorAlert(exception);
     }
 }
 function RemoveAuthourItem(event)
 {
-    let authourList = document.getElementById('authour-list');
-    let nodes  = Array.from(authourList.childNodes);
-    let selectedIndex = nodes.indexOf(event);
-    thisBook.RemoveAuthorItem(selectedIndex);
-    UpdateAuthorListUI();
+    try 
+    {
+        let authourList = document.getElementById('authour-list');
+        let nodes = Array.from(authourList.childNodes);
+        let selectedIndex = nodes.indexOf(event);
+        thisBook.RemoveAuthorItem(selectedIndex);
+        UpdateAuthorListUI();
+    }
+    catch (exception) {
+        ShowErrorAlert(exception);
+    }
 }
 function UpdateAuthorListUI()
 {
@@ -314,12 +329,18 @@ function Load_Countries(countryList)
 
 function Refresh_BookList_UI()
 {
-    const fromJSON = JSON.parse(localStorage.getItem('bookDB'));
-    BookDatabase = new Map(Object.entries(fromJSON));
-    let Bookslist = Array.from(BookDatabase.values());
-    document.getElementById('books-list').innerHTML = Makelist(Bookslist);
-    // Addeventlistener('click') for all list item
-    Invoke_EventListener_BookList(Bookslist);
+    try 
+    {
+        BookDatabase = ld.LoadBookDatabase();
+        let Bookslist = Array.from(BookDatabase.values());
+        document.getElementById('books-list').innerHTML = Makelist(Bookslist);
+
+        // Addeventlistener('click') for all list item
+        Invoke_EventListener_BookList(Bookslist);
+    }
+    catch (exception) {
+        ShowErrorAlert(exception);
+    }
 }
 function Makelist(givenList)
 {
@@ -389,8 +410,14 @@ function Invoke_EventListener_BookList(bookListDB)
 //==============================================
 function Refresh_UserList_UI()
 {
-    UserLogList = JSON.parse(localStorage.getItem('userLogDB'));
-    document.getElementById('users-list').innerHTML = GetUserList_LI(UserLogList);
+    try 
+    {
+        UserLogList = ld.GetUserLogDB();
+        document.getElementById('users-list').innerHTML = GetUserList_LI(UserLogList);
+    }
+    catch (exception) {
+        ShowErrorAlert(exception);
+    }
 }
 function GetUserList_LI(UserList)
 {
@@ -421,11 +448,9 @@ function DeleteSelectedItem(selectedItem)
     for(let i = 0; i < logMaster.length; i++)
     {
         let logItem = Array.from(logMaster[i]);
-        for(let j = 0; j < logItem.length; j++)
-        {
+        for (let j = 0; j < logItem.length; j++) {
             let singleItem = logItem[j];
-            if(singleItem.BookId == selectedItem.ISBN)
-            {
+            if (singleItem.BookId == selectedItem.ISBN) {
                 count++;
             }
         }
@@ -435,14 +460,11 @@ function DeleteSelectedItem(selectedItem)
         ld.DeleteBook(selectedItem);
         Refresh_BookList_UI();
     }
-    else
-    {
+    else {
         ShowErrorAlert('Book has been taken..! Cannot delete now.!')
     }
     document.getElementById('selection-action-block').style.display = 'none';
 }
-
-
 
 // ========[ Logout ]==========================================
 function Logout()
@@ -452,8 +474,7 @@ function Logout()
         cookie.DeleteCookie('cuser');
         window.location.href = "./index.html";
     }
-    catch(exception)
-    {
+    catch (exception) {
         console.log(exception);
     }
 }
@@ -475,8 +496,7 @@ function ResetAllFields()
     document.getElementById('book-stock-tb').value = '';
     document.getElementById('genre-list').innerHTML = '';
     document.getElementById('authour-list').innerHTML = '';
-    thisBook.Genre = [];
-    thisBook.Authuors = [];
+    thisBook = new Book();
 }
 // ========[ Show error alert ]=================================
 function ShowErrorAlert(error)
@@ -489,8 +509,7 @@ function ShowErrorAlert(error)
             document.getElementById('error-msg').style.display = 'none';    
         }, 5000);
     }
-    catch(exception)
-    {
+    catch (exception) {
         ShowErrorAlert(exception);
     }
 }
@@ -500,9 +519,8 @@ function GetUserFromCookie()
     try
     {
         if (cookie.CheckCookie()) {
-            let db = UserDatabase.GetUserDatabase();
-            if (db.has(cookie.GetCookie('cuser'))) {
-                return db.get(cookie.GetCookie('cuser'));
+            if (UserDatabase.has(cookie.GetCookie('cuser'))) {
+                return UserDatabase.get(cookie.GetCookie('cuser'));
             }
         }
         else

@@ -117,6 +117,7 @@ document.getElementById('pay-fine-btn').addEventListener('click', function()
 document.getElementById('return-book-btn').addEventListener('click', function()
 {
     BookReturn();
+    document.getElementById('book-return-card').style.display = 'none';
 });
 document.getElementById('menu-setting-btn').addEventListener('click', function()
 {

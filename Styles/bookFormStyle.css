@@ -4,7 +4,7 @@
 {
     width: 80%;
     height: 80%;
-    background-color: #d2e3e7;
+    background-color: var(--main2);
     box-shadow:  3px 3px 10px #848484;
     padding: 20px;
 }
@@ -158,6 +158,8 @@
     justify-content: center;
     align-items: center;
 }
+
+/* ====[ Sumbit Button]============ */
 #submit-btn
 {
     height: 40px;
@@ -175,6 +177,26 @@
     font-size: 20;
     font-weight: bold;
     background-color: #1c4e83;
+}
+/* ====[ Action Button]============ */
+#update-btn
+{
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+    display:none;
+    background-color: rebeccapurple;
+    border: 2px solid white;
+    color: var(--light3);
+    font-size: 16px;
+    font-weight: bold;
+}
+#update-btn:hover
+{
+    height: 50px;
+    font-size: 20;
+    font-weight: bold;
+    background-color: rgb(69, 9, 129);
 }
 
 #error-msg

@@ -7,13 +7,13 @@ import LibUtil from "./Utils/util.js";
 let SelectedGenreList = [];
 let SelectedAuthours = [];
 
+let BookDatabase = new Map();
 let BookLogMaster = new Map();
 let BookLogArray = [];
+let AuthourMaster = [];
+let GenreMaster = [];
 
 let ContextUser;
-let AuthourMaster = [];
-let BookDatabase = new Map();
-
 let SelectedBookItem;
 
 let UserBookLogList = [];
@@ -30,43 +30,53 @@ window.onload = (event) =>
     try
     {
         ContextUser = GetUserFromCookie();
-        BookLogMaster = LocalDB.GetBookLogDatabase();
-        try
-        {
-            if(BookLogMaster.size > 0)
-            {
-                UserBookLogList = Array.from(BookLogMaster.get(ContextUser.UserName));
-                BookLogArray = Array.from(BookLogMaster.values());
-            }   
+        if (ContextUser) {
+            Page_Constructor();
         }
-        catch(exception)
-        {
-            UserBookLogList = new Array();
-        }
-
-        if(ContextUser)
-        {
-            let ld = new localDB();
-            let genre = ld.Load_Genres();
-            BookDatabase = ld.LoadBookDatabase();
-            AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
-            FindFilter();
-            document.getElementById('user-name').innerHTML = ContextUser.FullName;
-            if (genre)
-                InitGenre(genre);
-            else
-                alert('no item ');
-        }
-        else
-        {
+        else {
             window.location.href = './index.html';
         }
     }
-    catch(exception)
-    {
+    catch (exception) {
         console.log(exception);
     }
 }
+
+function Page_Constructor()
+{
+    
+    document.getElementById('user-name').innerHTML = ContextUser.FullName;
+    BookDatabase = LocalDB.LoadBookDatabase();
+    BookLogMaster = LocalDB.GetBookLogDatabase();
+    AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
+    LogBookLogData();
+    LoadGenreMaster();
+    FindFilter();
+}
+
+function LogBookLogData()
+{
+    try {
+        if (BookLogMaster.size > 0) {
+            UserBookLogList = Array.from(BookLogMaster.get(ContextUser.UserName));
+            BookLogArray = Array.from(BookLogMaster.values());
+        }
+        else
+            UserBookLogList = new Array();
+    }
+    catch (exception) {
+        UserBookLogList = new Array();
+    }
+}
+function LoadGenreMaster()
+{
+    GenreMaster = LocalDB.Load_Genres();
+    if (GenreMaster)
+        InitGenre(GenreMaster);
+    else
+        alert('no item ');
+}
+
 // ========[ Event listener ]=============================
 document.getElementById('logout-btn').addEventListener('click', function()
 {
@@ -539,9 +549,9 @@ function TakeBook()
                     if (UserBookLogList.length < 4) {
                         // Update stock count
                         SelectedBookItem.StockCount--;
-                        let mm = BookDatabase;
                         UserBookLogList.push(bookPick);
                         BookLogMaster.set(ContextUser.UserName, UserBookLogList);
+
                         LocalDB.SetBookLogDatabase(BookLogMaster);
                         LocalDB.SetBookDatabase(BookDatabase);
                     }

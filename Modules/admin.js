@@ -21,7 +21,7 @@ let thisBook = new Book();
 let UserLogList = [];
 
 let ContextUser;
-let SelectedBookItem;
+let SelectedBookItem = new Book();
 
 // filter 
 let AuthourMaster = [];
@@ -32,31 +32,45 @@ window.onload = (event) =>
 {
     try
     {
-        BookDatabase = ld.LoadBookDatabase();
-        AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
-        UserDatabase = userDB.GetUserDatabase();
-        LoadInitialsForPageContext();
         
+        PageConstructor();
+        LoadInitialsForPageContext();
 
-        ContextUser = GetUserFromCookie();
-        if(ContextUser)
-        {
-            document.getElementById('user-name').innerHTML = ContextUser.FullName;
-            MenuNavigate(2);
-        }
-        else {
-            window.location.href = "./index.html";
-        }
     }
     catch (exception) {
         ShowErrorAlert(exception);
     }
 }
 
-//===========[ 1. Load Genre | 2. Load Country | 3. Load Language ]======================
+//===========[ Constructor Methods ]====================================================
 // ======================================================================================
+function PageConstructor()
+{
+    BookDatabase = ld.LoadBookDatabase();
+    AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
+    UserDatabase = userDB.GetUserDatabase();
+    VerifyCookieDetails();
+    
+    // Initial New Book Form
+    Show_NewBook_UI();
+}
+function VerifyCookieDetails()
+{
+    ContextUser = GetUserFromCookie();
+    if(ContextUser)
+    {
+        document.getElementById('user-name').innerHTML = ContextUser.FullName;
+        MenuNavigate(2);
+    }
+    else {
+        window.location.href = "./index.html";
+    }
+}
 function LoadInitialsForPageContext()
 {
+    
+
+    // Load Genre DB
     genreDB = ld.Load_Genres();
     if (genreDB)
     {
@@ -64,95 +78,16 @@ function LoadInitialsForPageContext()
         InitGenre(genreDB);
     }
         
-    //
+    // Loan Country DB
     countryDB = ld.Load_Country();
     if (countryDB)
         Load_Countries(countryDB);
 
-    //
+    // Load Languages DB
     languageDB = ld.Load_Language();
     if (languageDB)
         Load_Language(languageDB);
 }
-
-// ========[ Event listener ]=============================================================
-// ======================================================================================
-
-document.getElementById('genre-filter-combo').addEventListener('change', function(event)
-{
-    try
-    {
-        AddGenre();
-        FindFilter();
-    }
-    catch (exception) {
-        alert(exception);
-    }
-});
-document.getElementById('authour-input-key').addEventListener('keyup', function()
-{
-    FindAuthour();
-});
-
-
-
-
-
-
-
-document.getElementById('logout-btn').addEventListener('click', function()
-{
-    Logout();
-});
-document.getElementById('add-authour-btn').addEventListener('click', function()
-{
-    AddNewAuthour();
-});
-document.getElementById('submit-btn').addEventListener('click', function()
-{
-    SubmitNewBook();
-});
-document.getElementById('choose-img-btn').addEventListener('change', function()
-{
-    ChooseNewImage();
-});
-document.getElementById('genre-combo').addEventListener('change', function()
-{
-    AddNewGenre();
-});
-document.getElementById('menu-add-newbook').addEventListener('click', function()
-{
-    MenuNavigate(1);
-});
-document.getElementById('menu-show-allbook').addEventListener('click', function()
-{
-    MenuNavigate(2);
-});
-document.getElementById('menu-show-allusers').addEventListener('click', function()
-{
-    MenuNavigate(3);
-});
-
-// ===========[ Selection block buttons - add event listener ]=====================
-document.getElementById('close-selection-btn').addEventListener('click', function()
-{
-    document.getElementById('selection-action-block').style.display = 'none';
-});
-
-document.getElementById('update-book-btn').addEventListener('click', function()
-{
-    alert('update book clicked. No yet implimented');
-});
-document.getElementById('delete-book-btn').addEventListener('click', function()
-{
-    DeleteSelectedItem(SelectedBookItem);
-});
-
-
-
-// =====[ Fill initals ]=========================
-// ==============================================
-//#region [ Load Initals ]
 function Load_Genres(genreList)
 {
     let genreCombo = document.getElementById('genre-combo');
@@ -179,7 +114,80 @@ function InitGenre(genreList)
     genreCombo.value = '';
 }
 
-//#endregion
+// ========[ Event listener ]=============================================================
+// ======================================================================================
+
+document.getElementById('genre-filter-combo').addEventListener('change', function(event)
+{
+    try
+    {
+        AddGenre();
+        FindFilter();
+    }
+    catch (exception) {
+        alert(exception);
+    }
+});
+document.getElementById('authour-input-key').addEventListener('keyup', function()
+{
+    FindAuthour();
+});
+
+document.getElementById('logout-btn').addEventListener('click', function()
+{
+    Logout();
+});
+document.getElementById('add-authour-btn').addEventListener('click', function()
+{
+    AddNewAuthour();
+});
+
+document.getElementById('submit-btn').addEventListener('click', function()
+{
+    SubmitNewBook();
+});
+document.getElementById('update-btn').addEventListener('click', function()
+{
+    UpdateBookDetails();
+});
+document.getElementById('choose-img-btn').addEventListener('change', function()
+{
+    ChooseNewImage();
+});
+document.getElementById('genre-combo').addEventListener('change', function()
+{
+    AddNewGenre();
+});
+document.getElementById('menu-add-newbook').addEventListener('click', function()
+{
+    MenuNavigate(1);
+    Show_NewBook_UI();
+    ResetAllFields();
+});
+document.getElementById('menu-show-allbook').addEventListener('click', function()
+{
+    MenuNavigate(2);
+});
+document.getElementById('menu-show-allusers').addEventListener('click', function()
+{
+    MenuNavigate(3);
+});
+
+// ===========[ Selection block buttons - add event listener ]=====================
+document.getElementById('close-selection-btn').addEventListener('click', function()
+{
+    document.getElementById('selection-action-block').style.display = 'none';
+});
+
+document.getElementById('update-book-btn').addEventListener('click', function()
+{
+    InvokUpdateBook(SelectedBookItem);
+});
+document.getElementById('delete-book-btn').addEventListener('click', function()
+{
+    DeleteSelectedItem(SelectedBookItem);
+});
+
 
 // ========[ Menu Navigations ]===================
 function MenuNavigate(s)
@@ -238,7 +246,7 @@ function AddNewGenre()
         let newGenre = document.getElementById('genre-combo').value;
         document.getElementById('genre-combo').value = '';
         thisBook.AddGenre(newGenre);
-        UpdateGenreListUI();
+        UpdateGenreListUI(thisBook.Genre);
     }
     catch (exception) {
         ShowErrorAlert(exception);
@@ -251,14 +259,14 @@ function RemoveGenreItem(event)
     let nodes = Array.from(genreList.childNodes);
     let selectedIndex = nodes.indexOf(event);
     thisBook.RemoveGenre(selectedIndex);
-    UpdateGenreListUI();
+    UpdateGenreListUI(thisBook.Genre);
 }
-function UpdateGenreListUI()
+function UpdateGenreListUI(givenGenreList)
 {
     let genreList = document.getElementById('genre-list');
     if(genreList)
     {
-        genreList.innerHTML = `${thisBook.Genre.map((gen) => 
+        genreList.innerHTML = `${givenGenreList.map((gen) => 
             `<li id='genre-item'>
                 <div>${gen}</div>
                 <div id="genre-item-btn" width="10" height="10">
@@ -284,7 +292,7 @@ function AddNewAuthour()
         let newAuthour = document.getElementById('authour-tb').value;
         document.getElementById('authour-tb').value = '';
         thisBook.AddAuthours(newAuthour);
-        UpdateAuthorListUI();
+        UpdateAuthorListUI(thisBook.Authuors);
     }
     catch (exception) {
         ShowErrorAlert(exception);
@@ -298,18 +306,18 @@ function RemoveAuthourItem(event)
         let nodes = Array.from(authourList.childNodes);
         let selectedIndex = nodes.indexOf(event);
         thisBook.RemoveAuthorItem(selectedIndex);
-        UpdateAuthorListUI();
+        UpdateAuthorListUI(thisBook.Authuors);
     }
     catch (exception) {
         ShowErrorAlert(exception);
     }
 }
-function UpdateAuthorListUI()
+function UpdateAuthorListUI(givenAuthourList)
 {
     let authourList = document.getElementById('authour-list');
     if(authourList)
     {
-        authourList.innerHTML = `${thisBook.Authuors.map((author) => 
+        authourList.innerHTML = `${givenAuthourList.map((author) => 
             `<li id='authour-item'>
                 <label>${author}</label>
                 <div id="delete-item">
@@ -332,25 +340,7 @@ function SubmitNewBook()
 {
     try
     {
-        thisBook.SetBookTitle(document.getElementById('book-title-tb').value)
-        thisBook.SetISBN(document.getElementById('book-isbn-tb').value);
-        thisBook.SetEdition(document.getElementById('book-edition-tb').value);
-        thisBook.SetLanguage(document.getElementById('language-combo').value);
-        //
-        if(thisBook.Genre.length == 0)
-            throw "You have to select atleast 1 genre.";
-        if(thisBook.Authuors.length == 0)
-            throw "Book must have author";
-        //
-        thisBook.SetPublisher(document.getElementById('book-publisher-tb').value);
-        thisBook.SetPublisherContact(document.getElementById('book-publisher-contact').value);
-        thisBook.SetPublisedDate(document.getElementById('book-pubished-date').value);
-        thisBook.SetOrigin(document.getElementById('book-origin-combo').value);
-        //
-        thisBook.SetSection(document.getElementById('lib-section-tb').value);
-        thisBook.SetRack(document.getElementById('lib-rack-tb').value);
-        thisBook.SetStockCount(document.getElementById('book-stock-tb').value);
-        
+        GrabFormValues();
         PushToMaster(thisBook);
 
         ResetAllFields();
@@ -360,9 +350,31 @@ function SubmitNewBook()
         ShowErrorAlert(exception);
     }
 }
+function GrabFormValues()
+{
+    thisBook.SetBookTitle(document.getElementById('book-title-tb').value)
+    thisBook.SetISBN(document.getElementById('book-isbn-tb').value);
+    thisBook.SetEdition(document.getElementById('book-edition-tb').value);
+    thisBook.SetLanguage(document.getElementById('language-combo').value);
+    //
+    if(thisBook.Genre.length == 0)
+        throw "You have to select atleast 1 genre.";
+    if(thisBook.Authuors.length == 0)
+        throw "Book must have author";
+    //
+    thisBook.SetPublisher(document.getElementById('book-publisher-tb').value);
+    thisBook.SetPublisherContact(document.getElementById('book-publisher-contact').value);
+    thisBook.SetPublisedDate(document.getElementById('book-pubished-date').value);
+    thisBook.SetOrigin(document.getElementById('book-origin-combo').value);
+    //
+    thisBook.SetSection(document.getElementById('lib-section-tb').value);
+    thisBook.SetRack(document.getElementById('lib-rack-tb').value);
+    thisBook.SetStockCount(document.getElementById('book-stock-tb').value);
+}
 function PushToMaster(Book)
 {
-    if (Book) {
+    if (Book) 
+    {
         BookDatabase.set(Book.ISBN, Book);
 
         // 1. When new book comes to insert, check ISBN number is already exist or not.
@@ -741,6 +753,63 @@ function ResetAllFields()
     document.getElementById('authour-list').innerHTML = '';
     thisBook = new Book();
 }
+function InvokUpdateBook(selectedBookItem)
+{
+    MenuNavigate(1);
+    document.getElementById('book-title-tb').value = selectedBookItem.BookTitle;
+    document.getElementById('book-isbn-tb').value = selectedBookItem.ISBN;
+    document.getElementById('book-edition-tb').value = selectedBookItem.Edition;
+    document.getElementById('language-combo').value = selectedBookItem.Language;
+
+    UpdateGenreListUI(selectedBookItem.Genre);
+    UpdateAuthorListUI(selectedBookItem.Authuors);
+    // document.getElementById('genre-combo').value = '';
+    // document.getElementById('authour-tb').value = '';
+
+    document.getElementById('book-publisher-tb').value = selectedBookItem.Publisher;
+    document.getElementById('book-publisher-contact').value = selectedBookItem.PublisherContact;
+    document.getElementById('book-pubished-date').value = selectedBookItem.DateOfPublished;
+    document.getElementById('book-origin-combo').value = selectedBookItem.Origin;
+    document.getElementById('lib-section-tb').value = selectedBookItem.Section;
+    document.getElementById('lib-rack-tb').value = selectedBookItem.Rack;
+    document.getElementById('book-stock-tb').value = selectedBookItem.StockCount;
+
+    thisBook.BookTitle = selectedBookItem.BookTitle;
+    thisBook.ISBN = selectedBookItem.ISBN;
+    thisBook.Edition = selectedBookItem.Edition;
+    thisBook.Language = selectedBookItem.Language;
+    thisBook.Genre = selectedBookItem.Genre;
+    thisBook.Authuors = selectedBookItem.Authuors;
+
+    thisBook.Publisher = selectedBookItem.Publisher;
+    thisBook.PublisherContact = selectedBookItem.PublisherContact;
+    thisBook.DateOfPublished = selectedBookItem.DateOfPublished;
+    thisBook.Origin = selectedBookItem.Origin;
+
+    thisBook.Section = selectedBookItem.Section;
+    thisBook.Rack = selectedBookItem.Rack;
+    thisBook.StockCount = selectedBookItem.StockCount;
+    
+    document.getElementById('selection-action-block').style.display = 'none';
+
+    Show_UpdateBook_UI();
+}
+
+
+function UpdateBookDetails()
+{
+    try {
+        GrabFormValues();
+        PushToMaster(thisBook);
+        alert("Updated book details done!");
+        Show_NewBook_UI();
+        MenuNavigate(2);
+    }
+    catch (exception) {
+        ShowErrorAlert(exception);
+    }
+}
+
 // ========[ Show error alert ]=================================
 function ShowErrorAlert(error)
 {
@@ -784,4 +853,17 @@ function GetDistinctAuthoursList(booksList)
             })
     });
     return distinctAuthour;
+}
+
+function Show_UpdateBook_UI()
+{
+    document.getElementById('update-btn').style.display = 'block';
+    document.getElementById('submit-btn').style.display = 'none';
+    document.getElementById('new-book-header').innerHTML = 'Update Book';
+}
+function Show_NewBook_UI()
+{
+    document.getElementById('update-btn').style.display = 'none';
+    document.getElementById('submit-btn').style.display = 'block';
+    document.getElementById('new-book-header').innerHTML = 'New Book';
 }

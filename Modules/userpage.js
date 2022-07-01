@@ -591,10 +591,14 @@ function BookReturn()
 {
     UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBook.ISBN);
     // Update user account DB
-    BookLogMaster.set(ContextUser.UserName, UserBookLogList);
+    if (UserBookLogList.length > 0)
+        BookLogMaster.set(ContextUser.UserName, UserBookLogList);
+    else
+        BookLogMaster.delete(ContextUser.UserName);
+
     LocalDB.SetBookLogDatabase(BookLogMaster);
     InvokeReturnPage();
-
+    
     // Update Book Stock count
     let ddd = BookDatabase.get(UserReturnBook.ISBN);
     ddd.StockCount++;

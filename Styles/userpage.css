@@ -78,6 +78,7 @@
     display: flex;
     flex-direction: row;
 
+    padding: 10px;
     height: auto;
     background-color: var(--light2);
 }
@@ -94,7 +95,6 @@
 #genre-combo
 {
     width: 100px;
-    height: 30px;
 }
 #genre-selected-list
 {

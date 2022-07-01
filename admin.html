@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="./Styles/bookFormStyle.css">
     <link rel="stylesheet" type="text/css" href="./Styles/showUsers.css">
     <link rel="stylesheet" type="text/css" href="./Styles/showBooksPage.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/adminDashboard.css">
 </head>
 <body>
     <div class="wrapper-div">
@@ -25,6 +26,49 @@
             </div>
         </div>
         <div class="content-block">
+
+            <!-- ===========[ Admin Dashboard ]=========================================================== -->
+            <div class="admin-dashboard" id="admin-dashboard">
+
+                <div class="dashboard-row-1">
+                    <!-- =============[ Total Books ]================== -->
+                    <div class="total-book-card">
+                        <div id="total-book-heading">Total Books</div>
+                        <div id="total-book-count"></div>
+                    </div>
+                
+                    <!-- =============[ Total Customer ]================== -->
+                    <div class="total-customer-card">
+                        <div id="total-customer-heading">Total Customer</div>
+                        <div id="total-customer-count">1000</div>
+                    </div>
+                    <!-- =============[ Total Transactions ]================== -->
+                    <!-- <div class="total-transaction-card">
+                        <div id="total-transaction-heading">Total transaction</div>
+                        <div id="total-transaction-count">1000</div>
+                    </div> -->
+                </div>
+
+                <div class="dashboard-row-2">
+                    <!-- =============[ Books In Taken ]================== -->
+                    <div class="total-taken-card">
+                        <div id="total-taken-heading">Total Book Taken</div>
+                        <div id="total-taken-count">1000</div>
+                    </div>
+                
+                    <!-- =============[ Books In Late ]================== -->
+                    <div class="total-books-late-card">
+                        <div id="total-books-late-heading">Book Late</div>
+                        <div id="total-books-late-count">1000</div>
+                    </div>
+                    <!-- =============[ Fine Amonunt ]================== -->
+                    <div class="total-fineamount-card">
+                        <div id="total-fineamount-heading">Fine Collected</div>
+                        <div id="total-fineamount-count">1000</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ===========[ New Book form block. ]=========================================================== -->
             <div class="bookform-block" id="bookform-block">
                 <h2 id="new-book-header">New Book</h2>
@@ -161,7 +205,8 @@
                                         <!-- Books List -->
                 <ul class="books-list" id="books-list"></ul>
             </div>
-
+            
+            <!-- ===========[ Show user logs ]=========================================================== -->
             <div class="show-user-block" id="show-user-block">
                 <ul class="users-list" id="users-list"></ul>
             </div>

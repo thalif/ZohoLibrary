@@ -1,10 +1,15 @@
 export default class LibUtil
 {
+    constructor()
+    {
+        this.FINE_AMOUNT = 12;
+        this.MIN_BOOK_PICK_DAY = 10;
+    }
     GetFineAmount(date1, date2)
     {
         let totalDays = this.GetDiff(date1, date2);
-        if(totalDays > 10)
-            return (totalDays - 10) * 12;
+        if(totalDays > this.MIN_BOOK_PICK_DAY)
+            return (totalDays - this.MIN_BOOK_PICK_DAY) * this.FINE_AMOUNT;
         else
             return 0;
     }

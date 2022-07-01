@@ -31,11 +31,9 @@ let SelectedAuthours = [];
 window.onload = (event) =>
 {
     try
-    {
-        
+    {   
         PageConstructor();
         LoadInitialsForPageContext();
-
     }
     catch (exception) {
         ShowErrorAlert(exception);
@@ -50,7 +48,7 @@ function PageConstructor()
     AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
     UserDatabase = userDB.GetUserDatabase();
     VerifyCookieDetails();
-    
+    InvokeDashboadContext();
     // Initial New Book Form
     Show_NewBook_UI();
 }
@@ -60,7 +58,7 @@ function VerifyCookieDetails()
     if(ContextUser)
     {
         document.getElementById('user-name').innerHTML = ContextUser.FullName;
-        MenuNavigate(2);
+        MenuNavigate(4);
     }
     else {
         window.location.href = "./index.html";
@@ -113,9 +111,44 @@ function InitGenre(genreList)
     genreCombo.innerHTML = `${genreList.map((genre) => `<option>${genre}</option>` ).join('')}`;
     genreCombo.value = '';
 }
+// ========[ Menu Navigations ]===================
+function MenuNavigate(s)
+{
+    switch(s)
+    {
+        case 1:
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('bookform-block').style.display = 'block';
+            document.getElementById('show-book-block').style.display = 'none';
+            document.getElementById('show-user-block').style.display = 'none';
+            break;
+        case 2:
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('bookform-block').style.display = 'none';
+            document.getElementById('show-book-block').style.display = 'block';
+            document.getElementById('show-user-block').style.display = 'none';
+            Refresh_BookList_UI(BookDatabase);
+            break;
+        case 3:
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('bookform-block').style.display = 'none';
+            document.getElementById('show-book-block').style.display = 'none';
+            document.getElementById('show-user-block').style.display = 'block';
+            Refresh_UserList_UI();
+            break;
+        case 4:
+            document.getElementById('admin-dashboard').style.display = 'flex';
+            document.getElementById('bookform-block').style.display = 'none';
+            document.getElementById('show-book-block').style.display = 'none';
+            document.getElementById('show-user-block').style.display = 'none';
+        default:
+            break;
+    }
+}
 
 // ========[ Event listener ]=============================================================
 // ======================================================================================
+//#region Even Listener
 
 document.getElementById('genre-filter-combo').addEventListener('change', function(event)
 {
@@ -187,40 +220,21 @@ document.getElementById('delete-book-btn').addEventListener('click', function()
 {
     DeleteSelectedItem(SelectedBookItem);
 });
+//#endregion
 
-
-// ========[ Menu Navigations ]===================
-function MenuNavigate(s)
+//================================================================================================================================
+//=========[ Invoke Dahsboard ]=======================================================================================================
+//================================================================================================================================
+function InvokeDashboadContext()
 {
-    switch(s)
-    {
-        case 1:
-            document.getElementById('bookform-block').style.display = 'block';
-            document.getElementById('show-book-block').style.display = 'none';
-            document.getElementById('show-user-block').style.display = 'none';
-            break;
-        case 2:
-            document.getElementById('bookform-block').style.display = 'none';
-            document.getElementById('show-book-block').style.display = 'block';
-            document.getElementById('show-user-block').style.display = 'none';
-            Refresh_BookList_UI(BookDatabase);
-            break;
-        case 3:
-            document.getElementById('bookform-block').style.display = 'none';
-            document.getElementById('show-book-block').style.display = 'none';
-            document.getElementById('show-user-block').style.display = 'block';
-            Refresh_UserList_UI();
-            break;
-        default:
-            break;
-    }
+    document.getElementById('total-book-count').innerHTML = BookDatabase.size;
+    document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
 }
-
 
 //================================================================================================================================
 //=========[ Add new book ]=======================================================================================================
 //================================================================================================================================
-//#region [ Add New Book ]
+//#region Add New Book
 // ========[ Choose image ]======================
 function ChooseNewImage()
 {
@@ -383,8 +397,6 @@ function PushToMaster(Book)
 }
 //#endregion
 
-
-
 //================================================================================================================================
 //=========[ Show books ]=========================================================================================================
 //================================================================================================================================
@@ -504,6 +516,8 @@ function RemoveAuthour(element)
     UpdateSelectionAuthourListUI(SelectedAuthours);
     FindFilter();
 }
+
+
 
 // =====[ Filter find click ]=====================
 // ===============================================
@@ -653,7 +667,6 @@ function Invoke_EventListener_BookList(bookListDB)
 }
 
 //#endregion
-
 
 
 //================================================================================================================================

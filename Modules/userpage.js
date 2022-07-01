@@ -426,6 +426,7 @@ function UserBookReturnListTemplate(givenList)
 function AvailCheck(isbn)
 {
     let book = BookDatabase.get(isbn);
+    
     if(book.StockCount > 0)
         return`
         <div class="in-stock-block">
@@ -553,11 +554,9 @@ function TakeBook()
                 bookPick.BookId = SelectedBookItem.ISBN;
                 bookPick.PickDate = new Date();
                 bookPick.PickDate.setDate(bookPick.PickDate.getDate() - TestDay);
-                //
+                
+                //Check user already has this book.
                 if (UserBookLogList.length > 0) {
-                    // To-Do
-                    //Check user already has this book.
-
                     //Check user already picked count is less than 4
                     if (UserBookLogList.length < 4) {
                         // Update stock count

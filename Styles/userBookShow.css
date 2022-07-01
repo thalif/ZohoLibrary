@@ -140,7 +140,7 @@
     padding-left: 10px;
 }
 /* ==[ Book availability block ]==*/
-.avail-in-block, .not-avail-block, .in-stock-block, .return-in-block, .return-imediate-block
+.avail-in-block, .not-avail-block, .in-stock-block, .return-in-block, .return-imediate-block, .not-avail-stock-block
 {
     margin-left: 14px;
     width: 90%;
@@ -159,6 +159,11 @@
 .not-avail-block
 {
     background-color:rgb(206, 65, 65);
+}
+.not-avail-stock-block
+{
+    background-color:darkred;
+    color: white;
 }
 .in-stock-block
 {

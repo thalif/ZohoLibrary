@@ -4,6 +4,9 @@ import localDB from "./Utils/localDB.js";
 import BookLog from "./Model/BookLog.js";
 import LibUtil from "./Utils/util.js";
 
+
+const TestDay = 13;
+
 let SelectedGenreList = [];
 let SelectedAuthours = [];
 
@@ -25,6 +28,7 @@ const libUtil = new LibUtil();
 const LocalDB = new localDB();
 const UserDatabase = new UserDB();
 const cookie = new LocalCookie();
+
 window.onload = (event) =>
 {
     try
@@ -53,7 +57,6 @@ function Page_Constructor()
     LoadGenreMaster();
     FindFilter();
 }
-
 function LogBookLogData()
 {
     try {
@@ -77,7 +80,8 @@ function LoadGenreMaster()
         alert('no item ');
 }
 
-// ========[ Event listener ]=============================
+// ========[ Event listener ]========================
+//#region Event Listener
 document.getElementById('logout-btn').addEventListener('click', function()
 {
     Logout();
@@ -154,6 +158,8 @@ document.getElementById('delete-account-btn').addEventListener('click', function
         alert(ex);
     }
 });
+
+//#endregion
 
 
 function MenuNavigate(index)
@@ -233,7 +239,6 @@ function FindBookForGenre(genre, database)
 }
 
 // =====[ Authour filter action ]=====================
-
 function FindAuthour()
 {
     let inputText = document.getElementById('authour-input-key');
@@ -316,7 +321,7 @@ function FindBookForAuthour(authour, database)
 }
 
 
-// =====[ List item templates ]=====================
+// =====[ List item templates ]===================
 // ===============================================
 function BookShowTemplate(givenList)
 {
@@ -430,6 +435,7 @@ function AvailCheck(isbn)
     {
         // Get least book return date.
         let leastDate = new Date();
+        BookLogArray = Array.from(BookLogMaster.values());
         for(let i = 0; i < BookLogArray.length; i++)
         {
             let bookLog = Array.from(BookLogArray[i]);
@@ -444,6 +450,13 @@ function AvailCheck(isbn)
         }
         //===================
         let leastDay = libUtil.GetDiff(leastDate, new Date());
+        if(leastDay == 0)
+        {
+            return `
+            <div class="not-avail-stock-block">
+                <div id="not-avail-text">Stock unavailable</div>
+            </div>`;
+        }
         if (leastDay > 10)
             return `
             <div class="not-avail-block">
@@ -539,7 +552,7 @@ function TakeBook()
                 bookPick.UserName = ContextUser.UserName;
                 bookPick.BookId = SelectedBookItem.ISBN;
                 bookPick.PickDate = new Date();
-                bookPick.PickDate.setDate(bookPick.PickDate.getDate() - 3);
+                bookPick.PickDate.setDate(bookPick.PickDate.getDate() - TestDay);
                 //
                 if (UserBookLogList.length > 0) {
                     // To-Do
@@ -562,7 +575,6 @@ function TakeBook()
                 else {
                     // Update stock count
                     SelectedBookItem.StockCount--;
-                    let mm = BookDatabase;
                     UserBookLogList.push(bookPick);
                     BookLogMaster.set(ContextUser.UserName, UserBookLogList);
 
@@ -581,7 +593,8 @@ function TakeBook()
     FindFilter();
     document.getElementById('book-selection-card').style.display = 'none';
 }
-// =======[ Return Book ]==========================
+// =======[ Return Book ]=========================
+// ===============================================
 function ReturnBook(element)
 {
     UserReturnBookLog = UserBookLogList[element];
@@ -604,6 +617,8 @@ function BookReturn()
     ddd.StockCount++;
     LocalDB.SetBookDatabase(BookDatabase);
 }
+
+
 // =======[ Book Return ]=========
 function InvokeReturnPage()
 {

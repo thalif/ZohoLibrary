@@ -132,9 +132,32 @@
             </div>
             <!-- ===========[ Show Book Block ]=========================================================== -->
             <div class="show-book-block" id="show-book-block">
+                
+                                        <!-- Genre search panel -->
                 <div class="book-filter-panel">
+                    <div class="genre-filter-block">
+                        <div class="genre-select">
+                            Genre
+                            <br>
+                            <select id="genre-filter-combo"></select>
+                        </div>
+                        <ul id="genre-filter-selected-list"></ul>
+                        <!-- <ul id="genre-selected-list"></ul> -->
+                    </div>
 
+                                        <!-- Authour Search Panel -->
+                    <div class="Authour-search-panel">
+                        <div class="authour-input">
+                            Authour
+                            <br>
+                            <input id="authour-input-key" type="text">
+                        </div>
+                        
+                        <ul id="search-item-list" class="search-item-list"></ul>
+                        <ul id="authour-selected-list"></ul>
+                    </div>
                 </div>
+                                        <!-- Books List -->
                 <ul class="books-list" id="books-list"></ul>
             </div>
 

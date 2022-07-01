@@ -1,17 +1,50 @@
+/* ================[ Books filter panel ]===================== */
+/* ========================================================== */
+
+.book-filter-panel
+{
+    width: 100%;
+    background-color: var(--dark22);
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    border-radius: 3px;
+}
+/* =======[ Genre block ]======= */ 
+/* =======[ Authour block ]======= */
+.genre-filter-block,
+.Authour-search-panel {
+    width: 50%;
+}
+
+#genre-filter-combo{
+    width: 180px;
+}
+
+/* ====[ Genre list ]======== */
+/* ====[ Authour list ]======== */
+#genre-filter-selected-list,
+#authour-selected-list {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+
+#genre-filter-selected-list li,
+#authour-selected-list li {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    padding-left: 10px;
+}
+
 /* ================[ Show Books ]===================== */
 /* =================================================== */
-
 .show-book-block
 {
     width: 83%;
     height: 100%;
     position: absolute;
-}
-.book-filter-panel
-{
-    width: 100%;
-    height: 10%;
-    background-color: rgb(47, 171, 47);
 }
 .books-list
 {
@@ -19,15 +52,15 @@
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
-
     background-color: transparent;
     height: 90%;
     overflow-y: scroll;
 }
 .books-list li
 {
+    /* background-color: royalblue; */
     padding-left: 10px;
-    padding-top: 10px;
+    Margin-top: 10px;
 }
 
 /* ========[ Booklist card ]======================================== */
@@ -120,8 +153,7 @@
     color: white;
     text-align: center;
 }
-#lang-text
-{
+#lang-text {
     padding: 5px;
 }
 

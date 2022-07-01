@@ -49,7 +49,6 @@ window.onload = (event) =>
             let ld = new localDB();
             let genre = ld.Load_Genres();
             BookDatabase = ld.LoadBookDatabase();
-
             AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
             FindFilter();
             document.getElementById('user-name').innerHTML = ContextUser.FullName;

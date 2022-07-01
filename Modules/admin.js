@@ -22,13 +22,21 @@ let UserLogList = [];
 
 let ContextUser;
 let SelectedBookItem;
+
+// filter 
+let AuthourMaster = [];
+let SelectedGenreList = [];
+let SelectedAuthours = [];
+
 window.onload = (event) =>
 {
     try
     {
         BookDatabase = ld.LoadBookDatabase();
+        AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
         UserDatabase = userDB.GetUserDatabase();
         LoadInitialsForPageContext();
+        
 
         ContextUser = GetUserFromCookie();
         if(ContextUser)
@@ -51,7 +59,11 @@ function LoadInitialsForPageContext()
 {
     genreDB = ld.Load_Genres();
     if (genreDB)
+    {
         Load_Genres(genreDB);
+        InitGenre(genreDB);
+    }
+        
     //
     countryDB = ld.Load_Country();
     if (countryDB)
@@ -65,6 +77,29 @@ function LoadInitialsForPageContext()
 
 // ========[ Event listener ]=============================================================
 // ======================================================================================
+
+document.getElementById('genre-filter-combo').addEventListener('change', function(event)
+{
+    try
+    {
+        AddGenre();
+        FindFilter();
+    }
+    catch (exception) {
+        alert(exception);
+    }
+});
+document.getElementById('authour-input-key').addEventListener('keyup', function()
+{
+    FindAuthour();
+});
+
+
+
+
+
+
+
 document.getElementById('logout-btn').addEventListener('click', function()
 {
     Logout();
@@ -113,7 +148,40 @@ document.getElementById('delete-book-btn').addEventListener('click', function()
     DeleteSelectedItem(SelectedBookItem);
 });
 
-// ========[ Menu Navigations ]==========================
+
+
+// =====[ Fill initals ]=========================
+// ==============================================
+//#region [ Load Initals ]
+function Load_Genres(genreList)
+{
+    let genreCombo = document.getElementById('genre-combo');
+    genreCombo.innerHTML = `${genreList.map((genre) => `<option>${genre}</option>` ).join(',')}`; 
+    document.getElementById('genre-combo').value = '';
+}
+function Load_Language(languageList)
+{
+    let langCombo = document.getElementById('language-combo');
+    langCombo.innerHTML = `${languageList.map((lang) => `<option>${lang}</option>` ).join(',')}`;
+    document.getElementById('language-combo').value = '';
+}
+function Load_Countries(countryList)
+{
+    let countryCombo = document.getElementById('book-origin-combo');
+    countryCombo.innerHTML = `${countryList.map((con) => `<option>${con}</option>` ).join(',')}`;
+    document.getElementById('book-origin-combo').value = '';
+}
+// =======[ Load genre combo for filter panel ]==========
+function InitGenre(genreList)
+{
+    let genreCombo = document.getElementById('genre-filter-combo');
+    genreCombo.innerHTML = `${genreList.map((genre) => `<option>${genre}</option>` ).join('')}`;
+    genreCombo.value = '';
+}
+
+//#endregion
+
+// ========[ Menu Navigations ]===================
 function MenuNavigate(s)
 {
     switch(s)
@@ -127,7 +195,7 @@ function MenuNavigate(s)
             document.getElementById('bookform-block').style.display = 'none';
             document.getElementById('show-book-block').style.display = 'block';
             document.getElementById('show-user-block').style.display = 'none';
-            Refresh_BookList_UI();
+            Refresh_BookList_UI(BookDatabase);
             break;
         case 3:
             document.getElementById('bookform-block').style.display = 'none';
@@ -140,50 +208,12 @@ function MenuNavigate(s)
     }
 }
 
-// ========[ Submit new book ]==========================
-function SubmitNewBook()
-{
-    try
-    {
-        thisBook.SetBookTitle(document.getElementById('book-title-tb').value)
-        thisBook.SetISBN(document.getElementById('book-isbn-tb').value);
-        thisBook.SetEdition(document.getElementById('book-edition-tb').value);
-        thisBook.SetLanguage(document.getElementById('language-combo').value);
-        //
-        if(thisBook.Genre.length == 0)
-            throw "You have to select atleast 1 genre.";
-        if(thisBook.Authuors.length == 0)
-            throw "Book must have author";
-        //
-        thisBook.SetPublisher(document.getElementById('book-publisher-tb').value);
-        thisBook.SetPublisherContact(document.getElementById('book-publisher-contact').value);
-        thisBook.SetPublisedDate(document.getElementById('book-pubished-date').value);
-        thisBook.SetOrigin(document.getElementById('book-origin-combo').value);
-        //
-        thisBook.SetSection(document.getElementById('lib-section-tb').value);
-        thisBook.SetRack(document.getElementById('lib-rack-tb').value);
-        thisBook.SetStockCount(document.getElementById('book-stock-tb').value);
-        
-        PushToMaster(thisBook);
 
-        ResetAllFields();
-    }
-    catch(exception)
-    {
-        ShowErrorAlert(exception);
-    }
-}
-function PushToMaster(Book)
-{
-    if (Book) {
-        BookDatabase.set(Book.ISBN, Book);
-
-        // 1. When new book comes to insert, check ISBN number is already exist or not.
-        ld.SetBookDatabase(BookDatabase);
-    }
-}
-
-// ========[ Choose image ]=============================
+//================================================================================================================================
+//=========[ Add new book ]=======================================================================================================
+//================================================================================================================================
+//#region [ Add New Book ]
+// ========[ Choose image ]======================
 function ChooseNewImage()
 {
     let input = document.getElementById('choose-img-btn');
@@ -198,7 +228,6 @@ function ChooseNewImage()
         }
     }
 }
-
 
 // =====[ Genre list ]===========================
 // ==============================================
@@ -245,7 +274,6 @@ function UpdateGenreListUI()
         });
     });
 }
-
 
 // =====[ Authour list ]=========================
 // ==============================================
@@ -299,39 +327,233 @@ function UpdateAuthorListUI()
     
 }
 
-
-// =====[ Fill initals ]=========================
-// ==============================================
-function Load_Genres(genreList)
+// ========[ Submit new book ]=====================
+function SubmitNewBook()
 {
-    let genreCombo = document.getElementById('genre-combo');
-    genreCombo.innerHTML = `${genreList.map((genre) => `<option>${genre}</option>` ).join(',')}`; 
-    document.getElementById('genre-combo').value = '';
+    try
+    {
+        thisBook.SetBookTitle(document.getElementById('book-title-tb').value)
+        thisBook.SetISBN(document.getElementById('book-isbn-tb').value);
+        thisBook.SetEdition(document.getElementById('book-edition-tb').value);
+        thisBook.SetLanguage(document.getElementById('language-combo').value);
+        //
+        if(thisBook.Genre.length == 0)
+            throw "You have to select atleast 1 genre.";
+        if(thisBook.Authuors.length == 0)
+            throw "Book must have author";
+        //
+        thisBook.SetPublisher(document.getElementById('book-publisher-tb').value);
+        thisBook.SetPublisherContact(document.getElementById('book-publisher-contact').value);
+        thisBook.SetPublisedDate(document.getElementById('book-pubished-date').value);
+        thisBook.SetOrigin(document.getElementById('book-origin-combo').value);
+        //
+        thisBook.SetSection(document.getElementById('lib-section-tb').value);
+        thisBook.SetRack(document.getElementById('lib-rack-tb').value);
+        thisBook.SetStockCount(document.getElementById('book-stock-tb').value);
+        
+        PushToMaster(thisBook);
+
+        ResetAllFields();
+    }
+    catch(exception)
+    {
+        ShowErrorAlert(exception);
+    }
 }
-function Load_Language(languageList)
+function PushToMaster(Book)
 {
-    let langCombo = document.getElementById('language-combo');
-    langCombo.innerHTML = `${languageList.map((lang) => `<option>${lang}</option>` ).join(',')}`;
-    document.getElementById('language-combo').value = '';
+    if (Book) {
+        BookDatabase.set(Book.ISBN, Book);
+
+        // 1. When new book comes to insert, check ISBN number is already exist or not.
+        ld.SetBookDatabase(BookDatabase);
+    }
 }
-function Load_Countries(countryList)
+//#endregion
+
+
+
+//================================================================================================================================
+//=========[ Show books ]=========================================================================================================
+//================================================================================================================================
+//#region [ Show Books ]
+
+// =======[ Genre Filter section ]=================
+function AddGenre() // ok
 {
-    let countryCombo = document.getElementById('book-origin-combo');
-    countryCombo.innerHTML = `${countryList.map((con) => `<option>${con}</option>` ).join(',')}`;
-    document.getElementById('book-origin-combo').value = '';
+    let newGenre = document.getElementById('genre-filter-combo').value;
+    document.getElementById('genre-filter-combo').value = '';
+
+    if(!SelectedGenreList.includes(newGenre))
+    {
+        SelectedGenreList.push(newGenre);
+        UpdateSelectedGenreList(SelectedGenreList);
+    }
+    else
+        throw `${newGenre} is already has been selected.!`;    
+}
+function UpdateSelectedGenreList(selectedGenres) // ok
+{
+    let sGenreList = document.getElementById('genre-filter-selected-list');
+    sGenreList.innerHTML = `${selectedGenres.map((genre) => 
+        `<li>
+            <label>${genre}</label>
+            <div id="delete-item">
+                <img src="./Styles/close.png" width="10" height="10">
+            </div>
+        </li>`).join('')}`; 
+
+    let childItem = Array.from(sGenreList.childNodes);
+    childItem.forEach(element => 
+        {
+            element.addEventListener('click', function()
+            {
+                RemoveGenre(element);
+            });
+        });
+}
+function RemoveGenre(element) // ok
+{
+    let genreList = document.getElementById('genre-filter-selected-list');
+    let nodes = Array.from(genreList.childNodes);
+    let index = nodes.indexOf(element);
+    SelectedGenreList.splice(index, 1);
+    UpdateSelectedGenreList(SelectedGenreList);
+    FindFilter();
 }
 
+// =======[ Authour Filter section ]=================
+function FindAuthour()
+{
+    let inputText = document.getElementById('authour-input-key');
+    if(inputText.value)
+    {
+        document.getElementById('search-item-list').style.display = 'block';
+        let upperCase = inputText.value.toUpperCase();
+        let result = AuthourMaster.filter((item) => item.toUpperCase().includes(upperCase));
+        UpdateSearchDownList(result);
+    }
+    else
+        document.getElementById('search-item-list').style.display = 'none';
+}
+function UpdateSearchDownList(resultList)
+{
+    let searchDownlist = document.getElementById('search-item-list');
+    searchDownlist.innerHTML = `${resultList.map((authour) => 
+        `<li id="search-list-item">${authour}</li>`).join('')}`;
 
-//=========[ Show books ]=======================
-//==============================================
+    let childItem = Array.from(searchDownlist.childNodes);
+    childItem.forEach(element => {
+        element.addEventListener('click', function () {
+            AddAuthour(element.innerHTML);
+        });
+    });
+}
+function AddAuthour(selectedItem)
+{
+    if(!SelectedAuthours.includes(selectedItem))
+    {
+        SelectedAuthours.push(selectedItem);
+        UpdateSelectionAuthourListUI(SelectedAuthours);
+        FindFilter();
+    }   
+    else
+        throw `${selectedItem} is already added.`;
+}
+function UpdateSelectionAuthourListUI(SelectedAuthours)
+{
+    let selectedList = document.getElementById('authour-selected-list');
+    selectedList.innerHTML = `${SelectedAuthours.map((authour) => 
+        `<li>
+            <label>${authour}</label>
+            <div id="delete-item">
+                <img src="./Styles/close.png" width="10" height="10">
+            </div>
+        </li>`).join('')}`;
+    
+    let childItem = Array.from(selectedList.childNodes);
+    childItem.forEach(element => 
+        {
+            element.addEventListener('click', function()
+            {
+                RemoveAuthour(element);
+            });
+        });
 
-function Refresh_BookList_UI()
+    document.getElementById('search-item-list').style.display = 'none';
+    document.getElementById('authour-input-key').value = '';
+}
+function RemoveAuthour(element)
+{
+    let selectedAuthourList = document.getElementById('authour-selected-list');
+    let nodes = Array.from(selectedAuthourList.childNodes);
+    let index = nodes.indexOf(element);
+    SelectedAuthours.splice(index, 1);
+    UpdateSelectionAuthourListUI(SelectedAuthours);
+    FindFilter();
+}
+
+// =====[ Filter find click ]=====================
+// ===============================================
+function FindFilter()
+{
+    let copy = Array.from(BookDatabase.values());
+    if(SelectedAuthours.length > 0)
+    {
+        let aFound = [];
+        SelectedAuthours.forEach((item) => 
+        {
+            let booksfound = FindBookForAuthour(item, copy);
+            booksfound.forEach((book) => { aFound.push(book) });
+        });
+        copy = aFound;
+    }
+    if(SelectedGenreList.length > 0)
+    {
+        let gFound = [];
+        SelectedGenreList.forEach((item) => 
+        {
+            let booksfound = FindBookForGenre(item, copy);
+            booksfound.forEach((book) =>  { gFound.push(book)});
+        });
+        copy = gFound;
+    }
+    let mainList = document.getElementById('books-list');
+    mainList.innerHTML = AdminBookCardTemplate(copy);
+
+    Refresh_BookList_UI(copy);
+}
+function FindBookForAuthour(authour, database)
+{
+    let result = [];
+    let bookMaster = Array.from(database);
+    bookMaster.forEach((book) => 
+    {
+        if(book.Authuors.includes(authour))
+            result.push(book);
+    });
+    return result;
+}
+function FindBookForGenre(genre, database)
+{
+    let result = [];
+    let bookMaster = Array.from(database);
+    bookMaster.forEach((book) => 
+    {
+        if(book.Genre.includes(genre))
+            result.push(book);
+    });
+    return result;
+}
+
+//=============[ Show book list ]===================
+function Refresh_BookList_UI(BookDatabase)
 {
     try 
     {
-        BookDatabase = ld.LoadBookDatabase();
+        // BookDatabase = ld.LoadBookDatabase();
         let Bookslist = Array.from(BookDatabase.values());
-        document.getElementById('books-list').innerHTML = Makelist(Bookslist);
+        document.getElementById('books-list').innerHTML = AdminBookCardTemplate(Bookslist);
 
         // Addeventlistener('click') for all list item
         Invoke_EventListener_BookList(Bookslist);
@@ -340,7 +562,7 @@ function Refresh_BookList_UI()
         ShowErrorAlert(exception);
     }
 }
-function Makelist(givenList)
+function AdminBookCardTemplate(givenList)
 {
     return `${givenList.map((item) => 
         `<li>
@@ -418,9 +640,14 @@ function Invoke_EventListener_BookList(bookListDB)
     });
 }
 
+//#endregion
 
-//=========[ Show users ]=======================
-//==============================================
+
+
+//================================================================================================================================
+//=========[ Show user logs ]=====================================================================================================
+//================================================================================================================================
+//#region [Show User logs]
 function Refresh_UserList_UI()
 {
     try 
@@ -471,13 +698,16 @@ function DeleteSelectedItem(selectedItem)
     if(count <= 0)
     {
         ld.DeleteBook(selectedItem);
-        Refresh_BookList_UI();
+        Refresh_BookList_UI(BookDatabase);
     }
     else {
         ShowErrorAlert('Book has been taken..! Cannot delete now.!')
     }
     document.getElementById('selection-action-block').style.display = 'none';
 }
+//#endregion
+
+
 
 // ========[ Logout ]==========================================
 function Logout()
@@ -540,4 +770,18 @@ function GetUserFromCookie()
             return false;
     }
     catch { return false; }
+}
+
+function GetDistinctAuthoursList(booksList)
+{
+    let authourList = booksList.map((item) => item.Authuors);
+    let distinctAuthour = [];
+    authourList.forEach(element => {
+        element.forEach(item => 
+            {
+                if(!distinctAuthour.includes(item)) 
+                    distinctAuthour.push(item)
+            })
+    });
+    return distinctAuthour;
 }

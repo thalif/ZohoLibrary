@@ -2,12 +2,14 @@ import Book from "./Model/Book.js";
 import localDB from "./Utils/localDB.js";
 import UserDB from "./Utils/userDB.js";
 import Cookie from "./Utils/localCookie.js";
+import Util from "./Utils/util.js";
 
 
 // const dayjs = require('dayjs');
 // console.log(dayjs().format());
 
 let ld = new localDB();
+let util = new Util();
 let userDB = new UserDB();
 let cookie = new Cookie();
 
@@ -227,8 +229,44 @@ document.getElementById('delete-book-btn').addEventListener('click', function()
 //================================================================================================================================
 function InvokeDashboadContext()
 {
-    document.getElementById('total-book-count').innerHTML = BookDatabase.size;
+    document.getElementById('total-book-count').innerHTML = GetTotalBooksCount();
     document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
+    document.getElementById('total-taken-count').innerHTML = GetBookTakenCount();
+    document.getElementById('total-fineamount-count').innerHTML = GetFineAmount();
+    document.getElementById('total-books-late-count').innerHTML = GetBookLateCount();
+}
+function GetTotalBooksCount()
+{
+    let count = 0;
+    BookDatabase.forEach((item) => count += parseInt(item.StockCount));
+    return count;
+}
+function GetBookTakenCount()
+{
+    let bookTakenLog = ld.GetBookLogDatabase();
+    let count = 0;
+    bookTakenLog.forEach((item) => item.forEach((i) => count++ ));
+    return count;
+}
+function GetFineAmount()
+{
+    let returnLog = ld.GetFineReocrd();
+    let amount = 0;
+    returnLog.forEach((item) => amount += parseInt(item.FineAmount))
+    return amount;
+}
+function GetBookLateCount()
+{
+    let bookTakenLog = ld.GetBookLogDatabase();
+    let count = 0;
+
+    bookTakenLog.forEach ( (item) => { item.forEach((i) =>  
+    {
+        if (util.GetDiff(new Date(i.PickDate), new Date()) > 10) {
+            count++;
+        }
+    })  });
+    return count;
 }
 
 //================================================================================================================================

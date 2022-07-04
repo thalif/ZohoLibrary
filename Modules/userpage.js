@@ -57,6 +57,21 @@ function Page_Constructor()
     LoadGenreMaster();
     FindFilter();
 }
+
+function SelectedMenuStyle(selectedButtonID)
+{
+    document.getElementById(selectedButtonID).style.backgroundColor = '#2C3639';
+    document.getElementById(selectedButtonID).style.color = '#b9c7c8';
+    document.getElementById(selectedButtonID).style.fontSize = 'large';
+    document.getElementById(selectedButtonID).style.border = '0px';
+}
+function UndoMenuButtonStyle(buttonID)
+{
+    document.getElementById(buttonID).style.backgroundColor = '#d2d2d2';
+    document.getElementById(buttonID).style.color = '#5e8089';
+    document.getElementById(buttonID).style.fontSize = 'regular';
+    document.getElementById(buttonID).style.border = '1px';
+}
 function LogBookLogData()
 {
     try {
@@ -177,6 +192,7 @@ function MenuNavigate(index)
             document.getElementById('center-filter-block').style.display = 'none';
             document.getElementById('search-content-list').style.display = 'none';
             document.getElementById('user-bookpick-list').style.display = 'flex';
+            
             InvokeReturnPage();
             break;
         default:
@@ -652,6 +668,7 @@ function InvokeBookSelectionCard()
     document.getElementById('book-selection-card').style.display = 'block';
     document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
     document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
+    document.getElementById('isbn-number').innerText = SelectedBookItem.ISBN;
 }
 // =======[ Invoke book return card ]===================
 function InvokeBookReturnCard(booklog)

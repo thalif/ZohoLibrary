@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Admin Page</title>
-    <link rel="stylesheet" type="text/css" href="./Styles/bookform.css">
+    <link rel="stylesheet" type="text/css" href="./Styles/adminPage.css">
     <link rel="stylesheet" type="text/css" href="./Styles/bookFormStyle.css">
     <link rel="stylesheet" type="text/css" href="./Styles/showUsers.css">
     <link rel="stylesheet" type="text/css" href="./Styles/showBooksPage.css">
@@ -14,12 +14,17 @@
             <p id="error-msg-tag">ssadfasdfasdfadfasdf</p>
         </div>
         <div class="header-block">
+            <div id="page-heading">
+                <h2>Library Admin</h2>
+            </div>
+
             <ul class="menu-list">
-                <button id="menu-add-newbook">New Book</button>
-                <button id="menu-show-allbook">Show Books</button>
-                <button id="menu-show-allusers">Show Users</button>
+                <button class="menu-btn" id="menu-dashboard">Dashboard</button>
+                <button class="menu-btn" id="menu-add-newbook">New Book</button>
+                <button class="menu-btn" id="menu-show-allbook">Show Books</button>
+                <button class="menu-btn" id="menu-show-allusers">Show Users</button>
             </ul>
-            <h3 id="page-heading">Zoho Library Admin</h3>
+            
             <div class="user-detail">
                 <div id="user-name"></div>
                 <button id="logout-btn">Logout</button>
@@ -84,7 +89,7 @@
                         </div>
                                                                     <!-- Edition    -->
                         <div>
-                            <label>Edtion</label>
+                            <label>Edition</label>
                             <input id="book-edition-tb" type="text">
                         </div>
                                                                     <!-- Language -->
@@ -133,7 +138,7 @@
                     </div>
                                                                     <!-- Publised Date -->
                     <div>
-                        <label>Publised Date</label>
+                        <label>Published Date</label>
                         <input id="book-pubished-date" type="date">
                     </div>
     
@@ -163,7 +168,7 @@
                         </div>
                                                                 <!-- Stock count -->
                         <div>
-                            <label>Stock count</label>
+                            <label>Stock Count</label>
                             <input id="book-stock-tb" type="text">
                         </div>
                     </div>
@@ -220,13 +225,13 @@
         </div>
 
         <div class="book-titte-panel">
-            <h3 id="selected-book-title"></h3>
-            <span id="book-version"></span>
+            <h3 id="selected-book-title">Book Title</h3>
+            <span id="book-version">Edition 2</span>
         </div>
         
         <div class="selection-action">
-            <button id="update-book-btn">Update</button>
             <button id="delete-book-btn">Delete</button>
+            <button id="update-book-btn">Update</button>
         </div>
     </div>
 </body>

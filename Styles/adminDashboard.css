@@ -1,3 +1,12 @@
+#menu-dashboard,
+#menu-add-newbook,
+#menu-show-allbook,
+#menu-show-allusers
+{
+    padding: 5px;
+    width: 160px;
+}
+
 .admin-dashboard
 {
     width: 90%;

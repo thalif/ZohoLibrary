@@ -1,7 +1,7 @@
 :root 
 {
     --dark1: #2C3639;
-    --dark22: #5e8089;
+    --dark22: #b5c8cd;
     --dark2:#b9c7c8;
     --light1: #e4e4e4;
     --light2: #D0C9C0;
@@ -30,15 +30,28 @@
     height: 15%;
     background-color: var(--dark1);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 .menu-list
 {
-    position: absolute;
-    left: 20px;
-    top: 100px;
+    margin-top: 10px;
+    width: 100%;
+    align-content: space-between;
+    padding-left: 20px;
+}
+.menu-btn
+{
+    background-color: #d2d2d2;
+    border: 1px solid var(--dark22);
+    font-weight: bold;
+}
+.menu-btn:hover
+{
+    background-color: var(--dark1);
+    color: #b9c7c8;
+    font-size: large;
 }
 /* =====[ Logged user Detail ]=========== */
 .user-detail
@@ -66,6 +79,9 @@
 }
 #page-heading
 {
+    display: flex;
+    align-items: center;
+    height: 80%;
     color: var(--light3);
 }
 /* ================[ Content Block ]===================== */
@@ -104,18 +120,22 @@
     top: 250px;
     width: 400px;
     height: 200px;
-    background-color: var(--light3);
+    background-color: var(--dark1);
     box-shadow:  3px 3px 10px #848484;
+
     padding: 20px;
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-radius: 5px;
-
+    color: white;
 }
+
 .book-titte-panel
 {
     width: 100%;
+    height: 50%;
+    /* background-color: rebeccapurple; */
     display: flex;
     flex-direction: row;
 }
@@ -126,7 +146,7 @@
 #book-version
 {
     font-size: 10px;
-    padding-left: 5px;
+    padding-left: 25px;
     align-content: center;
     text-align: center;
 }
@@ -147,7 +167,7 @@
 }
 #update-book-btn
 {
-    background-color: gray;
+    background-color: rgb(234, 234, 234);
 }
 #update-book-btn:hover
 {

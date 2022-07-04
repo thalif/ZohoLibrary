@@ -39,19 +39,19 @@ function Login()
                 }
                 else
                 {
-                    document.getElementById('error-msg').innerHTML = 'Invalid Credentials';
+                    document.getElementById('error-msg').innerHTML = 'Invalid Credentials.';
                     document.getElementById('error-block').style.display = 'block';
                 }
             }
             else
             {
-                document.getElementById('error-msg').innerHTML = 'Invalid Credentials';
+                document.getElementById('error-msg').innerHTML = 'User not found.';
                 document.getElementById('error-block').style.display = 'block';
             }
         }
         else
         {
-            document.getElementById('error-msg').innerHTML = 'Please enter credentials';
+            document.getElementById('error-msg').innerHTML = 'Please enter valid username';
             document.getElementById('error-block').style.display = 'block';
         }
     }

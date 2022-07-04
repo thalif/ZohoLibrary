@@ -123,6 +123,10 @@ function MenuNavigate(s)
             document.getElementById('bookform-block').style.display = 'block';
             document.getElementById('show-book-block').style.display = 'none';
             document.getElementById('show-user-block').style.display = 'none';
+            UndoMenuButtonStyle('menu-dashboard');
+            SelectedMenuStyle('menu-add-newbook');
+            UndoMenuButtonStyle('menu-show-allbook');
+            UndoMenuButtonStyle('menu-show-allusers');
             break;
         case 2:
             document.getElementById('admin-dashboard').style.display = 'none';
@@ -130,6 +134,10 @@ function MenuNavigate(s)
             document.getElementById('show-book-block').style.display = 'block';
             document.getElementById('show-user-block').style.display = 'none';
             Refresh_BookList_UI(BookDatabase);
+            UndoMenuButtonStyle('menu-dashboard');
+            UndoMenuButtonStyle('menu-add-newbook');
+            SelectedMenuStyle('menu-show-allbook');
+            UndoMenuButtonStyle('menu-show-allusers');
             break;
         case 3:
             document.getElementById('admin-dashboard').style.display = 'none';
@@ -137,12 +145,22 @@ function MenuNavigate(s)
             document.getElementById('show-book-block').style.display = 'none';
             document.getElementById('show-user-block').style.display = 'block';
             Refresh_UserList_UI();
+            UndoMenuButtonStyle('menu-dashboard');
+            UndoMenuButtonStyle('menu-add-newbook');
+            UndoMenuButtonStyle('menu-show-allbook');
+            SelectedMenuStyle('menu-show-allusers');
             break;
         case 4:
             document.getElementById('admin-dashboard').style.display = 'flex';
             document.getElementById('bookform-block').style.display = 'none';
             document.getElementById('show-book-block').style.display = 'none';
             document.getElementById('show-user-block').style.display = 'none';
+            SelectedMenuStyle('menu-dashboard');
+            UndoMenuButtonStyle('menu-add-newbook');
+            UndoMenuButtonStyle('menu-show-allbook');
+            UndoMenuButtonStyle('menu-show-allusers');
+            break;
+            
         default:
             break;
     }
@@ -151,6 +169,42 @@ function MenuNavigate(s)
 // ========[ Event listener ]=============================================================
 // ======================================================================================
 //#region Even Listener
+
+function SelectedMenuStyle(selectedButtonID)
+{
+    document.getElementById(selectedButtonID).style.backgroundColor = '#2C3639';
+    document.getElementById(selectedButtonID).style.color = '#b9c7c8';
+    document.getElementById(selectedButtonID).style.fontSize = 'large';
+    document.getElementById(selectedButtonID).style.border = '0px';
+}
+function UndoMenuButtonStyle(buttonID)
+{
+    document.getElementById(buttonID).style.backgroundColor = '#d2d2d2';
+    document.getElementById(buttonID).style.color = '#5e8089';
+    document.getElementById(buttonID).style.fontSize = 'regular';
+    document.getElementById(buttonID).style.border = '1px';
+}
+
+document.getElementById('menu-dashboard').addEventListener('click', function()
+{
+    MenuNavigate(4);
+});
+document.getElementById('menu-add-newbook').addEventListener('click', function()
+{
+    MenuNavigate(1);
+    Show_NewBook_UI();
+    ResetAllFields();
+});
+document.getElementById('menu-show-allbook').addEventListener('click', function()
+{
+    MenuNavigate(2);
+    
+});
+document.getElementById('menu-show-allusers').addEventListener('click', function()
+{
+    MenuNavigate(3);
+});
+
 
 document.getElementById('genre-filter-combo').addEventListener('change', function(event)
 {
@@ -193,20 +247,6 @@ document.getElementById('genre-combo').addEventListener('change', function()
 {
     AddNewGenre();
 });
-document.getElementById('menu-add-newbook').addEventListener('click', function()
-{
-    MenuNavigate(1);
-    Show_NewBook_UI();
-    ResetAllFields();
-});
-document.getElementById('menu-show-allbook').addEventListener('click', function()
-{
-    MenuNavigate(2);
-});
-document.getElementById('menu-show-allusers').addEventListener('click', function()
-{
-    MenuNavigate(3);
-});
 
 // ===========[ Selection block buttons - add event listener ]=====================
 document.getElementById('close-selection-btn').addEventListener('click', function()
@@ -232,7 +272,7 @@ function InvokeDashboadContext()
     document.getElementById('total-book-count').innerHTML = GetTotalBooksCount();
     document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
     document.getElementById('total-taken-count').innerHTML = GetBookTakenCount();
-    document.getElementById('total-fineamount-count').innerHTML = GetFineAmount();
+    document.getElementById('total-fineamount-count').innerHTML = "₹  "+GetFineAmount();
     document.getElementById('total-books-late-count').innerHTML = GetBookLateCount();
 }
 function GetTotalBooksCount()

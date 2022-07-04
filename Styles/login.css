@@ -69,10 +69,13 @@ input
 #login-btn
 {
     height: 30px;
+    background-color: var(--dark1);
+    color: var(--light3);
+    font-size: large;
 }
 #login-btn:hover
 {
-    background-color: var(--dark1);
-    color: var(--light3);
+    background-color: var(--dark2);
+    color: var(--dark1);
 }
 /* ==================== */

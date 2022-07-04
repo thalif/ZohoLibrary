@@ -142,6 +142,7 @@ document.getElementById('menu-return-book').addEventListener('click', function()
 document.getElementById('pay-fine-btn').addEventListener('click', function()
 {
     PayFine(UserReturnBookLog);
+    document.getElementById('book-return-card').style.display = 'none';
 });
 document.getElementById('return-book-btn').addEventListener('click', function()
 {
@@ -242,17 +243,6 @@ function UpdateSelectedGenreList(selectedGenres)
             });
         });
 }
-function FindBookForGenre(genre, database)
-{
-    let result = [];
-    let bookMaster = Array.from(database);
-    bookMaster.forEach((book) => 
-    {
-        if(book.Genre.includes(genre))
-            result.push(book);
-    });
-    return result;
-}
 
 // =====[ Authour filter action ]=====================
 function FindAuthour()
@@ -323,17 +313,6 @@ function RemoveAuthour(element)
     SelectedAuthours.splice(index, 1);
     UpdateSelectionAuthourListUI(SelectedAuthours);
     FindFilter();
-}
-function FindBookForAuthour(authour, database)
-{
-    let result = [];
-    let bookMaster = Array.from(database);
-    bookMaster.forEach((book) => 
-    {
-        if(book.Authuors.includes(authour))
-            result.push(book);
-    });
-    return result;
 }
 
 
@@ -523,23 +502,34 @@ function FindFilter()
     if(SelectedAuthours.length > 0)
     {
         let aFound = [];
-        SelectedAuthours.forEach((item) => 
+        SelectedAuthours.forEach((authour) => 
         {
-            let booksfound = FindBookForAuthour(item, copy);
-            booksfound.forEach((book) => { aFound.push(book) });
+            copy.filter((book) =>
+            {
+                if(book.Authuors.includes(authour))
+                {
+                    aFound.push(book);
+                }
+            });
         });
         copy = aFound;
     }
     if(SelectedGenreList.length > 0)
     {
         let gFound = [];
-        SelectedGenreList.forEach((item) => 
+        SelectedGenreList.forEach((genre) => 
         {
-            let booksfound = FindBookForGenre(item, copy);
-            booksfound.forEach((book) =>  { gFound.push(book)});
+            copy.filter((book) =>
+            {
+                if(book.Genre.includes(genre))
+                {
+                    gFound.push(book);
+                }
+            });
         });
         copy = gFound;
     }
+
     let mainList = document.getElementById('search-content-list');
     mainList.innerHTML = BookShowTemplate(copy);
 
@@ -583,6 +573,7 @@ function TakeBook()
                     //
                     LocalDB.SetBookLogDatabase(BookLogMaster);
                     LocalDB.SetBookDatabase(BookDatabase);
+                    ShowPositiveAlert(`${SelectedBookItem.BookTitle} has been issued to you. Thankyou!`)
                 }
                 else {
                     ShowErrorAlert(`Already user has ${UserBookLogList.length} books.`);
@@ -596,6 +587,7 @@ function TakeBook()
             ShowErrorAlert('No stock available!');
         }
     }
+    // Here FindFilter() reload books list with stock count updated.
     FindFilter();
     document.getElementById('book-selection-card').style.display = 'none';
 }
@@ -613,20 +605,25 @@ function BookReturn()
     {
         PayFine(UserReturnBookLog);
     }
-    UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBook.ISBN);
-    // Update user account DB
+    // Remove book from UserLog record.
+    UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBookLog.BookId);
+
+    // After removeal, check userLogRecord is empty ? Remove user from BookLogDB : Remove Pariculart book.
     if (UserBookLogList.length > 0)
         BookLogMaster.set(ContextUser.UserName, UserBookLogList);
     else
         BookLogMaster.delete(ContextUser.UserName);
 
+    // Push BookLogDatabase.
     LocalDB.SetBookLogDatabase(BookLogMaster);
-    InvokeReturnPage();
-    ShowPositiveAlert(`${UserReturnBook.BookTitle} has been returned. Thankyou!`)
-    // Update Book Stock count
-    let ddd = BookDatabase.get(UserReturnBookLog.BookId);
-    ddd.StockCount++;
+
+    // Update BookDatabase stock count & Push.
+    let returnedBook = BookDatabase.get(UserReturnBookLog.BookId);
+    returnedBook.StockCount++;
     LocalDB.SetBookDatabase(BookDatabase);
+    //
+    InvokeReturnPage();
+    ShowPositiveAlert(`'${returnedBook.BookTitle}' has been returned. Thankyou!`)
 }
 
 
@@ -703,8 +700,8 @@ function PayFine(booklog)
 {
     let fineAmount = libUtil.GetFineAmount(booklog.PickDate, new Date());
 
-    let dddd = UserBookLogList.filter((book) => book.BookId == UserReturnBook.ISBN)[0];
-    let index =  UserBookLogList.findIndex(book => book.BookId === dddd.BookId);
+    let returningBook = UserBookLogList.filter((book) => book.BookId == UserReturnBook.ISBN)[0];
+    let index =  UserBookLogList.findIndex(book => book.BookId === returningBook.BookId);
     
     UserReturnBook = UserBookLogList[index];
     UserReturnBook.PickDate = new Date();
@@ -718,7 +715,6 @@ function PayFine(booklog)
     LocalDB.SetBookLogDatabase(BookLogMaster);
 
     ShowPositiveAlert(`Fine amount ${fineAmount} is paid succesfully.!`);
-    // InvokeBookReturnCard(UserReturnBook);
     UpdateUserReturnListUI(UserBookMaster);
 }
 // =======[ Load Initials ]==========================

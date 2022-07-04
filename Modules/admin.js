@@ -123,10 +123,10 @@ function MenuNavigate(s)
             document.getElementById('bookform-block').style.display = 'block';
             document.getElementById('show-book-block').style.display = 'none';
             document.getElementById('show-user-block').style.display = 'none';
-            UndoMenuButtonStyle('menu-dashboard');
-            SelectedMenuStyle('menu-add-newbook');
-            UndoMenuButtonStyle('menu-show-allbook');
-            UndoMenuButtonStyle('menu-show-allusers');
+            SelectedMenuStyle('menu-dashboard');
+            UndoMenuButtonStyle('menu-add-newbook');
+            SelectedMenuStyle('menu-show-allbook');
+            SelectedMenuStyle('menu-show-allusers');
             break;
         case 2:
             document.getElementById('admin-dashboard').style.display = 'none';
@@ -134,10 +134,10 @@ function MenuNavigate(s)
             document.getElementById('show-book-block').style.display = 'block';
             document.getElementById('show-user-block').style.display = 'none';
             Refresh_BookList_UI(BookDatabase);
-            UndoMenuButtonStyle('menu-dashboard');
-            UndoMenuButtonStyle('menu-add-newbook');
-            SelectedMenuStyle('menu-show-allbook');
-            UndoMenuButtonStyle('menu-show-allusers');
+            SelectedMenuStyle('menu-dashboard');
+            SelectedMenuStyle('menu-add-newbook');
+            UndoMenuButtonStyle('menu-show-allbook');
+            SelectedMenuStyle('menu-show-allusers');
             break;
         case 3:
             document.getElementById('admin-dashboard').style.display = 'none';
@@ -145,20 +145,20 @@ function MenuNavigate(s)
             document.getElementById('show-book-block').style.display = 'none';
             document.getElementById('show-user-block').style.display = 'block';
             Refresh_UserList_UI();
-            UndoMenuButtonStyle('menu-dashboard');
-            UndoMenuButtonStyle('menu-add-newbook');
-            UndoMenuButtonStyle('menu-show-allbook');
-            SelectedMenuStyle('menu-show-allusers');
+            SelectedMenuStyle('menu-dashboard');
+            SelectedMenuStyle('menu-add-newbook');
+            SelectedMenuStyle('menu-show-allbook');
+            UndoMenuButtonStyle('menu-show-allusers');
             break;
         case 4:
             document.getElementById('admin-dashboard').style.display = 'flex';
             document.getElementById('bookform-block').style.display = 'none';
             document.getElementById('show-book-block').style.display = 'none';
             document.getElementById('show-user-block').style.display = 'none';
-            SelectedMenuStyle('menu-dashboard');
-            UndoMenuButtonStyle('menu-add-newbook');
-            UndoMenuButtonStyle('menu-show-allbook');
-            UndoMenuButtonStyle('menu-show-allusers');
+            UndoMenuButtonStyle('menu-dashboard');
+            SelectedMenuStyle('menu-add-newbook');
+            SelectedMenuStyle('menu-show-allbook');
+            SelectedMenuStyle('menu-show-allusers');
             break;
             
         default:

@@ -4,12 +4,13 @@
 .book-filter-panel
 {
     width: 100%;
-    background-color: var(--dark22);
+    background-color: #646e90;
     box-shadow:  3px 3px 10px #848484;
     display: flex;
     flex-direction: row;
     padding: 5px;
     border-radius: 3px;
+    color: whitesmoke;
 }
 /* =======[ Genre block ]======= */ 
 /* =======[ Authour block ]======= */
@@ -66,7 +67,7 @@
 /* =================================================== */
 .show-book-block
 {
-    width: 83%;
+    width: 85%;
     height: 100%;
     position: absolute;
 }
@@ -79,6 +80,7 @@
     background-color: transparent;
     height: 90%;
     overflow-y: scroll;
+    padding: 20px;
 }
 .books-list li
 {

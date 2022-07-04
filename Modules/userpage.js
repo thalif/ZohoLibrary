@@ -56,6 +56,7 @@ function Page_Constructor()
     LogBookLogData();
     LoadGenreMaster();
     FindFilter();
+    MenuNavigate(1);
 }
 
 function SelectedMenuStyle(selectedButtonID)
@@ -186,6 +187,8 @@ function MenuNavigate(index)
             document.getElementById('center-filter-block').style.display = 'flex';
             document.getElementById('search-content-list').style.display = 'flex';
             document.getElementById('user-bookpick-list').style.display = 'none';
+            UndoMenuButtonStyle('menu-find-book');
+            SelectedMenuStyle('menu-return-book');
             FindFilter();
             break;
 
@@ -193,7 +196,8 @@ function MenuNavigate(index)
             document.getElementById('center-filter-block').style.display = 'none';
             document.getElementById('search-content-list').style.display = 'none';
             document.getElementById('user-bookpick-list').style.display = 'flex';
-            
+            SelectedMenuStyle('menu-find-book');
+            UndoMenuButtonStyle('menu-return-book');
             InvokeReturnPage();
             break;
         default:
@@ -591,6 +595,7 @@ function TakeBook()
     FindFilter();
     document.getElementById('book-selection-card').style.display = 'none';
 }
+
 // =======[ Return Book ]=========================
 // ===============================================
 function ReturnBook(element)

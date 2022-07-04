@@ -774,20 +774,48 @@ function Refresh_UserList_UI()
     try 
     {
         UserLogList = ld.GetUserLogDB();
-        document.getElementById('users-list').innerHTML = GetUserList_LI(UserLogList);
+        
+        let CurrentDayUsers = UserLogList.filter((item) => {
+            let logDate = new Date(item.LogTime);
+            if(logDate.getDate() === new Date().getDate())
+                return item;
+        });
+
+        let PreviousDayUsers = UserLogList.filter((item) => {
+            let logDate = new Date(item.LogTime);
+            if(logDate.getDate() < new Date().getDate())
+                return item;
+        });
+
+        document.getElementById('current-day-heading').innerHTML = `Today\t: ${new Date().toDateString()}`;
+        document.getElementById('users-list-today').innerHTML = GetUserList_LI_CuurentDay(CurrentDayUsers);
+        document.getElementById('users-list').innerHTML = GetUserList_LI_PreviousDay(PreviousDayUsers);
     }
     catch (exception) {
         ShowErrorAlert(exception);
     }
 }
-function GetUserList_LI(UserList)
+function GetUserList_LI_CuurentDay(UserList)
 {
     return `${UserList.map((item) =>
         `<li>
             <div class="user-item-block">
-                <div>${item.FullName}</div> 
-                <div>${item.Gender}</div>
-                <div>${item.LogTime}</div>
+                <div id="logger-name">${item.FullName}</div> 
+                <div id="logger-gender">${item.Gender}</div>
+                <div id="logged-time">${new Date(item.LogTime).toLocaleTimeString()}</div>
+            </div>
+        </li>
+        `).join('')}`;
+}
+
+function GetUserList_LI_PreviousDay(UserList)
+{
+    return `${UserList.map((item) =>
+        `<li>
+            <div class="user-item-block">
+                <div id="logger-name">${item.FullName}</div> 
+                <div id="logger-gender">${item.Gender}</div>
+                <div id="logged-time">${new Date(item.LogTime).toDateString()}</div>
             </div>
         </li>
         `).join('')}`;

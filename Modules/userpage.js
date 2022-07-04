@@ -615,7 +615,7 @@ function BookReturn()
     // Remove book from UserLog record.
     UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBookLog.BookId);
 
-    // After removeal, check userLogRecord is empty ? Remove user from BookLogDB : Remove Pariculart book.
+    // After removeal, check userLogRecord is empty ? Remove user from BookLogDB : Remove selected book.
     if (UserBookLogList.length > 0)
         BookLogMaster.set(ContextUser.UserName, UserBookLogList);
     else
@@ -685,7 +685,7 @@ function InvokeBookReturnCard(booklog)
     if(fineAmount > 0)
     {
         document.getElementById('fine-amount-block').style.display = 'flex';
-        document.getElementById('fine-amount-block').innerHTML = `Fine Amount : ${fineAmount}`;
+        document.getElementById('fine-amount-block').innerHTML = `Fine Amount : ₹ ${fineAmount}`;
 
         document.getElementById('pay-fine-btn').style.display = 'flex';
         document.getElementById('pay-fine-btn').innerText = 'Pay fine & Extend';
@@ -721,7 +721,7 @@ function PayFine(booklog)
     BookLogMaster.set(ContextUser.UserName, UserBookLogList);
     LocalDB.SetBookLogDatabase(BookLogMaster);
 
-    ShowPositiveAlert(`Fine amount ${fineAmount} is paid succesfully.!`);
+    ShowPositiveAlert(`Fine amount ₹ ${fineAmount} is paid succesfully.!`);
     UpdateUserReturnListUI(UserBookMaster);
 }
 // =======[ Load Initials ]==========================

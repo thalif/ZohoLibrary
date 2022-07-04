@@ -213,7 +213,15 @@
             
             <!-- ===========[ Show user logs ]=========================================================== -->
             <div class="show-user-block" id="show-user-block">
-                <ul class="users-list" id="users-list"></ul>
+                <div id="current-day-block">
+                    <h3 id="current-day-heading">Today</h3>
+                    <ul class="users-list-today" id="users-list-today"></ul>
+                </div>
+                <div id="previous-day-block">
+                    <h3 id="previous-day-label">From previous day</h3>
+                    <ul class="users-list" id="users-list"></ul>
+                </div>
+                
             </div>
         </div>
     </div>

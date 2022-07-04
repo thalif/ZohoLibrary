@@ -134,10 +134,12 @@ document.getElementById('get-book-btn').addEventListener('click', function()
 document.getElementById('menu-find-book').addEventListener('click', function()
 {
     MenuNavigate(1);
+    document.getElementById('book-return-card').style.display = 'none';
 });
 document.getElementById('menu-return-book').addEventListener('click', function()
 {
     MenuNavigate(2);
+    document.getElementById('book-selection-card').style.display = 'none';
 });
 
 document.getElementById('pay-fine-btn').addEventListener('click', function()
@@ -490,7 +492,7 @@ function ReturnCheck(isbn)
                 let fineAmount = libUtil.GetFineAmount(userLog.PickDate, new Date());
                 return `
                     <div class="return-imediate-block">
-                        <div id="avail-in-text">Return imediate with fine amount ${fineAmount}!</div>
+                        <div id="avail-in-text">Return immediate with fine amount ₹ ${fineAmount}</div>
                     </div>`;
             }
         }
@@ -628,7 +630,7 @@ function BookReturn()
     LocalDB.SetBookDatabase(BookDatabase);
     //
     InvokeReturnPage();
-    ShowPositiveAlert(`'${returnedBook.BookTitle}' has been returned. Thankyou!`)
+    ShowPositiveAlert(`'${returnedBook.BookTitle}' has been returned. Thankyou!`);
 }
 
 
@@ -666,7 +668,7 @@ function InvokeBookSelectionCard()
     document.getElementById('book-selection-card').style.display = 'block';
     document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
     document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
-    document.getElementById('isbn-number').innerText = SelectedBookItem.ISBN;
+    document.getElementById('isbn-number').innerHTML = SelectedBookItem.ISBN;
 }
 // =======[ Invoke book return card ]===================
 function InvokeBookReturnCard(booklog)

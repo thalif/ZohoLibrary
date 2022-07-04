@@ -270,6 +270,15 @@
     align-items: center;
     font-size: 10px;
 }
+#stock-available-block
+{
+    color: royalblue;
+}
+#stock-unavailbale-block
+{
+    color: red;
+}
+
 #lib-section
 {
     margin-top: 2px;

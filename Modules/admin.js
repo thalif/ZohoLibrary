@@ -723,16 +723,32 @@ function AdminBookCardTemplate(givenList)
                             <label>Rack :</label>
                             <div id="lib-rack">${item.Rack}</div>
                         </div>
-                        <div class="stock-block">
-                            <label>Stock :</label>
-                            <div id="lib-stock">${item.StockCount}</div>
-                        </div>
+                        ${GetStockTemplate(item.StockCount)}
                     </div>
                 </div>
             </div>
         </div>
     </li>`).join('')}`;
 }
+
+function GetStockTemplate(count)
+{
+    if(count > 0)
+        return `
+        <div class="stock-block" id="stock-available-block">
+            <label>Stock :</label>
+            <div id="lib-stock">${count}</div>
+        </div>
+        `
+    else
+        return `
+        <div class="stock-block" id="stock-unavailbale-block">
+            <label>Stock :</label>
+            <div id="lib-stock">${count}</div>
+        </div>
+        `
+}
+
 function Invoke_EventListener_BookList(bookListDB)
 {
     let booksList = document.getElementById('books-list');

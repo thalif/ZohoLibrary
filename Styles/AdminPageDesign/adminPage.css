@@ -124,7 +124,7 @@
     box-shadow:  3px 3px 10px #848484;
 
     padding: 20px;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-between;
     border-radius: 5px;

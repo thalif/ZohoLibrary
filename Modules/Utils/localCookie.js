@@ -1,5 +1,9 @@
 export default class LocalCookie
 {
+    constructor()
+    {
+        this.MIN_DAYS_COOKIE_SET = 30;
+    }
     CheckCookie()
     {
         let cookieValue = this.GetCookie('cuser');
@@ -20,7 +24,7 @@ export default class LocalCookie
     SetCookie(cname, cvalue, exdays) 
     {
         const d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        d.setDate(d.getDate() + this.MIN_DAYS_COOKIE_SET);
         let expires = "expires="+ d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }

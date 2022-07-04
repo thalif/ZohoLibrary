@@ -35,6 +35,7 @@ function Login()
                 if(ContextUser.Password == passwordEntered)
                 {
                     UserDatabase.UpdateUserLogInfo(ContextUser);
+                    cookie.SetCookie('cuser', ContextUser.UserName, 10);
                     Redirect(ContextUser);
                 }
                 else
@@ -78,7 +79,6 @@ function GetUserFromCookie()
 
 function Redirect(user)
 {
-    cookie.SetCookie('cuser', user.UserName, 10);
     if(user.IsAdmin)
         window.location.href = "admin.html";
     else

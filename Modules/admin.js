@@ -362,7 +362,7 @@ function UpdateGenreListUI(givenGenreList)
             `<li id='genre-item'>
                 <div>${gen}</div>
                 <div id="genre-item-btn" width="10" height="10">
-                    <img src="./Styles/close.png" width="10" height="10">
+                    <img src="./Styles/Img/close.png" width="10" height="10">
                 </div>
             </li>`).join('')}`;
     }
@@ -413,7 +413,7 @@ function UpdateAuthorListUI(givenAuthourList)
             `<li id='authour-item'>
                 <label>${author}</label>
                 <div id="delete-item">
-                    <img src="./Styles/close.png" width="10" height="10">
+                    <img src="./Styles/Img/close.png" width="10" height="10">
                 </div>
             </li>`).join('')}`;
     }
@@ -501,7 +501,7 @@ function UpdateSelectedGenreList(selectedGenres) // ok
         `<li>
             <label>${genre}</label>
             <div id="delete-item">
-                <img src="./Styles/close.png" width="10" height="10">
+                <img src="./Styles/Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`; 
 
@@ -569,7 +569,7 @@ function UpdateSelectionAuthourListUI(SelectedAuthours)
         `<li>
             <label>${authour}</label>
             <div id="delete-item">
-                <img src="./Styles/close.png" width="10" height="10">
+                <img src="./Styles/Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`;
     

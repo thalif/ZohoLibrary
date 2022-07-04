@@ -7,15 +7,13 @@ export default class LocalCookie
     CheckCookie()
     {
         let cookieValue = this.GetCookie('cuser');
-        if(cookieValue)
-        {
+
+        if (cookieValue)
             return true;
-        }
         else
-        {
             return false;
-        }
     }
+    
     DeleteCookie(cookieName)
     {
         document.cookie = cookieName +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';

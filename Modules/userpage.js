@@ -5,7 +5,7 @@ import BookLog from "./Model/BookLog.js";
 import LibUtil from "./Utils/util.js";
 
 
-const TestDay = 4;
+const TestDay = 14;
 
 let SelectedGenreList = [];
 let SelectedAuthours = [];
@@ -92,7 +92,7 @@ function LoadGenreMaster()
     if (GenreMaster)
         InitGenre(GenreMaster);
     else
-        alert('no item ');
+        ShowErrorAlert('no item ');
 }
 
 // ========[ Event listener ]========================
@@ -165,12 +165,12 @@ document.getElementById('delete-account-btn').addEventListener('click', function
             window.location.href = "./index.html";
         }
         else {
-            alert(result);
+            ShowErrorAlert(result);
         }
         document.getElementById('setting-card').style.display = 'none';
     }
     catch (ex) {
-        alert(ex);
+        ShowErrorAlert(ex);
     }
 });
 
@@ -560,49 +560,40 @@ function FindFilter()
 function TakeBook()
 {
     if (ContextUser && SelectedBookItem) {
-        // Check stock count.
-        let tempCount = Array.from(UserBookLogList.filter((item) => item.BookId == SelectedBookItem.ISBN)).length;
-        if (tempCount <= 0) {
+        // 1. Check for book stock.
+        if(SelectedBookItem.StockCount > 0)
+        {
+            // 2. Restrict: User can have only 4 books at a time.
+            if(UserBookLogList.length < 4)
+            {
+                // 3. Check for user already had same book.
+                let userlog = Array.from(UserBookLogList.filter((item) => item.BookId == SelectedBookItem.ISBN)).length;
+                if (userlog === 0) {
 
-            if (SelectedBookItem.StockCount > 0) {
-                let bookPick = new BookLog();
-                bookPick.UserName = ContextUser.UserName;
-                bookPick.BookId = SelectedBookItem.ISBN;
-                bookPick.PickDate = new Date();
-                bookPick.PickDate.setDate(bookPick.PickDate.getDate() - TestDay);
-                
-                //Check user already has this book.
-                if (UserBookLogList.length > 0) {
-                    //Check user already picked count is less than 4
-                    if (UserBookLogList.length < 4) {
-                        // Update stock count
-                        SelectedBookItem.StockCount--;
-                        UserBookLogList.push(bookPick);
-                        BookLogMaster.set(ContextUser.UserName, UserBookLogList);
-
-                        LocalDB.SetBookLogDatabase(BookLogMaster);
-                        LocalDB.SetBookDatabase(BookDatabase);
-                    }
-                    else {
-                        alert(`Already user has ${UserBookLogList.length} books.`);
-                    }
-                }
-                else {
-                    // Update stock count
+                    let bookPick = new BookLog();
+                    bookPick.UserName = ContextUser.UserName;
+                    bookPick.BookId = SelectedBookItem.ISBN;
+                    bookPick.PickDate = new Date();
+                    bookPick.PickDate.setDate(bookPick.PickDate.getDate() - TestDay);
+                    //
                     SelectedBookItem.StockCount--;
+                    //
                     UserBookLogList.push(bookPick);
                     BookLogMaster.set(ContextUser.UserName, UserBookLogList);
-
+                    //
                     LocalDB.SetBookLogDatabase(BookLogMaster);
                     LocalDB.SetBookDatabase(BookDatabase);
                 }
+                else {
+                    ShowErrorAlert(`Already user has ${UserBookLogList.length} books.`);
+                }
             }
             else {
-                alert('No Stock!');
+                ShowErrorAlert(`Already user has ${UserBookLogList.length} books.`);
             }
         }
-        else {
-            alert(`User already has ${SelectedBookItem.BookTitle}!`);
+        else{
+            ShowErrorAlert('No stock available!');
         }
     }
     FindFilter();
@@ -617,6 +608,11 @@ function ReturnBook(element)
 }
 function BookReturn()
 {
+    let fineAmount = libUtil.GetFineAmount(UserReturnBookLog.PickDate, new Date());
+    if(fineAmount > 0)
+    {
+        PayFine(UserReturnBookLog);
+    }
     UserBookLogList = UserBookLogList.filter((book) => book.BookId != UserReturnBook.ISBN);
     // Update user account DB
     if (UserBookLogList.length > 0)
@@ -626,9 +622,9 @@ function BookReturn()
 
     LocalDB.SetBookLogDatabase(BookLogMaster);
     InvokeReturnPage();
-    
+    ShowPositiveAlert(`${UserReturnBook.BookTitle} has been returned. Thankyou!`)
     // Update Book Stock count
-    let ddd = BookDatabase.get(UserReturnBook.ISBN);
+    let ddd = BookDatabase.get(UserReturnBookLog.BookId);
     ddd.StockCount++;
     LocalDB.SetBookDatabase(BookDatabase);
 }
@@ -679,18 +675,26 @@ function InvokeBookReturnCard(booklog)
     document.getElementById('book-return-card').style.display = 'flex';
     document.getElementById('return-book-title').innerText = UserReturnBook.BookTitle;
     document.getElementById('isbn-number').innerText = UserReturnBook.ISBN;
-    document.getElementById('return-book-version').innerText = UserReturnBook.Edition;
+    document.getElementById('book-version').innerText = UserReturnBook.Edition; 
+
 
     if(fineAmount > 0)
     {
+        document.getElementById('fine-amount-block').style.display = 'flex';
+        document.getElementById('fine-amount-block').innerHTML = `Fine Amount : ${fineAmount}`;
+
         document.getElementById('pay-fine-btn').style.display = 'flex';
-        document.getElementById('return-book-btn').style.display = 'none';
-        document.getElementById('pay-fine-btn').innerText = 'Pay fine amount '+ fineAmount;
+        document.getElementById('pay-fine-btn').innerText = 'Pay fine & Extend';
+        
+        document.getElementById('return-book-btn').style.display = 'flex';
+        document.getElementById('return-book-btn').innerText = 'Pay fine & Return';
     }
     else
     {
+        document.getElementById('fine-amount-block').style.display = 'none';
         document.getElementById('pay-fine-btn').style.display = 'none';
         document.getElementById('return-book-btn').style.display = 'flex';
+        document.getElementById('return-book-btn').innerHTML = 'Return this book';
     }
 }
 
@@ -713,7 +717,8 @@ function PayFine(booklog)
     BookLogMaster.set(ContextUser.UserName, UserBookLogList);
     LocalDB.SetBookLogDatabase(BookLogMaster);
 
-    InvokeBookReturnCard(UserReturnBook);
+    ShowPositiveAlert(`Fine amount ${fineAmount} is paid succesfully.!`);
+    // InvokeBookReturnCard(UserReturnBook);
     UpdateUserReturnListUI(UserBookMaster);
 }
 // =======[ Load Initials ]==========================
@@ -770,4 +775,37 @@ function GetUserFromCookie()
             return false;
     }
     catch { return false; }
+}
+// ========[ Show error alert ]=================================
+function ShowPositiveAlert(positiveMessage)
+{
+    try
+    {
+        document.getElementById('error-msg').style.display = 'block';
+        document.getElementById('error-msg').style.backgroundColor = '#38b54b'; // Positive GREEN
+        document.getElementById('error-msg-tag').innerText = positiveMessage;
+        setTimeout(() => {
+            document.getElementById('error-msg').style.display = 'none';    
+        }, 5000);
+    }
+    catch(exception)
+    {
+        ShowErrorAlert(exception);
+    }
+}
+
+function ShowErrorAlert(error)
+{
+    try
+    {
+        document.getElementById('error-msg').style.display = 'block';
+        document.getElementById('error-msg').style.backgroundColor = '#ff3f3f'; // Negative RED
+        document.getElementById('error-msg-tag').innerText = error;
+        setTimeout(() => {
+            document.getElementById('error-msg').style.display = 'none';    
+        }, 5000);
+    }
+    catch (exception) {
+        ShowErrorAlert(exception);
+    }
 }

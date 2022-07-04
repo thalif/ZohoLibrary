@@ -894,7 +894,7 @@ function UpdateBookDetails()
     try {
         GrabFormValues();
         PushToMaster(thisBook);
-        alert("Updated book details done!");
+        ShowErrorAlert("Updated book details done!");
         Show_NewBook_UI();
         MenuNavigate(2);
     }

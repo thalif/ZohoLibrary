@@ -17,6 +17,7 @@
 {
     width: 100%;
     height: 100vh;
+    display: block;
 }
 .header-block
 {
@@ -29,6 +30,23 @@
     align-items: center;
     color: var(--light3);
 }
+
+/* =======[ Error message ]=============== */
+#error-msg
+{
+    width: 60%;
+    height: 30px;
+    background-color: #ff3f3f;
+    border: 2px solid white;
+    position: fixed;
+    left: 300px;
+    color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 /* =====[ User Detail ]=========== */
 .user-detail
 {

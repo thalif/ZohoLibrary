@@ -1020,10 +1020,13 @@ function Show_UpdateBook_UI()
     document.getElementById('update-btn').style.display = 'block';
     document.getElementById('submit-btn').style.display = 'none';
     document.getElementById('new-book-header').innerHTML = 'Update Book';
+    document.getElementById('book-isbn-tb').disabled = true;
 }
 function Show_NewBook_UI()
 {
+    ResetAllFields();
     document.getElementById('update-btn').style.display = 'none';
     document.getElementById('submit-btn').style.display = 'block';
     document.getElementById('new-book-header').innerHTML = 'New Book';
+    document.getElementById('book-isbn-tb').disabled = false;
 }

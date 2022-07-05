@@ -90,6 +90,10 @@
     background-color: orange;
     border: 2px solid var(--light1);
 }
+#logout-btn:hover
+{
+    background-color: orangered;
+}
 /* =========[ Center filter box ]========================= */
 /* ======================================================= */
 .center-filter-block

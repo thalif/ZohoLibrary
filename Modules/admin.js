@@ -5,9 +5,6 @@ import Cookie from "./Utils/localCookie.js";
 import Util from "./Utils/util.js";
 
 
-// const dayjs = require('dayjs');
-// console.log(dayjs().format());
-
 let ld = new localDB();
 let util = new Util();
 let userDB = new UserDB();
@@ -265,15 +262,32 @@ document.getElementById('delete-book-btn').addEventListener('click', function()
 //#endregion
 
 //================================================================================================================================
-//=========[ Invoke Dahsboard ]=======================================================================================================
+//=========[ Invoke Dahsboard ]===================================================================================================
 //================================================================================================================================
 function InvokeDashboadContext()
 {
     SetTotalBooksCount();
     document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
+    SetTotalTransaction();
     SetBookTakenCount();
     SetFineAmountCollected();
     SetBookLateData();
+}
+function SetTotalTransaction()
+{
+    let BookReturnRecord = ld.GetBookReturnRecord();
+    document.getElementById('total-transaction-count').innerHTML = BookReturnRecord.length;
+
+    let todayCount = 0;
+    BookReturnRecord.forEach((item) => {
+        let bookDate = new Date(item.Date);
+        let today = new Date();
+        if(bookDate.getFullYear() === today.getFullYear() && bookDate.getMonth() === today.getMonth() && bookDate.getDay() === today.getDay())
+        {
+            todayCount++;
+        }
+    });
+    document.getElementById('transaction-today').innerHTML = todayCount;
 }
 function SetTotalBooksCount()
 {
@@ -291,7 +305,7 @@ function SetBookTakenCount()
 
 function SetFineAmountCollected()
 {
-    let returnLog = ld.GetFineReocrd();
+    let returnLog = ld.GetBookReturnRecord();
     let amount = 0;
     returnLog.forEach((item) => amount += parseInt(item.FineAmount));
     document.getElementById('total-fineamount-collected').innerHTML = "₹  "+amount;

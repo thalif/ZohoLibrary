@@ -69,7 +69,8 @@
 #total-transaction-count,
 #total-taken-count,
 #total-books-late-count,
-#fine-value-section
+#fine-value-section,
+#total-transaction-value-section
 {
     border-radius: 5px;
     width: 100%;
@@ -84,12 +85,12 @@
     font-weight: bolder;
 }
 
-#fine-value-section
+#fine-value-section, #total-transaction-value-section
 {
     display: flex;
     flex-direction: column;
 }
-#total-fineamount-collected
+#total-fineamount-collected, #total-transaction-count
 {
     height: 75%;
     font-size: 40px;
@@ -99,10 +100,10 @@
     justify-content: center;
 }
 
-#total-fineamount-outstanding
+#total-fineamount-outstanding, #total-transection-today
 {
     height: 25%;
-    font-size: 12px;
+    font-size: 14px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

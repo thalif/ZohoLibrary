@@ -128,7 +128,8 @@ export default class localDB
         {
             "Username" : userName,
             "BookId" : bookId,
-            "FineAmount" : fineAmount
+            "FineAmount" : fineAmount,
+            "Date": new Date()
         };
 
         let FineRecord = this.GetBookReturnRecord();

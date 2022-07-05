@@ -5,7 +5,7 @@ import BookLog from "./Model/BookLog.js";
 import LibUtil from "./Utils/util.js";
 
 
-const TestDay = 2;
+const TestDay = 12;
 
 let SelectedGenreList = [];
 let SelectedAuthours = [];

@@ -922,6 +922,7 @@ function InvokUpdateBook(selectedBookItem)
     document.getElementById('lib-rack-tb').value = selectedBookItem.Rack;
     document.getElementById('book-stock-tb').value = selectedBookItem.StockCount;
 
+    thisBook = new Book();
     thisBook.BookTitle = selectedBookItem.BookTitle;
     thisBook.ISBN = selectedBookItem.ISBN;
     thisBook.Edition = selectedBookItem.Edition;

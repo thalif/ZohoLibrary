@@ -675,6 +675,20 @@ function Refresh_BookList_UI(BookDatabase)
         ShowErrorAlert(exception);
     }
 }
+
+function Invoke_EventListener_BookList(bookListDB)
+{
+    let booksList = document.getElementById('books-list');
+    let bookListChildrens = Array.from(booksList.childNodes);
+    bookListChildrens.forEach(item => {
+        item.addEventListener('click', function () 
+        {
+            SelectedBookItem = bookListDB[bookListChildrens.indexOf(item)];
+            InvokeSelectionCard(SelectedBookItem);
+        });
+    });
+}
+
 function AdminBookCardTemplate(givenList)
 {
     return `${givenList.map((item) => 
@@ -756,18 +770,7 @@ function GetStockTemplate(count)
         `
 }
 
-function Invoke_EventListener_BookList(bookListDB)
-{
-    let booksList = document.getElementById('books-list');
-    let bookListChildrens = Array.from(booksList.childNodes);
-    bookListChildrens.forEach(item => {
-        item.addEventListener('click', function () 
-        {
-            SelectedBookItem = bookListDB[bookListChildrens.indexOf(item)];
-            InvokeSelectionCard(SelectedBookItem);
-        });
-    });
-}
+
 
 //#endregion
 

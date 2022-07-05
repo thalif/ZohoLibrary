@@ -184,5 +184,39 @@
     padding: 10px;
 }
 
+/* ========[ Setting card ]=================================== */
+/* =============================================================== */
 
-
+.setting-card-close
+{
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+#setting-card-close-btn
+{
+    width: 30px;
+}
+.setting-card-content
+{
+    width: 100%;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+}
+#delete-account-btn
+{
+    width: 100%;
+    height: 30px;
+    background-color: rgb(251, 67, 67);
+    color: whitesmoke;
+    position: relative;
+    top: 100px;
+    border: 2px solid rgb(32, 0, 0);
+}
+#delete-account-btn:hover
+{
+    background-color: red;
+}

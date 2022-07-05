@@ -521,6 +521,7 @@ function FindFilter()
         });
         copy = aFound;
     }
+    
     if(SelectedGenreList.length > 0)
     {
         let gFound = [];

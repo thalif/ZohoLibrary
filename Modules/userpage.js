@@ -106,6 +106,11 @@ document.getElementById('authour-input-key').addEventListener('keyup', function(
 {
     FindAuthour();
 });
+document.getElementById('bookname-input-key').addEventListener('keyup', function()
+{
+    FindBookByKEY(); 
+});
+
 document.getElementById('genre-combo').addEventListener('change', function(event)
 {
     try
@@ -537,21 +542,42 @@ function FindFilter()
         });
         copy = gFound;
     }
+    UpdateBooksList(copy);
+}
+function FindBookByKEY()
+{
+    let copy = Array.from(BookDatabase.values());
+    let key = document.getElementById('bookname-input-key').value.toUpperCase();
+    let found = [];
+    if(key)
+    {
+        copy.forEach((item) => {
+            if (item.BookTitle.toUpperCase().includes(key) || item.ISBN.includes(key)) {
+                found.push(item);
+            }
+        });
+        UpdateBooksList(found);
+    }
+    else {
+        UpdateBooksList(copy);
+    }
+}
 
+function UpdateBooksList(booksListToBind)
+{
     let mainList = document.getElementById('search-content-list');
-    mainList.innerHTML = BookShowTemplate(copy);
+    mainList.innerHTML = BookShowTemplate(booksListToBind);
 
     let childItem = Array.from(mainList.childNodes);
     childItem.forEach(element => 
         {
             element.addEventListener('click', function()
             {
-                SelectedBookItem = copy[childItem.indexOf(element)];
+                SelectedBookItem = booksListToBind[childItem.indexOf(element)];
                 InvokeBookSelectionCard(SelectedBookItem);
             });
         });
 }
-
 
 // =======[ Book Take ]===========================
 // ===============================================

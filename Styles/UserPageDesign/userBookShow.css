@@ -256,7 +256,7 @@
     color: whitesmoke;
 }
 
-#isbn-number
+#isbn-number, #return-isbn-number
 {
     padding-left: 10px;
 }

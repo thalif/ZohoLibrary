@@ -681,7 +681,7 @@ function InvokeBookReturnCard(booklog)
 
     document.getElementById('book-return-card').style.display = 'flex';
     document.getElementById('return-book-title').innerText = UserReturnBook.BookTitle;
-    document.getElementById('isbn-number').innerText = UserReturnBook.ISBN;
+    document.getElementById('return-isbn-number').innerText = UserReturnBook.ISBN;
     document.getElementById('book-version').innerText = UserReturnBook.Edition; 
 
 

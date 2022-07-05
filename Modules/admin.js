@@ -269,44 +269,48 @@ document.getElementById('delete-book-btn').addEventListener('click', function()
 //================================================================================================================================
 function InvokeDashboadContext()
 {
-    document.getElementById('total-book-count').innerHTML = GetTotalBooksCount();
+    SetTotalBooksCount();
     document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
-    document.getElementById('total-taken-count').innerHTML = GetBookTakenCount();
-    document.getElementById('total-fineamount-count').innerHTML = "₹  "+GetFineAmount();
-    document.getElementById('total-books-late-count').innerHTML = GetBookLateCount();
+    SetBookTakenCount();
+    SetFineAmountCollected();
+    SetBookLateData();
 }
-function GetTotalBooksCount()
+function SetTotalBooksCount()
 {
     let count = 0;
     BookDatabase.forEach((item) => count += parseInt(item.StockCount));
-    return count;
+    document.getElementById('total-book-count').innerHTML = count;
 }
-function GetBookTakenCount()
+function SetBookTakenCount()
 {
     let bookTakenLog = ld.GetBookLogDatabase();
     let count = 0;
     bookTakenLog.forEach((item) => item.forEach((i) => count++ ));
-    return count;
+    document.getElementById('total-taken-count').innerHTML = count;
 }
-function GetFineAmount()
+
+function SetFineAmountCollected()
 {
     let returnLog = ld.GetFineReocrd();
     let amount = 0;
-    returnLog.forEach((item) => amount += parseInt(item.FineAmount))
-    return amount;
+    returnLog.forEach((item) => amount += parseInt(item.FineAmount));
+    document.getElementById('total-fineamount-collected').innerHTML = "₹  "+amount;
 }
-function GetBookLateCount()
+function SetBookLateData()
 {
     let bookTakenLog = ld.GetBookLogDatabase();
     let count = 0;
-
+    let outstandingFineAmount = 0;
     bookTakenLog.forEach ( (item) => { item.forEach((i) =>  
     {
-        if (util.GetDiff(new Date(i.PickDate), new Date()) > 10) {
+        let dateDiff = util.GetDiff(new Date(i.PickDate), new Date());
+        if (dateDiff > 10) {
             count++;
+            outstandingFineAmount += (util.FINE_AMOUNT * (dateDiff - 10));
         }
     })  });
-    return count;
+    document.getElementById('total-books-late-count').innerHTML = count;
+    document.getElementById('outstanding-fine').innerHTML = `₹  ${outstandingFineAmount}`;
 }
 
 //================================================================================================================================

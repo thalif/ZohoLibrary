@@ -122,29 +122,27 @@ export default class localDB
             return new Array();
     }
 
-    UpdateFineColleciton(thisUser, thisBook, fineAmount)
+    UpdateBookReturnRecord(userName, bookId, fineAmount)
     {
         let JSONObject = 
         {
-            "Username" : thisUser.UserName,
-            "BookId" : thisBook.BookId,
+            "Username" : userName,
+            "BookId" : bookId,
             "FineAmount" : fineAmount
         };
 
-        let FineRecord = this.GetFineReocrd();
+        let FineRecord = this.GetBookReturnRecord();
         FineRecord.push(JSONObject);
         localStorage.setItem('returnRecord', JSON.stringify(FineRecord));
     }
 
-    GetFineReocrd()
+    GetBookReturnRecord()
     {
-        try
-        {
+        try {
             let record = JSON.parse(localStorage.getItem('returnRecord'))
             return Array.from(record);
         }
-        catch
-        {
+        catch{
             return new Array();
         }
     }

@@ -5,7 +5,7 @@ import BookLog from "./Model/BookLog.js";
 import LibUtil from "./Utils/util.js";
 
 
-const TestDay = 14;
+const TestDay = 2;
 
 let SelectedGenreList = [];
 let SelectedAuthours = [];
@@ -621,6 +621,8 @@ function BookReturn()
     else
         BookLogMaster.delete(ContextUser.UserName);
 
+    // Update book return record.
+    LocalDB.UpdateBookReturnRecord(ContextUser.UserName, UserReturnBookLog.BookId, fineAmount);
     // Push BookLogDatabase.
     LocalDB.SetBookLogDatabase(BookLogMaster);
 
@@ -713,9 +715,6 @@ function PayFine(booklog)
     UserReturnBook = UserBookLogList[index];
     UserReturnBook.PickDate = new Date();
     UserBookLogList[index] = UserReturnBook;
-
-    // Update collection record
-    LocalDB.UpdateFineColleciton(ContextUser, UserReturnBook, fineAmount);
 
     // Update user account book record DB
     BookLogMaster.set(ContextUser.UserName, UserBookLogList);

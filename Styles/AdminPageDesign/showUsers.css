@@ -4,7 +4,7 @@
 {
     width: 88%;
     height: 120%;
-    background-color: rgb(214, 224, 253);
+    background-color: #d6e0fd;
     /* background-color: var(--dark1); */
     padding: 20px;
     display: flex;
@@ -23,7 +23,6 @@
 {
     margin-top: 20px;
     min-height: 100px;
-    height: 300px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -33,6 +32,7 @@
 .users-list-today li
 {
     width: 300px;
+    height: 80px;
     background-color: white;
     padding: 10px;
     margin: 5px;

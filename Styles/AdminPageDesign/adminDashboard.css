@@ -61,6 +61,7 @@
     flex-direction: column;
     text-align: center;
     justify-content: center;
+    /* background-color: rebeccapurple; */
     color: aliceblue;
 }
 #total-book-count,
@@ -68,7 +69,7 @@
 #total-transaction-count,
 #total-taken-count,
 #total-books-late-count,
-#total-fineamount-count
+#fine-value-section
 {
     border-radius: 5px;
     width: 100%;
@@ -81,4 +82,30 @@
 
     font-size: 50px;
     font-weight: bolder;
+}
+
+#fine-value-section
+{
+    display: flex;
+    flex-direction: column;
+}
+#total-fineamount-collected
+{
+    height: 75%;
+    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#total-fineamount-outstanding
+{
+    height: 25%;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    color: #fa3636;
 }

@@ -198,25 +198,3 @@
     font-weight: bold;
     background-color: rgb(69, 9, 129);
 }
-
-#error-msg
-{
-    width: 60%;
-    height: 30px;
-    background-color: rgb(255, 63, 63);
-    border: 2px solid white;
-    position: fixed;
-    color: white;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-/* #authour-item:hover
-{
-    cursor: pointer;
-}
-#genre-item-btn:hover
-{
-    cursor: pointer;
-} */

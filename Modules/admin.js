@@ -453,6 +453,7 @@ function SubmitNewBook()
         GrabFormValues();
         PushToMaster(thisBook);
 
+        ShowPositiveAlert(`${thisBook.BookTitle} has been added successfully.`)
         ResetAllFields();
     }
     catch(exception)
@@ -839,6 +840,7 @@ function DeleteSelectedItem(selectedItem)
     let BookLogMaster = ld.GetBookLogDatabase();
     let logMaster = Array.from(BookLogMaster.values());
     
+    //Check user has taken this book before delete.
     let count = 0;
     for(let i = 0; i < logMaster.length; i++)
     {
@@ -853,11 +855,14 @@ function DeleteSelectedItem(selectedItem)
     if(count <= 0)
     {
         ld.DeleteBook(selectedItem);
+        BookDatabase = ld.LoadBookDatabase();
         Refresh_BookList_UI(BookDatabase);
+        ShowPositiveAlert(`${selectedItem.BookTitle} has been deleted successfully.`)
     }
     else {
-        ShowErrorAlert('Book has been taken..! Cannot delete now.!')
+        ShowErrorAlert('Book has been taken by user. Cannot delete now.!')
     }
+
     document.getElementById('selection-action-block').style.display = 'none';
 }
 //#endregion
@@ -944,7 +949,7 @@ function UpdateBookDetails()
     try {
         GrabFormValues();
         PushToMaster(thisBook);
-        ShowErrorAlert("Updated book details done!");
+        ShowPositiveAlert("Updated book details done!");
         Show_NewBook_UI();
         MenuNavigate(2);
     }
@@ -953,20 +958,31 @@ function UpdateBookDetails()
     }
 }
 
-// ========[ Show error alert ]=================================
-function ShowErrorAlert(error)
+// ========[ Show alert ]=================================
+function ShowPositiveAlert(positiveMessage)
 {
     try
     {
         document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg-tag').innerText = error;
+        document.getElementById('error-msg').style.backgroundColor = '#38b54b'; // Positive GREEN
+        document.getElementById('error-msg-tag').innerText = positiveMessage;
         setTimeout(() => {
             document.getElementById('error-msg').style.display = 'none';    
         }, 5000);
     }
-    catch (exception) {
+    catch(exception)
+    {
         ShowErrorAlert(exception);
     }
+}
+function ShowErrorAlert(error)
+{
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').style.backgroundColor = '#ff3f3f'; // Negative RED
+    document.getElementById('error-msg-tag').innerText = error;
+    setTimeout(() => {
+        document.getElementById('error-msg').style.display = 'none';    
+    }, 5000);
 }
 // ========[ Cookie info ]======================================
 function GetUserFromCookie()

@@ -183,3 +183,20 @@
     background-color: rgb(247, 44, 44);
     border: 2px solid black;
 }
+
+/* ===========[ Error Message ]================= */
+#error-msg
+{
+    width: 60%;
+    height: 30px;
+    background-color: #ff3f3f;
+    border: 2px solid white;
+    position: fixed;
+    left: 300px;
+    color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 2;
+}

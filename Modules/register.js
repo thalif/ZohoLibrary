@@ -8,7 +8,6 @@ window.onload = (event) =>
 {
     ResetAllFields();
     UserDatabase = userDB.GetUserDatabase();
-    ValidateCheck();
 }
 document.getElementById('submit-btn').addEventListener('click', function()
 {
@@ -18,15 +17,16 @@ document.getElementById('reset-btn').addEventListener('click', function()
 {
     ResetAllFields();
 });
-function ValidateCheck()
+function ValidateWithExistingRecord()
 {
+    // Check username is already taken.
     let userNameEntered = document.getElementById('username-box').value;
     if(UserDatabase.has(userNameEntered))
         throw `${userNameEntered} has already taken. Please provide different username.`
     
+    // Check Email and Mobile number is already existing or not.
     let userEmailEntered = document.getElementById('email-box').value;
     let userMobileEntered = document.getElementById('mobile-box').value;
-
     let UserDatas = Array.from(UserDatabase.values());
     UserDatas.forEach((item) => {
 
@@ -47,7 +47,9 @@ function Register()
     }
     try
     {  
-        ValidateCheck();
+        // 1. Validate user data with our existing Database [ Username | Mobile | Email ]
+        ValidateWithExistingRecord();
+
         newUser.ID = GetNewID();
         newUser.setFullName(document.getElementById('fullname-box').value);
         newUser.setUserName(document.getElementById('username-box').value);
@@ -58,21 +60,26 @@ function Register()
         newUser.setPassword(document.getElementById('password-box1').value, document.getElementById('password-box2').value);
         newUser.IsAdmin = false;
 
+        // 2. Update database with new user.
         userDB.AddNewUser(newUser);
         UserDatabase = userDB.GetUserDatabase();
 
+        // 3. Reset all fields.
         ResetAllFields();
         window.location.href = './index.html';
 
     }
     catch(exception)
     {
-        document.getElementById('error-block').style.display = 'flex';
-        document.getElementById('er').innerHTML = exception;
-        console.log(exception);
+        ShowError(exception);
     }
 }
-
+function ShowError(message)
+{
+    document.getElementById('error-block').style.display = 'flex';
+    document.getElementById('er').innerHTML = exception;
+    console.log(exception);
+}
 function ResetAllFields()
 {
     document.getElementById('fullname-box').value = '';

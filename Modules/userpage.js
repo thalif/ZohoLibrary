@@ -799,16 +799,10 @@ function ShowPositiveAlert(positiveMessage)
 
 function ShowErrorAlert(error)
 {
-    try
-    {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').style.backgroundColor = '#ff3f3f'; // Negative RED
-        document.getElementById('error-msg-tag').innerText = error;
-        setTimeout(() => {
-            document.getElementById('error-msg').style.display = 'none';    
-        }, 5000);
-    }
-    catch (exception) {
-        ShowErrorAlert(exception);
-    }
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').style.backgroundColor = '#ff3f3f'; // Negative RED
+    document.getElementById('error-msg-tag').innerText = error;
+    setTimeout(() => {
+        document.getElementById('error-msg').style.display = 'none';    
+    }, 5000);
 }

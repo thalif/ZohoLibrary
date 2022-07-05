@@ -505,6 +505,7 @@ function ReturnCheck(isbn)
 function FindFilter()
 {
     let copy = Array.from(BookDatabase.values());
+    
     if(SelectedAuthours.length > 0)
     {
         let aFound = [];

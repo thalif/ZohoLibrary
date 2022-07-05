@@ -625,20 +625,30 @@ function FindFilter()
     if(SelectedAuthours.length > 0)
     {
         let aFound = [];
-        SelectedAuthours.forEach((item) => 
+        SelectedAuthours.forEach((authour) => 
         {
-            let booksfound = FindBookForAuthour(item, copy);
-            booksfound.forEach((book) => { aFound.push(book) });
+            copy.filter((book) =>
+            {
+                if(book.Authuors.includes(authour))
+                {
+                    aFound.push(book);
+                }
+            });
         });
         copy = aFound;
     }
     if(SelectedGenreList.length > 0)
     {
         let gFound = [];
-        SelectedGenreList.forEach((item) => 
+        SelectedGenreList.forEach((genre) => 
         {
-            let booksfound = FindBookForGenre(item, copy);
-            booksfound.forEach((book) =>  { gFound.push(book)});
+            copy.filter((book) =>
+            {
+                if(book.Genre.includes(genre))
+                {
+                    gFound.push(book);
+                }
+            });
         });
         copy = gFound;
     }
@@ -646,28 +656,6 @@ function FindFilter()
     mainList.innerHTML = AdminBookCardTemplate(copy);
 
     Refresh_BookList_UI(copy);
-}
-function FindBookForAuthour(authour, database)
-{
-    let result = [];
-    let bookMaster = Array.from(database);
-    bookMaster.forEach((book) => 
-    {
-        if(book.Authuors.includes(authour))
-            result.push(book);
-    });
-    return result;
-}
-function FindBookForGenre(genre, database)
-{
-    let result = [];
-    let bookMaster = Array.from(database);
-    bookMaster.forEach((book) => 
-    {
-        if(book.Genre.includes(genre))
-            result.push(book);
-    });
-    return result;
 }
 
 //=============[ Show book list ]===================

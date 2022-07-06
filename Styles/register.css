@@ -26,21 +26,23 @@ body
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
+
+/* =====[ Register Block ]===================================== */
 .register-block
 {
     width: 30%;
-    height: 75%;
+    height: 600px;
     background-color: var(--light3);
     box-shadow:  3px 3px 10px #848484;
     border-radius: 10px;
     padding: 20px;
-    position: relative;
-    top: 100px;
 }
 #label span
 {
     color: red;
+    font-weight: bolder;
     padding-left: 5px;
 }
 #fieldDiv
@@ -54,7 +56,7 @@ body
 {
     height: 30px;
     border-radius: 2px;
-    border: 0px;
+    border: 0.5px solid #acacac;
     padding-left: 15px;
 }
 #gender-combo
@@ -63,8 +65,9 @@ body
 }
 #actionDiv
 {
-    position: relative;
-    top: 10px;
+    /* background-color: red; */
+    height: 30px;
+    align-items: center;
     display: flex;
     float: row;
     justify-content: space-around;
@@ -74,13 +77,15 @@ body
     height: 30px;
     width: 100px;
 }
+/* =====[ Error block ]=========================== */
 #error-block
 {
-    position: relative;
-    height: 40px; 
-    top: 10px;
-    display: hidden;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 #er
 {
@@ -88,6 +93,8 @@ body
     font-size: 14px;
     font-weight: bolder;
 }
+
+/* =======[ Reset btn ]============================= */
 #reset-btn
 {
     background-color: orange;
@@ -113,4 +120,15 @@ body
 #submit-btn:hover
 {
     background-color: rgb(10, 39, 120);
+}
+
+.user-register-block
+{
+    width: 100%;
+    height: 30px;
+    /* background-color: royalblue; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }

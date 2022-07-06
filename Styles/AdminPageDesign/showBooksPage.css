@@ -35,10 +35,6 @@
 
 #genre-filter-selected-list li,
 #authour-selected-list li {
-    /* display: flex;
-    flex-direction: row;
-    padding: 5px;
-    padding-left: 10px; */
     background-color: var(--dark1);
     color: var(--light3);
     border-radius: 5px;

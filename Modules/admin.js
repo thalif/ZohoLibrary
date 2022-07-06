@@ -65,8 +65,6 @@ function VerifyCookieDetails()
 }
 function LoadInitialsForPageContext()
 {
-    
-
     // Load Genre DB
     genreDB = ld.Load_Genres();
     if (genreDB)
@@ -173,8 +171,6 @@ function SelectedMenuStyle(selectedButtonID)
     let selectedBtnColor = '#d2d2d2';
     document.getElementById(selectedButtonID).style.backgroundColor = defaultBtnColor;
     document.getElementById(selectedButtonID).style.color = selectedBtnColor;
-    // document.getElementById(selectedButtonID).style.fontSize = 'large';
-    // document.getElementById(selectedButtonID).style.border = '0px';
 }
 function UndoMenuButtonStyle(buttonID)
 {
@@ -182,8 +178,6 @@ function UndoMenuButtonStyle(buttonID)
     let selectedBtnColor = '#d2d2d2';
     document.getElementById(buttonID).style.backgroundColor = selectedBtnColor;
     document.getElementById(buttonID).style.color = defaultBtnColor;
-    // document.getElementById(buttonID).style.fontSize = 'regular';
-    // document.getElementById(buttonID).style.border = '1px';
 }
 
 document.getElementById('menu-dashboard').addEventListener('click', function()
@@ -501,10 +495,11 @@ function PushToMaster(Book)
 
 
 
+//#region [ Show Books ]
 //================================================================================================================================
 //=========[ Show books ]=========================================================================================================
 //================================================================================================================================
-//#region [ Show Books ]
+
 
 // =======[ Genre Filter section ]=================
 function AddGenre() // ok

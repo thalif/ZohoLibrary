@@ -169,17 +169,21 @@ function MenuNavigate(s)
 
 function SelectedMenuStyle(selectedButtonID)
 {
-    document.getElementById(selectedButtonID).style.backgroundColor = '#2C3639';
-    document.getElementById(selectedButtonID).style.color = '#b9c7c8';
-    document.getElementById(selectedButtonID).style.fontSize = 'large';
-    document.getElementById(selectedButtonID).style.border = '0px';
+    let defaultBtnColor = '#2C3639';
+    let selectedBtnColor = '#d2d2d2';
+    document.getElementById(selectedButtonID).style.backgroundColor = defaultBtnColor;
+    document.getElementById(selectedButtonID).style.color = selectedBtnColor;
+    // document.getElementById(selectedButtonID).style.fontSize = 'large';
+    // document.getElementById(selectedButtonID).style.border = '0px';
 }
 function UndoMenuButtonStyle(buttonID)
 {
-    document.getElementById(buttonID).style.backgroundColor = '#d2d2d2';
-    document.getElementById(buttonID).style.color = '#5e8089';
-    document.getElementById(buttonID).style.fontSize = 'regular';
-    document.getElementById(buttonID).style.border = '1px';
+    let defaultBtnColor = '#2C3639';
+    let selectedBtnColor = '#d2d2d2';
+    document.getElementById(buttonID).style.backgroundColor = selectedBtnColor;
+    document.getElementById(buttonID).style.color = defaultBtnColor;
+    // document.getElementById(buttonID).style.fontSize = 'regular';
+    // document.getElementById(buttonID).style.border = '1px';
 }
 
 document.getElementById('menu-dashboard').addEventListener('click', function()
@@ -236,10 +240,10 @@ document.getElementById('update-btn').addEventListener('click', function()
 {
     UpdateBookDetails();
 });
-document.getElementById('choose-img-btn').addEventListener('change', function()
-{
-    ChooseNewImage();
-});
+// document.getElementById('choose-img-btn').addEventListener('change', function()
+// {
+//     ChooseNewImage();
+// });
 document.getElementById('genre-combo').addEventListener('change', function()
 {
     AddNewGenre();
@@ -268,7 +272,7 @@ function InvokeDashboadContext()
 {
     SetTotalBooksCount();
     document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
-    SetTotalTransaction();
+    // SetTotalTransaction();
     SetBookTakenCount();
     SetFineAmountCollected();
     SetBookLateData();
@@ -327,10 +331,11 @@ function SetBookLateData()
     document.getElementById('outstanding-fine').innerHTML = `₹  ${outstandingFineAmount}`;
 }
 
-//================================================================================================================================
+
+//#region Add New Book
 //=========[ Add new book ]=======================================================================================================
 //================================================================================================================================
-//#region Add New Book
+
 // ========[ Choose image ]======================
 function ChooseNewImage()
 {
@@ -562,8 +567,8 @@ function FindAuthour()
 function UpdateSearchDownList(resultList)
 {
     let searchDownlist = document.getElementById('search-item-list');
-    searchDownlist.innerHTML = `${resultList.map((authour) => 
-        `<li id="search-list-item">${authour}</li>`).join('')}`;
+    searchDownlist.innerHTML = `${resultList.map((author) => 
+        `<li id="search-list-item">${author}</li>`).join('')}`;
 
     let childItem = Array.from(searchDownlist.childNodes);
     childItem.forEach(element => {
@@ -583,13 +588,13 @@ function AddAuthour(selectedItem)
     else
         throw `${selectedItem} is already added.`;
 }
-function UpdateSelectionAuthourListUI(SelectedAuthours)
+function UpdateSelectionAuthourListUI(SelectedAuthors)
 {
     let selectedList = document.getElementById('authour-selected-list');
-    selectedList.innerHTML = `${SelectedAuthours.map((authour) => 
+    selectedList.innerHTML = `${SelectedAuthors.map((author) => 
         `<li>
-            <label>${authour}</label>
-            <div id="delete-item">
+            <label>${author}</label>
+            <div id="delete-author-item">
                 <img src="./Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`;
@@ -717,7 +722,7 @@ function AdminBookCardTemplate(givenList)
                 <div class="center-block">
                     <div class="ISBN-block"> 
                         <div>ISBN :</div> 
-                        <div>${item.ISBN}</div> 
+                        <div id="isbn-number">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
                         Authour :
@@ -728,7 +733,7 @@ function AdminBookCardTemplate(givenList)
                 </div>
                 <div class="genre-block-card">
                     Genre:
-                    <ul class="genre-list-card"> 
+                    <ul class="genre-card-list"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>

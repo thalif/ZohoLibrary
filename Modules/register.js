@@ -33,7 +33,7 @@ function ValidateWithExistingRecord()
         if(item.Email == userEmailEntered)
             throw `${userEmailEntered} has been already registerd.`
         else if(item.Mobile == userMobileEntered)
-            throw `${userMobileEntered} has been already registerd`;
+            throw `${userMobileEntered} has been already registerd.`;
     });
     return true;
 }
@@ -77,8 +77,7 @@ function Register()
 function ShowError(message)
 {
     document.getElementById('error-block').style.display = 'flex';
-    document.getElementById('er').innerHTML = exception;
-    console.log(exception);
+    document.getElementById('er').innerHTML = message;
 }
 function ResetAllFields()
 {

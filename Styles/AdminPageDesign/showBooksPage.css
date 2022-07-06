@@ -30,14 +30,43 @@
     list-style: none;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 #genre-filter-selected-list li,
 #authour-selected-list li {
+    /* display: flex;
+    flex-direction: row;
+    padding: 5px;
+    padding-left: 10px; */
+    background-color: var(--dark1);
+    color: var(--light3);
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
     padding: 5px;
+    padding-left: 15px;
+    margin-left: 20px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+#delete-item
+{
+    visibility: hidden;
+}
+#delete-author-item
+{
     padding-left: 10px;
+    padding-right: 5px;
+    visibility: hidden;
+}
+#genre-filter-selected-list li:hover > #delete-item
+{
+    visibility: visible;
+}
+#authour-selected-list li:hover > #delete-author-item
+{
+    visibility: visible;
 }
 .search-item-list
 {
@@ -68,25 +97,26 @@
 .show-book-block
 {
     width: 85%;
-    height: 100%;
+    height: 75%;
     position: absolute;
 }
 .books-list
 {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
     flex-wrap: wrap;
     list-style: none;
-    background-color: transparent;
+    /* background-color: royalblue; */
     height: 90%;
     overflow-y: scroll;
     padding: 20px;
 }
 .books-list li
 {
-    /* background-color: royalblue; */
-    padding-left: 10px;
-    Margin-top: 10px;
+    height: 150px;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 /* ========[ Booklist card ]======================================== */
@@ -185,24 +215,33 @@
 }
 
 /* ==================================================== */
+.center-block
+{
+    height: 30px;
+    /* background-color: rgb(182, 141, 141); */
+}
 .center-block div
 {
     display: flex;
     flex-direction: row;
-    height: 50%;
-    /* background-color: red; */
+    /* background-color: rgb(252, 131, 131); */
 }
 .ISBN-block
 {
+    height: 15px;
     font-size: 12px;
     color: rgb(63, 63, 63);
+}
+#isbn-number
+{
+    padding-left: 10px;
 }
 /* =======================[ Authour block ]===================*/
 .author-block
 {
+    height: 15px;
     font-size: 12px;
     color: rgb(63, 63, 63);
-    height: 25px;
     /* background-color: rebeccapurple; */
     display: flex;
     flex-direction: row;
@@ -211,40 +250,32 @@
 .author-list{
     display: flex;
     flex-direction: row;
-    position: relative;
-    bottom: 10px;
     list-style: none;
 }
 /* ===================[ Genre block ]=======================*/
 .genre-block-card
 {
-    position: relative;
-    bottom: 7px;
     height: 25px;
     /* background-color: red; */
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
-.genre-list-card
+.genre-card-list
 {
+    list-style: none;
     display: flex;
     flex-direction: row;
-    list-style: none;
-    margin-bottom: 10px;
 }
 /* =====================[ Library details block ]===========*/
 .library-detail-block
 {
-    position: relative;
-    left: 15px;
-    bottom: 5px;
     width: 90%;
     height: 45px;
     background-color: var(--light1);
     box-shadow: inset 3px 3px 10px #848484;
     /* box-shadow: 3px 3px 10px #848484; */
     border-radius: 5px;
+    margin-left: 14px;
 }
 .library-detail-block label
 {

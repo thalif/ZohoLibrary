@@ -357,7 +357,7 @@ function BookShowTemplate(givenList)
                 <div class="center-block">
                     <div class="ISBN-block"> 
                         <div>ISBN :</div> 
-                        <div>${item.ISBN}</div> 
+                        <div id="isbn-number">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
                         Authour :
@@ -366,15 +366,13 @@ function BookShowTemplate(givenList)
                         </ul>
                     </div>
                 </div>
-                <div class="genre-block">
+                <div class="genre-block-card">
                     Genre:
-                    <ul class="genre-list"> 
+                    <ul class="genre-card-list"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>
-
                 ${AvailCheck(item.ISBN)}
-                
             </div>
         </div>
     </li>`).join('')}`;

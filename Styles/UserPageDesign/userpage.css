@@ -153,21 +153,7 @@
     justify-content: center;
 }
 
-#search-content-list
-{
-    width: 90%;
-    padding: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    overflow-y: scroll;
-    flex-wrap: wrap;
-    list-style: none;
-}
-#search-content-list li
-{
-    padding-left: 10px;
-}
+
 #user-bookpick-list
 {
     width: 100%;

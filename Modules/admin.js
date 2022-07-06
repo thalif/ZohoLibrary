@@ -65,8 +65,6 @@ function VerifyCookieDetails()
 }
 function LoadInitialsForPageContext()
 {
-    
-
     // Load Genre DB
     genreDB = ld.Load_Genres();
     if (genreDB)
@@ -130,7 +128,7 @@ function MenuNavigate(s)
             document.getElementById('bookform-block').style.display = 'none';
             document.getElementById('show-book-block').style.display = 'block';
             document.getElementById('show-user-block').style.display = 'none';
-            Refresh_BookList_UI(BookDatabase);
+            UpdateBookList(BookDatabase);
             SelectedMenuStyle('menu-dashboard');
             SelectedMenuStyle('menu-add-newbook');
             UndoMenuButtonStyle('menu-show-allbook');
@@ -169,17 +167,17 @@ function MenuNavigate(s)
 
 function SelectedMenuStyle(selectedButtonID)
 {
-    document.getElementById(selectedButtonID).style.backgroundColor = '#2C3639';
-    document.getElementById(selectedButtonID).style.color = '#b9c7c8';
-    document.getElementById(selectedButtonID).style.fontSize = 'large';
-    document.getElementById(selectedButtonID).style.border = '0px';
+    let defaultBtnColor = '#2C3639';
+    let selectedBtnColor = '#d2d2d2';
+    document.getElementById(selectedButtonID).style.backgroundColor = defaultBtnColor;
+    document.getElementById(selectedButtonID).style.color = selectedBtnColor;
 }
 function UndoMenuButtonStyle(buttonID)
 {
-    document.getElementById(buttonID).style.backgroundColor = '#d2d2d2';
-    document.getElementById(buttonID).style.color = '#5e8089';
-    document.getElementById(buttonID).style.fontSize = 'regular';
-    document.getElementById(buttonID).style.border = '1px';
+    let defaultBtnColor = '#2C3639';
+    let selectedBtnColor = '#d2d2d2';
+    document.getElementById(buttonID).style.backgroundColor = selectedBtnColor;
+    document.getElementById(buttonID).style.color = defaultBtnColor;
 }
 
 document.getElementById('menu-dashboard').addEventListener('click', function()
@@ -218,6 +216,19 @@ document.getElementById('authour-input-key').addEventListener('keyup', function(
 {
     FindAuthour();
 });
+document.getElementById('bookname-input-key').addEventListener('keyup', function()
+{
+    FindBookByKEY(); 
+});
+document.getElementById('bookname-input-key').addEventListener('click', function()
+{
+    document.getElementById('bookname-input-key').value = '';
+    SelectedGenreList = [];
+    SelectedAuthours = [];
+    UpdateSelectedGenreList(SelectedGenreList);
+    UpdateSelectionAuthourListUI(SelectedAuthours);
+    FindFilter();
+});
 
 document.getElementById('logout-btn').addEventListener('click', function()
 {
@@ -236,10 +247,10 @@ document.getElementById('update-btn').addEventListener('click', function()
 {
     UpdateBookDetails();
 });
-document.getElementById('choose-img-btn').addEventListener('change', function()
-{
-    ChooseNewImage();
-});
+// document.getElementById('choose-img-btn').addEventListener('change', function()
+// {
+//     ChooseNewImage();
+// });
 document.getElementById('genre-combo').addEventListener('change', function()
 {
     AddNewGenre();
@@ -268,7 +279,7 @@ function InvokeDashboadContext()
 {
     SetTotalBooksCount();
     document.getElementById('total-customer-count').innerHTML = UserDatabase.size;
-    SetTotalTransaction();
+    // SetTotalTransaction();
     SetBookTakenCount();
     SetFineAmountCollected();
     SetBookLateData();
@@ -327,10 +338,11 @@ function SetBookLateData()
     document.getElementById('outstanding-fine').innerHTML = `₹  ${outstandingFineAmount}`;
 }
 
-//================================================================================================================================
+
+//#region Add New Book
 //=========[ Add new book ]=======================================================================================================
 //================================================================================================================================
-//#region Add New Book
+
 // ========[ Choose image ]======================
 function ChooseNewImage()
 {
@@ -380,7 +392,7 @@ function UpdateGenreListUI(givenGenreList)
             `<li id='genre-item'>
                 <div>${gen}</div>
                 <div id="genre-item-btn" width="10" height="10">
-                    <img src="./Styles/Img/close.png" width="10" height="10">
+                    <img src="./Img/close.png" width="10" height="10">
                 </div>
             </li>`).join('')}`;
     }
@@ -431,7 +443,7 @@ function UpdateAuthorListUI(givenAuthourList)
             `<li id='authour-item'>
                 <label>${author}</label>
                 <div id="delete-item">
-                    <img src="./Styles/Img/close.png" width="10" height="10">
+                    <img src="./Img/close.png" width="10" height="10">
                 </div>
             </li>`).join('')}`;
     }
@@ -496,10 +508,11 @@ function PushToMaster(Book)
 
 
 
+//#region [ Show Books ]
 //================================================================================================================================
 //=========[ Show books ]=========================================================================================================
 //================================================================================================================================
-//#region [ Show Books ]
+
 
 // =======[ Genre Filter section ]=================
 function AddGenre() // ok
@@ -522,7 +535,7 @@ function UpdateSelectedGenreList(selectedGenres) // ok
         `<li>
             <label>${genre}</label>
             <div id="delete-item">
-                <img src="./Styles/Img/close.png" width="10" height="10">
+                <img src="./Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`; 
 
@@ -562,8 +575,8 @@ function FindAuthour()
 function UpdateSearchDownList(resultList)
 {
     let searchDownlist = document.getElementById('search-item-list');
-    searchDownlist.innerHTML = `${resultList.map((authour) => 
-        `<li id="search-list-item">${authour}</li>`).join('')}`;
+    searchDownlist.innerHTML = `${resultList.map((author) => 
+        `<li id="search-list-item">${author}</li>`).join('')}`;
 
     let childItem = Array.from(searchDownlist.childNodes);
     childItem.forEach(element => {
@@ -583,14 +596,14 @@ function AddAuthour(selectedItem)
     else
         throw `${selectedItem} is already added.`;
 }
-function UpdateSelectionAuthourListUI(SelectedAuthours)
+function UpdateSelectionAuthourListUI(SelectedAuthors)
 {
     let selectedList = document.getElementById('authour-selected-list');
-    selectedList.innerHTML = `${SelectedAuthours.map((authour) => 
+    selectedList.innerHTML = `${SelectedAuthors.map((author) => 
         `<li>
-            <label>${authour}</label>
-            <div id="delete-item">
-                <img src="./Styles/Img/close.png" width="10" height="10">
+            <label>${author}</label>
+            <div id="delete-author-item">
+                <img src="./Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`;
     
@@ -656,11 +669,11 @@ function FindFilter()
     let mainList = document.getElementById('books-list');
     mainList.innerHTML = AdminBookCardTemplate(copy);
 
-    Refresh_BookList_UI(copy);
+    UpdateBookList(copy);
 }
 
 //=============[ Show book list ]===================
-function Refresh_BookList_UI(BookDatabase)
+function UpdateBookList(BookDatabase)
 {
     try 
     {
@@ -717,10 +730,10 @@ function AdminBookCardTemplate(givenList)
                 <div class="center-block">
                     <div class="ISBN-block"> 
                         <div>ISBN :</div> 
-                        <div>${item.ISBN}</div> 
+                        <div id="isbn-number">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
-                        Authour :
+                        Author :
                         <ul class="author-list">
                                 ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
                         </ul>
@@ -728,7 +741,7 @@ function AdminBookCardTemplate(givenList)
                 </div>
                 <div class="genre-block-card">
                     Genre:
-                    <ul class="genre-list-card"> 
+                    <ul class="genre-card-list"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>
@@ -836,7 +849,7 @@ function InvokeSelectionCard(selectedBookItem)
 {
     document.getElementById('selection-action-block').style.display = 'flex';
     document.getElementById('selected-book-title').innerText = selectedBookItem.BookTitle;
-    document.getElementById('book-version').innerText = "Edition"+ selectedBookItem.Edition;
+    document.getElementById('book-version').innerText = "ISBN: "+ selectedBookItem.ISBN;
 }
 function DeleteSelectedItem(selectedItem)
 {
@@ -859,7 +872,7 @@ function DeleteSelectedItem(selectedItem)
     {
         ld.DeleteBook(selectedItem);
         BookDatabase = ld.LoadBookDatabase();
-        Refresh_BookList_UI(BookDatabase);
+        UpdateBookList(BookDatabase);
         ShowPositiveAlert(`${selectedItem.BookTitle} has been deleted successfully.`)
     }
     else {
@@ -961,7 +974,24 @@ function UpdateBookDetails()
         ShowErrorAlert(exception);
     }
 }
-
+function FindBookByKEY()
+{
+    let copy = Array.from(BookDatabase.values());
+    let key = document.getElementById('bookname-input-key').value.toUpperCase();
+    let found = [];
+    if(key)
+    {
+        copy.forEach((item) => {
+            if (item.BookTitle.toUpperCase().includes(key) || item.ISBN.includes(key)) {
+                found.push(item);
+            }
+        });
+        UpdateBookList(found);
+    }
+    else {
+        UpdateBookList(copy);
+    }
+}
 // ========[ Show alert ]=================================
 function ShowPositiveAlert(positiveMessage)
 {

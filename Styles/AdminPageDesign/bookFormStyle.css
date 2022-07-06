@@ -60,16 +60,25 @@
 }
 .genre-list li
 {
-    /* background-color: royalblue; */
+    background-color: var(--dark1);
+    color: var(--light3);
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
     padding: 5px;
+    padding-left: 15px;
     margin-left: 20px;
     cursor: pointer;
+}
+.genre-list li:hover > #genre-item-btn
+{
+    visibility: visible;
 }
 #genre-item-btn
 {
     padding-left: 10px;
+    padding-right: 5px;
+    visibility: hidden;
 }
 
 /* =======[ row - 3 - Authour block ]========= */
@@ -93,15 +102,30 @@
 }
 .authour-list li
 {
+    background-color: var(--dark1);
+    color: var(--light3);
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
     padding: 5px;
+    padding-left: 15px;
     margin-left: 20px;
     cursor: pointer;
+}
+.authour-list li:hover > #delete-item
+{
+    visibility: visible;
 }
 #delete-item
 {
     padding-left: 10px;
+    padding-right: 5px;
+    visibility: hidden;
+}
+#add-authour-btn
+{
+    padding-left: 10px;
+    padding-right: 10px;
 }
 /* =======[ row - 6 - Publisher Details ]============ */
 /* ================================================== */

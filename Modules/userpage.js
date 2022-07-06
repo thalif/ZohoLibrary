@@ -61,17 +61,17 @@ function Page_Constructor()
 
 function SelectedMenuStyle(selectedButtonID)
 {
-    document.getElementById(selectedButtonID).style.backgroundColor = '#2C3639';
-    document.getElementById(selectedButtonID).style.color = '#b9c7c8';
-    document.getElementById(selectedButtonID).style.fontSize = 'large';
-    document.getElementById(selectedButtonID).style.border = '0px';
+    let defaultBtnColor = '#2C3639';
+    let selectedBtnColor = '#d2d2d2';
+    document.getElementById(selectedButtonID).style.backgroundColor = defaultBtnColor;
+    document.getElementById(selectedButtonID).style.color = selectedBtnColor;
 }
 function UndoMenuButtonStyle(buttonID)
 {
-    document.getElementById(buttonID).style.backgroundColor = '#d2d2d2';
-    document.getElementById(buttonID).style.color = '#5e8089';
-    document.getElementById(buttonID).style.fontSize = 'regular';
-    document.getElementById(buttonID).style.border = '1px';
+    let defaultBtnColor = '#2C3639';
+    let selectedBtnColor = '#d2d2d2';
+    document.getElementById(buttonID).style.backgroundColor = selectedBtnColor;
+    document.getElementById(buttonID).style.color = defaultBtnColor;
 }
 function LogBookLogData()
 {
@@ -106,15 +106,27 @@ document.getElementById('authour-input-key').addEventListener('keyup', function(
 {
     FindAuthour();
 });
+document.getElementById('bookname-input-key').addEventListener('keyup', function()
+{
+    FindBookByKEY(); 
+});
+document.getElementById('bookname-input-key').addEventListener('click', function()
+{
+    document.getElementById('bookname-input-key').value = '';
+    SelectedGenreList = [];
+    UpdateSelectedGenreList(SelectedGenreList);
+    SelectedAuthours = [];
+    UpdateSelectionAuthourListUI(SelectedAuthours);
+    FindFilter();
+});
+
 document.getElementById('genre-combo').addEventListener('change', function(event)
 {
-    try
-    {
+    try {
         AddGenre();
         FindFilter();
     }
-    catch(exception)
-    {
+    catch (exception) {
         console.log(exception);
     }
 });
@@ -183,6 +195,7 @@ document.getElementById('delete-account-btn').addEventListener('click', function
 
 function MenuNavigate(index)
 {
+    document.getElementById('setting-card').style.display = 'none';
     switch(index)
     {
         case 1:
@@ -236,7 +249,7 @@ function UpdateSelectedGenreList(selectedGenres)
         `<li>
             <label>${genre}</label>
             <div id="delete-item">
-                <img src="./Styles/Img/close.png" width="10" height="10">
+                <img src="./Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`; 
 
@@ -295,7 +308,7 @@ function UpdateSelectionAuthourListUI(SelectedAuthours)
         `<li>
             <label>${authour}</label>
             <div id="delete-item">
-                <img src="./Styles/Img/close.png" width="10" height="10">
+                <img src="./Img/close.png" width="10" height="10">
             </div>
         </li>`).join('')}`;
     
@@ -352,24 +365,22 @@ function BookShowTemplate(givenList)
                 <div class="center-block">
                     <div class="ISBN-block"> 
                         <div>ISBN :</div> 
-                        <div>${item.ISBN}</div> 
+                        <div id="isbn-number-card">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
                         Authour :
-                        <ul class="author-list">
-                                ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
+                        <ul class="author-list-card">
+                                ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
-                <div class="genre-block">
+                <div class="genre-block-card">
                     Genre:
-                    <ul class="genre-list"> 
+                    <ul class="genre-card-list"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>
-
                 ${AvailCheck(item.ISBN)}
-                
             </div>
         </div>
     </li>`).join('')}`;
@@ -402,24 +413,22 @@ function UserBookReturnListTemplate(givenList)
                 <div class="center-block">
                     <div class="ISBN-block"> 
                         <div>ISBN :</div> 
-                        <div>${item.ISBN}</div> 
+                        <div id="isbn-number-card">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
                         Authour :
-                        <ul class="author-list">
-                                ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
+                        <ul class="author-list-card">
+                                ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
-                <div class="genre-block">
+                <div class="genre-block-card">
                     Genre:
-                    <ul class="genre-list"> 
+                    <ul class="genre-card-list"> 
                             ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
                     </ul>
                 </div>
-
                 ${ReturnCheck(item.ISBN)}
-                
             </div>
         </div>
     </li>`).join('')}`;
@@ -537,21 +546,42 @@ function FindFilter()
         });
         copy = gFound;
     }
+    UpdateBooksList(copy);
+}
+function FindBookByKEY()
+{
+    let copy = Array.from(BookDatabase.values());
+    let key = document.getElementById('bookname-input-key').value.toUpperCase();
+    let found = [];
+    if(key)
+    {
+        copy.forEach((item) => {
+            if (item.BookTitle.toUpperCase().includes(key) || item.ISBN.includes(key)) {
+                found.push(item);
+            }
+        });
+        UpdateBooksList(found);
+    }
+    else {
+        UpdateBooksList(copy);
+    }
+}
 
+function UpdateBooksList(booksListToBind)
+{
     let mainList = document.getElementById('search-content-list');
-    mainList.innerHTML = BookShowTemplate(copy);
+    mainList.innerHTML = BookShowTemplate(booksListToBind);
 
     let childItem = Array.from(mainList.childNodes);
     childItem.forEach(element => 
         {
             element.addEventListener('click', function()
             {
-                SelectedBookItem = copy[childItem.indexOf(element)];
+                SelectedBookItem = booksListToBind[childItem.indexOf(element)];
                 InvokeBookSelectionCard(SelectedBookItem);
             });
         });
 }
-
 
 // =======[ Book Take ]===========================
 // ===============================================
@@ -671,7 +701,6 @@ function InvokeBookSelectionCard()
 {
     document.getElementById('book-selection-card').style.display = 'block';
     document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
-    document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
     document.getElementById('isbn-number').innerHTML = SelectedBookItem.ISBN;
 }
 // =======[ Invoke book return card ]===================

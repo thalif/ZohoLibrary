@@ -8,56 +8,60 @@
 <body>
     <div class="wrapper-block">
         <div id="error-msg">
-            <p id="error-msg-tag">ssadfasdfasdfadfasdf</p>
+            <p id="error-msg-tag"></p>
         </div>
         <div class="header-block">
-            <h2>Welcome to Zoho Library..!</h2>
+            <h2>Welcome to Zoho Library</h2>
 
             <div class="user-detail">
-                <div id="user-name">asdasdfasdffasd</div>
+                <div id="user-name"></div>
                 <button id="logout-btn">Logout</button>
             </div>
             
 
             <div class="menu-navigation-block">
-                <button id="menu-find-book">Find Books</button>
-                <button id="menu-return-book">Return Books</button>
+                <button class="menu-btn" id="menu-find-book">Find Books</button>
+                <button class="menu-btn" id="menu-return-book">Return Books</button>
             </div>
-            <button id="menu-setting-btn">Settings</button>
+            <button class="menu-btn" id="menu-setting-btn">Settings</button>
         </div>
-                                    <!-- Center filter panel -->
-        <div class="center-filter-block" id="center-filter-block">
-
-                                    <!-- Genre search panel -->
-            <div class="genre-filter-block">
-                <div class="genre-select">
-                    Genre
-                    <br>
-                    <select id="genre-combo"></select>
+            <!-- Center filter panel -->
+            <div class="center-filter-block" id="center-filter-block">
+            
+                <div class="filter-panel">
+            
+                    <!-- Genre search panel -->
+                    <div class="genre-filter-block">
+                        <div class="genre-select">
+                            Genre
+                            <br>
+                            <select id="genre-combo"></select>
+                        </div>
+                        <ul id="genre-selected-list"></ul>
+                    </div>
+            
+                    <!-- Authour Search Panel -->
+                    <div class="Authour-search-panel">
+                        <div class="authour-input">
+                            Authour
+                            <br>
+                            <input id="authour-input-key" type="text">
+                        </div>
+            
+                        <ul id="search-item-list" class="search-item-list"></ul>
+                        <ul id="authour-selected-list"></ul>
+                    </div>
+            
+                    <!-- Search by Book Name -->
+                    <div class="bookname-search-panel">
+                        <div class="bookname-input">
+                            Book Name
+                            <br>
+                            <input id="bookname-input-key" type="text">
+                        </div>
+                    </div>
                 </div>
-                <ul id="genre-selected-list"></ul>
             </div>
-
-                                    <!-- Authour Search Panel -->
-            <div class="Authour-search-panel">
-                <div class="authour-input">
-                    Authour
-                    <br>
-                    <input id="authour-input-key" type="text">
-                </div>
-                
-                <ul id="search-item-list" class="search-item-list"></ul>
-                <ul id="authour-selected-list"></ul>
-            </div>
-
-            <div class="bookname-search-panel">
-                <div class="bookname-input">
-                    Book Name
-                    <br>
-                    <input id="bookname-input-key" type="text">
-                </div>
-            </div>
-        </div>
         <!-- Content Block -->
         <div class="content-block">
             <ul id="search-content-list">
@@ -77,7 +81,6 @@
             <div class="book-titte-panel">
                 <div class="card-row-1">
                     <h2 id="selected-book-title"></h2>
-                    <span id="book-version"></span>
                 </div>
                 <br>
                 <div class="card-row-2">
@@ -98,8 +101,7 @@
             </div>
             <div class="book-titte-panel">
                 <div class="card-row-1">
-                    <h2 id="return-book-title">Book Title</h2>
-                    <span id="book-version">Edition 3</span>
+                    <h2 id="return-book-title"></h2>
                 </div>
                 <br>
                 <div class="card-row-2">
@@ -107,7 +109,6 @@
                     <div id="return-isbn-number"></div>
                 </div>
                 <div class="fine-amount-block" id="fine-amount-block">
-                    Fine amount: $ 40
                 </div>
             </div>
 

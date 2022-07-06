@@ -128,7 +128,7 @@ function MenuNavigate(s)
             document.getElementById('bookform-block').style.display = 'none';
             document.getElementById('show-book-block').style.display = 'block';
             document.getElementById('show-user-block').style.display = 'none';
-            Refresh_BookList_UI(BookDatabase);
+            UpdateBookList(BookDatabase);
             SelectedMenuStyle('menu-dashboard');
             SelectedMenuStyle('menu-add-newbook');
             UndoMenuButtonStyle('menu-show-allbook');
@@ -215,6 +215,19 @@ document.getElementById('genre-filter-combo').addEventListener('change', functio
 document.getElementById('authour-input-key').addEventListener('keyup', function()
 {
     FindAuthour();
+});
+document.getElementById('bookname-input-key').addEventListener('keyup', function()
+{
+    FindBookByKEY(); 
+});
+document.getElementById('bookname-input-key').addEventListener('click', function()
+{
+    document.getElementById('bookname-input-key').value = '';
+    SelectedGenreList = [];
+    SelectedAuthours = [];
+    UpdateSelectedGenreList(SelectedGenreList);
+    UpdateSelectionAuthourListUI(SelectedAuthours);
+    FindFilter();
 });
 
 document.getElementById('logout-btn').addEventListener('click', function()
@@ -656,11 +669,11 @@ function FindFilter()
     let mainList = document.getElementById('books-list');
     mainList.innerHTML = AdminBookCardTemplate(copy);
 
-    Refresh_BookList_UI(copy);
+    UpdateBookList(copy);
 }
 
 //=============[ Show book list ]===================
-function Refresh_BookList_UI(BookDatabase)
+function UpdateBookList(BookDatabase)
 {
     try 
     {
@@ -859,7 +872,7 @@ function DeleteSelectedItem(selectedItem)
     {
         ld.DeleteBook(selectedItem);
         BookDatabase = ld.LoadBookDatabase();
-        Refresh_BookList_UI(BookDatabase);
+        UpdateBookList(BookDatabase);
         ShowPositiveAlert(`${selectedItem.BookTitle} has been deleted successfully.`)
     }
     else {
@@ -961,7 +974,24 @@ function UpdateBookDetails()
         ShowErrorAlert(exception);
     }
 }
-
+function FindBookByKEY()
+{
+    let copy = Array.from(BookDatabase.values());
+    let key = document.getElementById('bookname-input-key').value.toUpperCase();
+    let found = [];
+    if(key)
+    {
+        copy.forEach((item) => {
+            if (item.BookTitle.toUpperCase().includes(key) || item.ISBN.includes(key)) {
+                found.push(item);
+            }
+        });
+        UpdateBookList(found);
+    }
+    else {
+        UpdateBookList(copy);
+    }
+}
 // ========[ Show alert ]=================================
 function ShowPositiveAlert(positiveMessage)
 {

@@ -733,7 +733,7 @@ function AdminBookCardTemplate(givenList)
                         <div id="isbn-number">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
-                        Authour :
+                        Author :
                         <ul class="author-list">
                                 ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
                         </ul>
@@ -849,7 +849,7 @@ function InvokeSelectionCard(selectedBookItem)
 {
     document.getElementById('selection-action-block').style.display = 'flex';
     document.getElementById('selected-book-title').innerText = selectedBookItem.BookTitle;
-    document.getElementById('book-version').innerText = "Edition"+ selectedBookItem.Edition;
+    document.getElementById('book-version').innerText = "ISBN: "+ selectedBookItem.ISBN;
 }
 function DeleteSelectedItem(selectedItem)
 {

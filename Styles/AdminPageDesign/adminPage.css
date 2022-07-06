@@ -149,7 +149,7 @@
     height: 50%;
     /* background-color: rebeccapurple; */
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 #selected-book-title
 {
@@ -157,10 +157,8 @@
 }
 #book-version
 {
-    font-size: 10px;
-    padding-left: 25px;
-    align-content: center;
-    text-align: center;
+    margin-top: 5px;
+    font-size: 14px;
 }
 
 /* ====[ Action button panel ]=========== */

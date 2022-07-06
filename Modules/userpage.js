@@ -701,7 +701,6 @@ function InvokeBookSelectionCard()
 {
     document.getElementById('book-selection-card').style.display = 'block';
     document.getElementById('selected-book-title').innerText = SelectedBookItem.BookTitle;
-    document.getElementById('book-version').innerText = 'Edition'+ SelectedBookItem.Edition;
     document.getElementById('isbn-number').innerHTML = SelectedBookItem.ISBN;
 }
 // =======[ Invoke book return card ]===================

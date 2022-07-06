@@ -1,17 +1,25 @@
 /* ========[ Booklist card ]============================ */
 /* ===================================================== */
-#search-content-list
+#search-content-list, #user-bookpick-list
 {
     width: 90%;
+    height: 70%;
     padding: 20px;
     display: flex;
     flex-direction: row;
     align-self: baseline;
+    align-content: baseline;
     overflow-y: scroll;
     flex-wrap: wrap;
     list-style: none;
 }
 #search-content-list li
+{
+    height: 140px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+#user-bookpick-list li
 {
     height: 140px;
     margin-left: 10px;
@@ -145,7 +153,8 @@
     flex-direction: row;
     align-self: center;
 }
-.author-list{
+.author-list-card{
+    height: 15px;
     display: flex;
     flex-direction: row;
     list-style: none;
@@ -334,7 +343,70 @@
 {
     background-color: #2d4dad;
 }
+/* =========[ Center filter box ]========================= */
+/* ======================================================= */
+.center-filter-block
+{
+    width: 100%;
+    padding: 10px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: var(--light2);
+}
+.filter-panel
+{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+}
 
+/* ====[ Genre block ]====== */
+.genre-filter-block
+{
+    width: 40%;
+    /* background-color: darkcyan; */
+}
+.genre-select
+{
+    margin-left: 20px;
+}
+#genre-combo
+{
+    width: 100px;
+}
+#genre-selected-list
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 10px;
+}
+#genre-selected-list li
+{
+    background-color: var(--dark1);
+    color: var(--light3);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    padding-left: 15px;
+    margin-left: 20px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+#genre-selected-list li:hover > #delete-item
+{
+    visibility: visible;
+}
+#delete-item
+{
+    padding-left: 10px;
+    padding-right: 5px;
+    visibility: hidden;
+}
 
 /* =====[ Authour Search block ]===== */
 .Authour-search-panel
@@ -352,10 +424,21 @@
 }
 #authour-selected-list li
 {
-    margin-left: 15px;
-    padding: 10px;
+    background-color: var(--dark1);
+    color: var(--light3);
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
+    padding: 5px;
+    padding-left: 15px;
+    margin-left: 20px;
+    margin-top: 5px;
+    cursor: pointer;
+    
+}
+#authour-selected-list li:hover > #delete-item
+{
+    visibility: visible;
 }
 .search-item-list
 {
@@ -381,7 +464,10 @@
 }
 #authour-input-key
 {
-    width: 300px;
+    width: 200px;
     padding-left: 15px;
 }
-
+#bookname-input-key
+{
+    width: 300px;
+}

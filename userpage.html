@@ -20,44 +20,47 @@
             
 
             <div class="menu-navigation-block">
-                <button id="menu-find-book">Find Books</button>
-                <button id="menu-return-book">Return Books</button>
+                <button class="menu-btn" id="menu-find-book">Find Books</button>
+                <button class="menu-btn" id="menu-return-book">Return Books</button>
             </div>
-            <button id="menu-setting-btn">Settings</button>
+            <button class="menu-btn" id="menu-setting-btn">Settings</button>
         </div>
-                                    <!-- Center filter panel -->
-        <div class="center-filter-block" id="center-filter-block">
-
-                                    <!-- Genre search panel -->
-            <div class="genre-filter-block">
-                <div class="genre-select">
-                    Genre
-                    <br>
-                    <select id="genre-combo"></select>
+            <!-- Center filter panel -->
+            <div class="center-filter-block" id="center-filter-block">
+            
+                <div class="filter-panel">
+            
+                    <!-- Genre search panel -->
+                    <div class="genre-filter-block">
+                        <div class="genre-select">
+                            Genre
+                            <br>
+                            <select id="genre-combo"></select>
+                        </div>
+                        <ul id="genre-selected-list"></ul>
+                    </div>
+            
+                    <!-- Authour Search Panel -->
+                    <div class="Authour-search-panel">
+                        <div class="authour-input">
+                            Authour
+                            <br>
+                            <input id="authour-input-key" type="text">
+                        </div>
+            
+                        <ul id="search-item-list" class="search-item-list"></ul>
+                        <ul id="authour-selected-list"></ul>
+                    </div>
+            
+                    <div class="bookname-search-panel">
+                        <div class="bookname-input">
+                            Book Name
+                            <br>
+                            <input id="bookname-input-key" type="text">
+                        </div>
+                    </div>
                 </div>
-                <ul id="genre-selected-list"></ul>
             </div>
-
-                                    <!-- Authour Search Panel -->
-            <div class="Authour-search-panel">
-                <div class="authour-input">
-                    Authour
-                    <br>
-                    <input id="authour-input-key" type="text">
-                </div>
-                
-                <ul id="search-item-list" class="search-item-list"></ul>
-                <ul id="authour-selected-list"></ul>
-            </div>
-
-            <div class="bookname-search-panel">
-                <div class="bookname-input">
-                    Book Name
-                    <br>
-                    <input id="bookname-input-key" type="text">
-                </div>
-            </div>
-        </div>
         <!-- Content Block -->
         <div class="content-block">
             <ul id="search-content-list">

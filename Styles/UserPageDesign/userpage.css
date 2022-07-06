@@ -70,14 +70,28 @@
     left: 10px;
     top: 120px;
 }
-#menu-find-book, #menu-return-book, #menu-setting-btn
+.menu-btn
 {
     width: 150px;
     height: 30px;
+    border: 0px;
+    background-color: var(--dark1);
+    height: 30px;
+    color: #d2d2d2;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
     text-align: center;
+}
+.menu-btn:hover
+{
+    background-color: #d2d2d2;
+    color: var(--dark1);
 }
 #menu-setting-btn
 {
+    background-color: #d2d2d2;
+    color: var(--dark1);
     position: absolute;
     right: 10px;
     top: 120px;
@@ -94,49 +108,7 @@
 {
     background-color: orangered;
 }
-/* =========[ Center filter box ]========================= */
-/* ======================================================= */
-.center-filter-block
-{
-    display: flex;
-    flex-direction: row;
 
-    padding: 10px;
-    height: auto;
-    background-color: var(--light2);
-}
-/* ====[ Genre block ]====== */
-.genre-filter-block
-{
-    width: 40%;
-    /* background-color: darkcyan; */
-}
-.genre-select
-{
-    margin-left: 20px;
-}
-#genre-combo
-{
-    width: 100px;
-}
-#genre-selected-list
-{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    list-style: none;
-    padding-left: 10px;
-}
-#genre-selected-list li
-{
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-}
-#delete-item
-{
-    padding-left: 10px;
-}
 
 /* ===========[ Content block ]======================= */
 /* =================================================== */
@@ -151,23 +123,6 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-}
-
-
-#user-bookpick-list
-{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    background-color: var(--light3);
-    list-style: none;
-    display: none;
-}
-#user-bookpick-list li
-{
-    padding: 10px;
 }
 
 /* ========[ Setting card ]=================================== */

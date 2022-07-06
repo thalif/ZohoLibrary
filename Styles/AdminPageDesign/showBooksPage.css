@@ -8,15 +8,25 @@
     box-shadow:  3px 3px 10px #848484;
     display: flex;
     flex-direction: row;
-    padding: 5px;
-    border-radius: 3px;
+    justify-content: space-evenly;
+    padding: 10px;
+    position: relative;
+    bottom: 20px;
     color: whitesmoke;
 }
 /* =======[ Genre block ]======= */ 
 /* =======[ Authour block ]======= */
 .genre-filter-block,
 .Authour-search-panel {
-    width: 50%;
+    width: 25%;
+}
+.bookname-search-panel
+{
+    width: 200px;
+}
+#bookname-input-key
+{
+    width: 250px;
 }
 
 #genre-filter-combo{
@@ -92,17 +102,23 @@
 /* =================================================== */
 .show-book-block
 {
-    width: 85%;
+    width: 100%;
     height: 75%;
     position: absolute;
+    /* display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; */
 }
 .books-list
 {
+    margin-left: 100px;
     padding: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: baseline;
+
     
     overflow-y: scroll;
     list-style: none;
@@ -333,4 +349,25 @@
 #lib-stock
 {
     margin-top: 2px;
+}
+/* ========[ Show only in stock ]=========================== */
+.only-instock-checkbox-panel
+{
+    width: auto;
+    height: 35px;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #a5acc4;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#stock-check-label
+{
+    color: var(--dark1);
+    font-weight: bold;
+    padding-left: 10px;
+    cursor: pointer;
 }

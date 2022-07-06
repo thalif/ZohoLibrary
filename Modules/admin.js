@@ -128,7 +128,7 @@ function MenuNavigate(s)
             document.getElementById('bookform-block').style.display = 'none';
             document.getElementById('show-book-block').style.display = 'block';
             document.getElementById('show-user-block').style.display = 'none';
-            UpdateBookList(BookDatabase);
+            FindFilter();
             SelectedMenuStyle('menu-dashboard');
             SelectedMenuStyle('menu-add-newbook');
             UndoMenuButtonStyle('menu-show-allbook');
@@ -179,7 +179,14 @@ function UndoMenuButtonStyle(buttonID)
     document.getElementById(buttonID).style.backgroundColor = selectedBtnColor;
     document.getElementById(buttonID).style.color = defaultBtnColor;
 }
-
+document.getElementById('in-stock-check').addEventListener('change', function()
+{
+    if(this.checked)
+        document.getElementById('only-instock-checkbox-panel').style.backgroundColor = '#eb3434';
+    else
+        document.getElementById('only-instock-checkbox-panel').style.backgroundColor = '#a5acc4';
+    FindFilter();
+});
 document.getElementById('menu-dashboard').addEventListener('click', function()
 {
     MenuNavigate(4);
@@ -666,23 +673,22 @@ function FindFilter()
         });
         copy = gFound;
     }
-    let mainList = document.getElementById('books-list');
-    mainList.innerHTML = AdminBookCardTemplate(copy);
-
+    
     UpdateBookList(copy);
 }
 
 //=============[ Show book list ]===================
-function UpdateBookList(BookDatabase)
+function UpdateBookList(booksListToBind)
 {
     try 
     {
-        // BookDatabase = ld.LoadBookDatabase();
-        let Bookslist = Array.from(BookDatabase.values());
-        document.getElementById('books-list').innerHTML = AdminBookCardTemplate(Bookslist);
+        if(document.getElementById('in-stock-check').checked)
+            booksListToBind = booksListToBind.filter((item) => item.StockCount > 0);
 
-        // Addeventlistener('click') for all list item
-        Invoke_EventListener_BookList(Bookslist);
+        let mainList = document.getElementById('books-list');
+        mainList.innerHTML = AdminBookCardTemplate(Array.from(booksListToBind));
+        
+        Invoke_EventListener_BookList(booksListToBind);
     }
     catch (exception) {
         ShowErrorAlert(exception);
@@ -872,7 +878,7 @@ function DeleteSelectedItem(selectedItem)
     {
         ld.DeleteBook(selectedItem);
         BookDatabase = ld.LoadBookDatabase();
-        UpdateBookList(BookDatabase);
+        FindFilter();
         ShowPositiveAlert(`${selectedItem.BookTitle} has been deleted successfully.`)
     }
     else {

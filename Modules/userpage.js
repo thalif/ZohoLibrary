@@ -98,6 +98,16 @@ function LoadGenreMaster()
 
 // ========[ Event listener ]========================
 //#region Event Listener
+
+document.getElementById('in-stock-check').addEventListener('change', function()
+{
+    if(this.checked)
+        document.getElementById('only-instock-checkbox-panel').style.backgroundColor = '#eb3434';
+    else
+        document.getElementById('only-instock-checkbox-panel').style.backgroundColor = '#a5acc4';
+    FindFilter();
+});
+
 document.getElementById('logout-btn').addEventListener('click', function()
 {
     Logout();
@@ -569,6 +579,10 @@ function FindBookByKEY()
 
 function UpdateBooksList(booksListToBind)
 {
+    // Check to show only show books in available
+    if(document.getElementById('in-stock-check').checked)
+        booksListToBind = booksListToBind.filter((item) => item.StockCount > 0);
+        
     let mainList = document.getElementById('search-content-list');
     mainList.innerHTML = BookShowTemplate(booksListToBind);
 

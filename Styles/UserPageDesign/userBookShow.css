@@ -365,12 +365,12 @@
 /* ====[ Genre block ]====== */
 .genre-filter-block
 {
-    width: 40%;
+    width: 30%;
     /* background-color: darkcyan; */
 }
 .genre-select
 {
-    margin-left: 20px;
+    margin-left: 0px;
 }
 #genre-combo
 {
@@ -411,7 +411,7 @@
 /* =====[ Authour Search block ]===== */
 .Authour-search-panel
 {
-    width: 40%;
+    width: 35%;
     height: 100%;
     /* background-color: rgb(31, 68, 68); */
 }
@@ -467,7 +467,35 @@
     width: 200px;
     padding-left: 15px;
 }
+
+/* ========[ Search by book name ]=========================== */
+/* .bookname-search-panel
+{
+    background-color: #177528;
+} */
 #bookname-input-key
 {
     width: 300px;
+}
+
+/* ========[ Show only in stock ]=========================== */
+.only-instock-checkbox-panel
+{
+    width: auto;
+    height: 35px;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #a5acc4;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#stock-check-label
+{
+    color: var(--dark1);
+    font-weight: bold;
+    padding-left: 10px;
+    cursor: pointer;
 }

@@ -187,6 +187,20 @@ document.getElementById('in-stock-check').addEventListener('change', function()
         document.getElementById('only-instock-checkbox-panel').style.backgroundColor = '#a5acc4';
     FindFilter();
 });
+
+document.getElementById('authour-input-key').addEventListener('click', function()
+{
+    // Reset book search by key
+    FindFilter();
+    document.getElementById('bookname-input-key').value = '';
+});
+
+document.getElementById('genre-filter-combo').addEventListener('click', function()
+{
+    // Reset book search by key
+    FindFilter();
+    document.getElementById('bookname-input-key').value = '';
+});
 document.getElementById('menu-dashboard').addEventListener('click', function()
 {
     MenuNavigate(4);

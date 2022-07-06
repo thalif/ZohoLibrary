@@ -216,7 +216,7 @@ document.getElementById('genre-filter-combo').addEventListener('change', functio
         FindFilter();
     }
     catch (exception) {
-        alert(exception);
+        ShowErrorAlert(exception);
     }
 });
 document.getElementById('authour-input-key').addEventListener('keyup', function()
@@ -817,8 +817,12 @@ function Refresh_UserList_UI()
         });
 
         document.getElementById('current-day-heading').innerHTML = `Today\t: ${new Date().toDateString()}`;
+        document.getElementById('current-day-count').innerHTML = `${CurrentDayUsers.length} user's`;
+        document.getElementById('previous-day-count').innerHTML = `${PreviousDayUsers.length} user's`;
+
         document.getElementById('users-list-today').innerHTML = GetUserList_LI_CuurentDay(CurrentDayUsers);
         document.getElementById('users-list').innerHTML = GetUserList_LI_PreviousDay(PreviousDayUsers);
+        
     }
     catch (exception) {
         ShowErrorAlert(exception);

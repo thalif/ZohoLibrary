@@ -3,7 +3,7 @@
 .show-user-block
 {
     width: 88%;
-    height: 100%;
+    height: 120%;
     background-color: #d6e0fd;
     position: absolute;
     /* background-color: var(--dark1); */
@@ -15,19 +15,32 @@
 {
     width: 100%;
 }
+
+.current-day-header, .previous-day-header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 #previous-day-block
 {
+    margin-top: 30px;
     width: 100%;
 }
 .users-list-today
 {
     margin-top: 20px;
-    min-height: 100px;
+    max-height: 300px;
     display: flex;
+    
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
     overflow-y: scroll;
+    box-shadow: inset 3px 3px 10px #848484;
+    padding: 10px;
+    border-radius: 5px;
 }
 .users-list-today li
 {
@@ -49,7 +62,9 @@
     flex-wrap: wrap;
     list-style: none;
     overflow-y: scroll;
-    border-radius: 3px;
+    box-shadow: inset 3px 3px 10px #848484;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .users-list li

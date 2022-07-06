@@ -378,7 +378,7 @@ function BookShowTemplate(givenList)
                         <div id="isbn-number-card">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
-                        Authour :
+                        Author :
                         <ul class="author-list-card">
                                 ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
                         </ul>
@@ -426,7 +426,7 @@ function UserBookReturnListTemplate(givenList)
                         <div id="isbn-number-card">${item.ISBN}</div> 
                     </div>
                     <div class="author-block"> 
-                        Authour :
+                        Author :
                         <ul class="author-list-card">
                                 ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
                         </ul>

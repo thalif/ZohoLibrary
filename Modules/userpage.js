@@ -88,7 +88,8 @@ function LogBookLogData()
 }
 function LoadGenreMaster()
 {
-    GenreMaster = LocalDB.Load_Genres();
+    // GenreMaster = LocalDB.Load_Genres();
+    GenreMaster = ["Comedy","Education","Politics","Novel","Fiction","Non-Fiction","Mythology","Horror","Crime","Science","Entertainment","Biography","History"];
     if (GenreMaster)
         InitGenre(GenreMaster);
     else

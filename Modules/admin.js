@@ -46,6 +46,8 @@ function PageConstructor()
     BookDatabase = ld.LoadBookDatabase();
     AuthourMaster = GetDistinctAuthoursList(Array.from(BookDatabase.values()));
     UserDatabase = userDB.GetUserDatabase();
+
+
     VerifyCookieDetails();
     InvokeDashboadContext();
     // Initial New Book Form
@@ -66,7 +68,8 @@ function VerifyCookieDetails()
 function LoadInitialsForPageContext()
 {
     // Load Genre DB
-    genreDB = ld.Load_Genres();
+    // genreDB = ld.Load_Genres();
+    genreDB = ["Comedy","Education","Politics","Novel","Fiction","Non-Fiction","Mythology","Horror","Crime","Science","Entertainment","Biography","History"];
     if (genreDB)
     {
         Load_Genres(genreDB);
@@ -74,12 +77,14 @@ function LoadInitialsForPageContext()
     }
         
     // Loan Country DB
-    countryDB = ld.Load_Country();
+    // countryDB = ld.Load_Country();
+    countryDB = ["India","Japan","Russia","France","Amarica", "United Kingdom"];
     if (countryDB)
         Load_Countries(countryDB);
 
     // Load Languages DB
-    languageDB = ld.Load_Language();
+    // languageDB = ld.Load_Language();
+    languageDB = ["Tamil","English","French","Japanese"];
     if (languageDB)
         Load_Language(languageDB);
 }

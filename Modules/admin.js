@@ -656,8 +656,6 @@ function RemoveAuthour(element)
     FindFilter();
 }
 
-
-
 // =====[ Filter find click ]=====================
 // ===============================================
 function FindFilter()

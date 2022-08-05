@@ -23,6 +23,7 @@ let UserBookLogList = [];
 let UserBookMaster = [];
 let UserReturnBook;
 let UserReturnBookLog;
+let BooksBindList = [];
 
 const libUtil = new LibUtil();
 const LocalDB = new localDB();
@@ -362,101 +363,59 @@ function RemoveAuthour(element)
 
 // =====[ List item templates ]===================
 // ===============================================
-function BookShowTemplate(givenList)
-{
-    return `${givenList.map((item) => 
-        `<li>
-        <div class="book-card">
-            <div class="cover"></div>
-            <div class="book-detail">
-                <div class="top-block">
-                    <div class="title-block">
-                        <div class="left-start">
-                            <div>
-                                <h3 id="b-title">${item.BookTitle}</h3>
-                            </div>
-                            
-                            <div class="edition-badge">
-                                <div class="edition">Edition</div>
-                                <div class="edition-v">${item.Edition}</div>
-                            </div>
+
+function GetBookReturnCardTemplate(item) {
+    let listItem = document.createElement('li');
+    listItem.id = 'list-item-1';
+    listItem.innerHTML = 
+    `<div class="book-card">
+        <div class="cover"></div>
+        <div class="book-detail">
+            <div class="top-block">
+                <div class="title-block">
+                    <div class="left-start">
+                        <div>
+                            <h3 id="b-title">${item.BookTitle}</h3>
                         </div>
-                        <div class="right-end">
-                            <div id="lang-text">
-                            ${item.Language}</div>
+                        
+                        <div class="edition-badge">
+                            <div class="edition">Edition</div>
+                            <div class="edition-v">${item.Edition}</div>
                         </div>
                     </div>
-                </div>
-                <div class="center-block">
-                    <div class="ISBN-block"> 
-                        <div>ISBN :</div> 
-                        <div id="isbn-number-card">${item.ISBN}</div> 
-                    </div>
-                    <div class="author-block"> 
-                        Author :
-                        <ul class="author-list-card">
-                                ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
-                        </ul>
+                    <div class="right-end">
+                        <div id="lang-text">
+                        ${item.Language}</div>
                     </div>
                 </div>
-                <div class="genre-block-card">
-                    Genre:
-                    <ul class="genre-card-list"> 
-                            ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
+            </div>
+            <div class="center-block">
+                <div class="ISBN-block"> 
+                    <div>ISBN :</div> 
+                    <div id="isbn-number-card">${item.ISBN}</div> 
+                </div>
+                <div class="author-block"> 
+                    Author :
+                    <ul class="author-list-card">
+                            ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
                     </ul>
                 </div>
-                ${AvailCheck(item.ISBN)}
             </div>
-        </div>
-    </li>`).join('')}`;
-}
-function UserBookReturnListTemplate(givenList)
-{
-    return `${givenList.map((item) => 
-        `<li>
-        <div class="book-card">
-            <div class="cover"></div>
-            <div class="book-detail">
-                <div class="top-block">
-                    <div class="title-block">
-                        <div class="left-start">
-                            <div>
-                                <h3 id="b-title">${item.BookTitle}</h3>
-                            </div>
-                            
-                            <div class="edition-badge">
-                                <div class="edition">Edition</div>
-                                <div class="edition-v">${item.Edition}</div>
-                            </div>
-                        </div>
-                        <div class="right-end">
-                            <div id="lang-text">
-                            ${item.Language}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="center-block">
-                    <div class="ISBN-block"> 
-                        <div>ISBN :</div> 
-                        <div id="isbn-number-card">${item.ISBN}</div> 
-                    </div>
-                    <div class="author-block"> 
-                        Author :
-                        <ul class="author-list-card">
-                                ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-                <div class="genre-block-card">
-                    Genre:
-                    <ul class="genre-card-list"> 
-                            ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
-                    </ul>
-                </div>
-                ${ReturnCheck(item.ISBN)}
+            <div class="genre-block-card">
+                Genre:
+                <ul class="genre-card-list"> 
+                        ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
+                </ul>
             </div>
+            ${ReturnCheck(item.ISBN)}
         </div>
-    </li>`).join('')}`;
+    </div>
+    <div id='listitem-wrapper'></div>`;
+
+    listItem.addEventListener('click', (e) => {
+        ReturnBook(e.target.parentNode);
+    });
+    return listItem;
 }
 function AvailCheck(isbn)
 {
@@ -571,7 +530,8 @@ function FindFilter()
         });
         copy = gFound;
     }
-    UpdateBooksList(copy);
+    BooksBindList = copy;
+    UpdateBooksList(BooksBindList);
 }
 function FindBookByKEY()
 {
@@ -585,9 +545,11 @@ function FindBookByKEY()
                 found.push(item);
             }
         });
+        BooksBindList = found;
         UpdateBooksList(found);
     }
     else {
+        BooksBindList = copy;
         UpdateBooksList(copy);
     }
 }
@@ -595,23 +557,83 @@ function FindBookByKEY()
 function UpdateBooksList(booksListToBind)
 {
     // Check to show only show books in available
-    if(document.getElementById('in-stock-check').checked)
-        booksListToBind = booksListToBind.filter((item) => item.StockCount > 0);
+    try
+    {
+        if(document.getElementById('in-stock-check').checked)
+            booksListToBind = booksListToBind.filter((item) => item.StockCount > 0);
         
-    let mainList = document.getElementById('search-content-list');
-    mainList.innerHTML = BookShowTemplate(booksListToBind);
-
-    let childItem = Array.from(mainList.childNodes);
-    childItem.forEach(element => 
-        {
-            element.addEventListener('click', function()
-            {
-                SelectedBookItem = booksListToBind[childItem.indexOf(element)];
-                InvokeBookSelectionCard(SelectedBookItem);
-            });
-        });
+        let mainList = document.getElementById('search-content-list');
+        mainList.innerHTML = '';
+        booksListToBind.forEach(item => mainList.appendChild(GetCard(item)))
+    }
+    catch(exception)
+    {
+        console.log(exception);
+    }
+    
 }
+function BookListSelection(listSelectedElement)
+{
+    let booksList = document.getElementById('search-content-list');
+    let bookListChildrens = Array.from(booksList.childNodes);
+    let index = bookListChildrens.indexOf(listSelectedElement)
+    SelectedBookItem = BooksBindList[index];
+    InvokeBookSelectionCard();
+}
+function GetCard(item)
+{
+    let listItem = document.createElement('li');
+    listItem.id = 'list-item-1';
+    listItem.innerHTML = `
+    <div class="book-card">
+            <div class="cover"></div>
+            <div class="book-detail">
+                <div class="top-block">
+                    <div class="title-block">
+                        <div class="left-start">
+                            <div>
+                                <h3 id="b-title">${item.BookTitle}</h3>
+                            </div>
+                            
+                            <div class="edition-badge">
+                                <div class="edition">Edition</div>
+                                <div class="edition-v">${item.Edition}</div>
+                            </div>
+                        </div>
+                        <div class="right-end">
+                            <div id="lang-text">
+                            ${item.Language}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center-block">
+                    <div class="ISBN-block"> 
+                        <div>ISBN :</div> 
+                        <div id="isbn-number-card">${item.ISBN}</div> 
+                    </div>
+                    <div class="author-block"> 
+                        Author :
+                        <ul class="author-list-card">
+                                ${item.Authuors.map((a) => `<li id="author-listitem-card">${a}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="genre-block-card">
+                    Genre:
+                    <ul class="genre-card-list"> 
+                            ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
+                    </ul>
+                </div>
+                ${AvailCheck(item.ISBN)}
+            </div>
+        </div>
+        <div id='listitem-wrapper'></div>`;
 
+        listItem.addEventListener('click', (e) => {
+            BookListSelection(e.target.parentNode);
+        });
+        return listItem;
+}
 // =======[ Book Take ]===========================
 // ===============================================
 function TakeBook()
@@ -663,7 +685,11 @@ function TakeBook()
 // ===============================================
 function ReturnBook(element)
 {
-    UserReturnBookLog = UserBookLogList[element];
+    let bookPickList = document.getElementById('user-bookpick-list');
+    let index = Array.from(bookPickList.childNodes).indexOf(element);
+
+
+    UserReturnBookLog = UserBookLogList[index];
     InvokeBookReturnCard(UserReturnBookLog);
 }
 function BookReturn()
@@ -708,22 +734,16 @@ function InvokeReturnPage()
     });
     UpdateUserReturnListUI(UserBookMaster);
 }
-function UpdateUserReturnListUI(givenList)
-{
-    let bookPickList = document.getElementById('user-bookpick-list');
-    bookPickList.innerHTML = '';
-    bookPickList.innerHTML = UserBookReturnListTemplate(givenList);
-
-    let childItem = Array.from(bookPickList.childNodes);
-    childItem.forEach(element => 
-        {
-            element.addEventListener('click', function()
-            {
-                ReturnBook(childItem.indexOf(element));
-            });
-        });
+function UpdateUserReturnListUI(givenList) {
+    try {
+        let bookPickList = document.getElementById('user-bookpick-list');
+        bookPickList.innerHTML = '';
+        givenList.forEach(item => bookPickList.appendChild(GetBookReturnCardTemplate(item)));
+    }
+    catch (exception) {
+        console.log(exception);
+    }
 }
-
 
 // =======[ Invoke book selection card ]================
 function InvokeBookSelectionCard()
@@ -741,7 +761,7 @@ function InvokeBookReturnCard(booklog)
     document.getElementById('book-return-card').style.display = 'flex';
     document.getElementById('return-book-title').innerText = UserReturnBook.BookTitle;
     document.getElementById('return-isbn-number').innerText = UserReturnBook.ISBN;
-    document.getElementById('book-version').innerText = UserReturnBook.Edition; 
+    // document.getElementById('book-version').innerHTML = UserReturnBook.Edition; 
 
 
     if(fineAmount > 0)

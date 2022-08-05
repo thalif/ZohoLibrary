@@ -25,6 +25,15 @@
     margin-left: 10px;
     margin-bottom: 10px;
 }
+#listitem-wrapper{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1;
+    position: relative;
+    top: -150px;
+}
+
 /* ========[ Booklist card ]======================================== */
 /* ================================================================= */
 .book-card
@@ -289,6 +298,7 @@
     justify-content: space-between;
     border-radius: 5px;
     color: whitesmoke;
+    z-index: 2;
 }
 
 #isbn-number, #return-isbn-number

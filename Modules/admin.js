@@ -18,6 +18,7 @@ let UserDatabase = new Map();
 let BookDatabase = new Map();
 let thisBook = new Book();
 let UserLogList = [];
+let BooksBindList = [];
 
 let ContextUser;
 let SelectedBookItem = new Book();
@@ -692,8 +693,8 @@ function FindFilter()
         });
         copy = gFound;
     }
-    
-    UpdateBookList(copy);
+    BooksBindList = copy;
+    UpdateBookList(BooksBindList);
 }
 
 //=============[ Show book list ]===================
@@ -705,89 +706,89 @@ function UpdateBookList(booksListToBind)
             booksListToBind = booksListToBind.filter((item) => item.StockCount > 0);
 
         let mainList = document.getElementById('books-list');
-        mainList.innerHTML = AdminBookCardTemplate(Array.from(booksListToBind));
-        
-        Invoke_EventListener_BookList(booksListToBind);
+        mainList.innerHTML = '';
+        booksListToBind.forEach(item => mainList.appendChild(getCard(item)));
     }
     catch (exception) {
         ShowErrorAlert(exception);
     }
 }
 
-function Invoke_EventListener_BookList(bookListDB)
+function BookListSelection(listSelectedElement)
 {
     let booksList = document.getElementById('books-list');
     let bookListChildrens = Array.from(booksList.childNodes);
-    bookListChildrens.forEach(item => {
-        item.addEventListener('click', function () 
-        {
-            SelectedBookItem = bookListDB[bookListChildrens.indexOf(item)];
-            InvokeSelectionCard(SelectedBookItem);
-        });
-    });
+    let index = bookListChildrens.indexOf(listSelectedElement)
+    InvokeSelectionCard(BooksBindList[index]);
 }
 
-function AdminBookCardTemplate(givenList)
+function getCard(item)
 {
-    return `${givenList.map((item) => 
-        `<li>
-        <div class="book-card">
-            <div class="cover"></div>
-            <div class="book-detail">
-                <div class="top-block">
-                    <div class="title-block">
-                        <div class="left-start">
-                            <div>
-                                <h3 id="b-title">${item.BookTitle}</h3>
-                            </div>
-                            
-                            <div class="edition-badge">
-                                <div class="edition">Edition</div>
-                                <div class="edition-v">${item.Edition}</div>
-                            </div>
+    let listItem = document.createElement('li');
+    listItem.id = 'list-item-1';
+    listItem.innerHTML = 
+    `<div class="book-card">
+        <div class="cover"></div>
+        <div class="book-detail">
+            <div class="top-block">
+                <div class="title-block">
+                    <div class="left-start">
+                        <div>
+                            <h3 id="b-title">${item.BookTitle}</h3>
                         </div>
-                        <div class="right-end">
-                            <div id="lang-text">
-                            ${item.Language}</div>
+                        
+                        <div class="edition-badge">
+                            <div class="edition">Edition</div>
+                            <div class="edition-v">${item.Edition}</div>
                         </div>
                     </div>
-                </div>
-                <div class="center-block">
-                    <div class="ISBN-block"> 
-                        <div>ISBN :</div> 
-                        <div id="isbn-number">${item.ISBN}</div> 
-                    </div>
-                    <div class="author-block"> 
-                        Author :
-                        <ul class="author-list">
-                                ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-                <div class="genre-block-card">
-                    Genre:
-                    <ul class="genre-card-list"> 
-                            ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
-                    </ul>
-                </div>
-                <div class="library-detail-block">
-                    <label>Library Details:</label>
-                    <br>
-                    <div class="library-details">
-                        <div class="section-block">
-                            <label>Section :</label>
-                            <div id="lib-section">${item.Section}</div>
-                        </div>
-                        <div class="rack-block">
-                            <label>Rack :</label>
-                            <div id="lib-rack">${item.Rack}</div>
-                        </div>
-                        ${GetStockTemplate(item.StockCount)}
+                    <div class="right-end">
+                        <div id="lang-text">
+                        ${item.Language}</div>
                     </div>
                 </div>
             </div>
+            <div class="center-block">
+                <div class="ISBN-block"> 
+                    <div>ISBN :</div> 
+                    <div id="isbn-number">${item.ISBN}</div> 
+                </div>
+                <div class="author-block"> 
+                    Author :
+                    <ul class="author-list">
+                            ${item.Authuors.map((a) => `<li>${a}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+            <div class="genre-block-card">
+                Genre:
+                <ul class="genre-card-list"> 
+                        ${item.Genre.map((g) => `<li>${g}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="library-detail-block">
+                <label>Library Details:</label>
+                <br>
+                <div class="library-details">
+                    <div class="section-block">
+                        <label>Section :</label>
+                        <div id="lib-section">${item.Section}</div>
+                    </div>
+                    <div class="rack-block">
+                        <label>Rack :</label>
+                        <div id="lib-rack">${item.Rack}</div>
+                    </div>
+                    ${GetStockTemplate(item.StockCount)}
+                </div>
+            </div>
         </div>
-    </li>`).join('')}`;
+    </div>
+    <div id='listitem-wrapper'></div>`;
+
+    listItem.addEventListener('click', (e) => {
+        BookListSelection(e.target.parentNode);
+    });
+    return listItem;
 }
 
 function GetStockTemplate(count)
@@ -807,9 +808,6 @@ function GetStockTemplate(count)
         </div>
         `
 }
-
-
-
 //#endregion
 
 
@@ -1015,10 +1013,12 @@ function FindBookByKEY()
                 found.push(item);
             }
         });
-        UpdateBookList(found);
+        BooksBindList = found;
+        UpdateBookList(BooksBindList);
     }
     else {
-        UpdateBookList(copy);
+        BooksBindList = copy;
+        UpdateBookList(BooksBindList);
     }
 }
 // ========[ Show alert ]=================================

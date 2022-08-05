@@ -129,6 +129,14 @@
 
 /* ========[ Booklist card ]======================================== */
 /* ================================================================= */
+#listitem-wrapper{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1;
+    position: relative;
+    top: -150px;
+}
 .book-card
 {
     width: 400px;
